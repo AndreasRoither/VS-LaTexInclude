@@ -1,6 +1,5 @@
 # VS-LatechInclude
-
-
+----
 # LatechIncludeWPF
 
 Latech Include WPF creates a .tex file which includes all files in a folder you specified.
@@ -30,7 +29,7 @@ Step 2:
 Unpack zip
 ```
 
-## Running the 
+## Running the programm
 
 Start the .exe
 
