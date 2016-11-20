@@ -1,6 +1,6 @@
-# VS-LatechInclude
+## VS-LatechInclude
 ----
-# LatechIncludeWPF
+## LatechIncludeWPF
 
 Latech Include WPF creates a .tex file which includes all files in a folder you specified.
 
