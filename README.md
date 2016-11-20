@@ -1,10 +1,10 @@
-## VS-LatechInclude
+### VS-LatechInclude
 ----
-## LatechIncludeWPF
+### LatechIncludeWPF
 
 Latech Include WPF creates a .tex file which includes all files in a folder you specified.
 
-## Getting Started
+### Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
 
