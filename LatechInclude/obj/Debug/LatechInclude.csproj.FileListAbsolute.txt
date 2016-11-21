@@ -22,7 +22,6 @@ C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\Latec
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.csproj.GenerateResource.Cache
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.exe
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.pdb
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\MahApps.Metro.dll
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\System.Windows.Interactivity.dll
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\MahApps.Metro.pdb
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\MahApps.Metro.xml
@@ -73,3 +72,7 @@ C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\MainWind
 C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.g.resources
 C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.Properties.Resources.resources
 C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.csproj.GenerateResource.Cache
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\TextEditorWindow.g.cs
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Xceed.Wpf.Toolkit.dll
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\TextEditorWindow.baml
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\RibbonControlsLibrary.dll

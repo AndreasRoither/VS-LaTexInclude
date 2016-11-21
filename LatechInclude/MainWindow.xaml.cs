@@ -62,6 +62,7 @@ namespace LatechInclude
                 path_TextBox.Text = folder;
       
                 _empList.Clear();
+                ListView.ItemsSource = null;
                 ListView.Items.Clear();
 
                 string[] files = Directory.GetFiles(dlg.FileName);
@@ -80,7 +81,7 @@ namespace LatechInclude
 
         private void ListView_OnNameClick(object sender, RoutedEventArgs e)
         {
-            _empList = new ObservableCollection<MyFile>(from file in _empList orderby file.Name select file);
+            _empList = new ObservableCollection<MyFile>(from file in _empList orderby file.FileName select file);
             int i = 1;
             foreach (MyFile file in _empList)
             {
@@ -93,7 +94,7 @@ namespace LatechInclude
 
         private void ListView_OnEndingClick(object sender, RoutedEventArgs e)
         {
-            _empList = new ObservableCollection<MyFile>(from file in _empList orderby file.Ending select file);
+            _empList = new ObservableCollection<MyFile>(from file in _empList orderby file.Extension select file);
             int i = 1;
             foreach (MyFile file in _empList)
             {
@@ -166,23 +167,29 @@ namespace LatechInclude
         {
 
         }
+
+        private void onTextEditor_Click(object sender, RoutedEventArgs e)
+        {
+            Window textEditor_Window = new TextEditorWindow();
+            textEditor_Window.Show();
+        }
     }
 
     public class MyFile
     {
-        public MyFile(string Name, string Path, string Ending, int Position)
+        public MyFile(string FileName, string Path, string Extension, int Position)
         {
-            this.Name = Name;
+            this.FileName = FileName;
             this.Path = Path;
-            this.Ending = Ending;
+            this.Extension = Extension;
             this.Position = Position;
         }
 
-        public string Name { get; set; }
+        public string FileName { get; set; }
 
         public string Path { get; set; }
 
-        public string Ending { get; set; }
+        public string Extension { get; set; }
 
         public int Position { get; set; }
     }
