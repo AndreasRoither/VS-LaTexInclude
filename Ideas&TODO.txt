@@ -10,6 +10,9 @@
 	- whitelist
 	- excludelist
 	- settings file
+	- File extention filter (by Fx)
+	- A textbox where you can define the language which is written to \lstinputlisting[language=C] (by Fx)
+	
 	
 	###############
 	#    Ideas    #
@@ -18,4 +21,14 @@
 	- Extension depending texcode
 	- syntaxhighlighting
 	- Modern UI
+	- Parameters in source file header (project name, language, author, date, ... )
+		sample: 
+		/*
+		project= Testproject
+		language= C++
+		autor= Fx
+		date= 21.11.2016
+		*/
+		
+	
 		
