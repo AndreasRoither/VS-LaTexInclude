@@ -16,8 +16,10 @@
                     <MenuItem Header="_Exit" Click="onMenu_File_ExitClick"/>
                 </MenuItem>
                 <MenuItem Header="_Settings" HorizontalAlignment="Center" Height="25" Width="56">
-                    <MenuItem Header="_Ending Exclude List" Click="onMenu_Settings_ExcludeClick"/>
-                    <MenuItem Header="_Ending File Input List" Click="onMenu_Settings_ExcludeClick"/>
+                    <MenuItem Header="extension exclude list" Click="onMenu_Settings_ExcludeClick"/>
+                    <MenuItem Header="extension whiteList" Click="onMenu_Settings_ExcludeClick"/>
+                </MenuItem>
+                <MenuItem Header="_TextEditor" HorizontalAlignment="Center" Height="25" Width="65" Click="onTextEditor_Click">
                 </MenuItem>
             </Menu>
             <StackPanel VerticalAlignment="Bottom">
@@ -35,11 +37,11 @@
                             <GridViewColumnHeader Tag="Pos">Pos.</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
-                    <GridViewColumn Width="250" DisplayMemberBinding="{Binding Name}">
-                        <GridViewColumnHeader Tag="Name" Click="ListView_OnNameClick" Content="Filename"/>
+                    <GridViewColumn Width="250" DisplayMemberBinding="{Binding FileName}">
+                        <GridViewColumnHeader Tag="FileName" Click="ListView_OnNameClick" Content="Filename"/>
                     </GridViewColumn>
-                    <GridViewColumn Width="120" DisplayMemberBinding="{Binding Ending}">
-                        <GridViewColumnHeader Tag="Ending" Click="ListView_OnEndingClick" Content="Extension"/>
+                    <GridViewColumn Width="120" DisplayMemberBinding="{Binding Extension}">
+                        <GridViewColumnHeader Tag="Extension" Click="ListView_OnEndingClick" Content="Extension"/>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
