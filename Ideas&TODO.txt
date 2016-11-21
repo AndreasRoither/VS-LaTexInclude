@@ -8,7 +8,6 @@
 	
 	- App Ressource for Programm settings
 	- whitelist
-	- excludelist
 	- settings file
 	- File extention filter (by Fx)
 	- A textbox where you can define the language which is written to \lstinputlisting[language=C] (by Fx)

@@ -148,30 +148,36 @@ namespace LatechInclude
             ListView.Items.Refresh();
         }
 
-        private void onMenu_File_ExitClick(object sender, RoutedEventArgs e)
+        private void onMainWindow_File_Exit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
 
-        private void onMenu_File_OpenClick(object sender, RoutedEventArgs e)
+        private void onMainWindow_File_Open_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void onMenu_File_SaveClick(object sender, RoutedEventArgs e)
+        private void onMainWindow_File_Save_Click(object sender, RoutedEventArgs e)
         {
             statusBar_TextBlock.Text = "Saved";
-        }
-
-        private void onMenu_Settings_ExcludeClick(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void onTextEditor_Click(object sender, RoutedEventArgs e)
         {
             Window textEditor_Window = new TextEditorWindow();
             textEditor_Window.Show();
+        }
+
+        private void onMainWindow_Settings_Click(object sender, RoutedEventArgs e)
+        {
+            Window settings_Window = new SettingsWindow();
+            settings_Window.Show();
+        }
+
+        public void setText(String text)
+        {
+            this.statusBar_TextBlock.Text = text;
         }
     }
 

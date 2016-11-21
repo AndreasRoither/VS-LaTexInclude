@@ -91,9 +91,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="TextEditorWindow.xaml.cs">
+    <Compile Include="ApplicationViewModel.cs" />
+    <Compile Include="HelperClass\ObservableObject.cs" />
+    <Compile Include="HelperClass\RelayCommand.cs" />
+    <Compile Include="IPageViewModel.cs" />
+    <Compile Include="Views\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TextEditorWindow.xaml.cs">
       <DependentUpon>TextEditorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ExcludeFilter.xaml.cs">
+      <DependentUpon>ExcludeFilter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\ExcludeFilterModel.cs" />
+    <Compile Include="Views\WhiteList.xaml.cs">
+      <DependentUpon>WhiteList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\WhiteListModel.cs" />
     <Compile Include="XMLSerializer.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -107,7 +122,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="TextEditorWindow.xaml">
+    <Page Include="Views\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TextEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExcludeFilter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WhiteList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

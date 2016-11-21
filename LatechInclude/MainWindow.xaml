@@ -11,13 +11,11 @@
         <DockPanel>
             <Menu DockPanel.Dock="Top" Height="25">
                 <MenuItem Header="_File" HorizontalAlignment="Center" Height="25" Width="35">
-                    <MenuItem Header="_Open" Click="onMenu_File_OpenClick"/>
-                    <MenuItem Header="_Save" Click="onMenu_File_SaveClick"/>
-                    <MenuItem Header="_Exit" Click="onMenu_File_ExitClick"/>
+                    <MenuItem Header="_Open" Click="onMainWindow_File_Open_Click"/>
+                    <MenuItem Header="_Save" Click="onMainWindow_File_Save_Click"/>
+                    <MenuItem Header="_Exit" Click="onMainWindow_File_Exit_Click"/>
                 </MenuItem>
-                <MenuItem Header="_Settings" HorizontalAlignment="Center" Height="25" Width="56">
-                    <MenuItem Header="extension exclude list" Click="onMenu_Settings_ExcludeClick"/>
-                    <MenuItem Header="extension whiteList" Click="onMenu_Settings_ExcludeClick"/>
+                <MenuItem Header="_Settings" HorizontalAlignment="Center" Height="25" Width="56" Click="onMainWindow_Settings_Click">
                 </MenuItem>
                 <MenuItem Header="_TextEditor" HorizontalAlignment="Center" Height="25" Width="65" Click="onTextEditor_Click">
                 </MenuItem>

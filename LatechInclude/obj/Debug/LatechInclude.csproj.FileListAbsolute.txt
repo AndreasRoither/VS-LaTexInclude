@@ -11,7 +11,6 @@ C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Micro
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.Sensors.xml
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.ShellExtensions.xml
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.csprojResolveAssemblyReference.cache
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\MainWindow.g.cs
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\App.g.cs
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude_MarkupCompile.cache
@@ -23,8 +22,6 @@ C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\Latec
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.exe
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.pdb
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\System.Windows.Interactivity.dll
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\MahApps.Metro.pdb
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\MahApps.Metro.xml
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\de\System.Windows.Interactivity.resources.dll
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\en\System.Windows.Interactivity.resources.dll
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\es\System.Windows.Interactivity.resources.dll
@@ -72,9 +69,7 @@ C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\MainWind
 C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.g.resources
 C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.Properties.Resources.resources
 C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.csproj.GenerateResource.Cache
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\TextEditorWindow.g.cs
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Xceed.Wpf.Toolkit.dll
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\TextEditorWindow.baml
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\RibbonControlsLibrary.dll
 C:\Users\andir\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\LatechInclude.exe.config
 C:\Users\andir\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.exe
@@ -117,3 +112,12 @@ C:\Users\andir\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\TextEdi
 C:\Users\andir\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.g.resources
 C:\Users\andir\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.Properties.Resources.resources
 C:\Users\andir\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.csproj.GenerateResource.Cache
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\Views\SettingsWindow.g.cs
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\Views\TextEditorWindow.g.cs
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\Views\TextEditorWindow.baml
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\Views\SettingsWindow.baml
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\Views\ExcludeFilter.baml
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\Views\WhiteList.baml
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\Views\ExcludeFilter.g.cs
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\Views\WhiteList.g.cs
