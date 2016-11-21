@@ -1,0 +1,21 @@
+######################
+# Features and Ideas #
+######################
+
+	###############
+	#    To add   #
+	###############
+	
+	- App Ressource for Programm settings
+	- whitelist
+	- excludelist
+	- settings file
+	
+	###############
+	#    Ideas    #
+	###############
+
+	- Extension depending texcode
+	- syntaxhighlighting
+	- Modern UI
+		
