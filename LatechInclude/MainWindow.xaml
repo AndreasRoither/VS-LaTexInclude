@@ -36,14 +36,10 @@
                         </GridViewColumn.Header>
                     </GridViewColumn>
                     <GridViewColumn Width="250" DisplayMemberBinding="{Binding Name}">
-                        <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="Name" Click="ListView_OnNameClick">Name</GridViewColumnHeader>
-                        </GridViewColumn.Header>
+                        <GridViewColumnHeader Tag="Name" Click="ListView_OnNameClick" Content="Filename"/>
                     </GridViewColumn>
                     <GridViewColumn Width="120" DisplayMemberBinding="{Binding Ending}">
-                        <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="Ending" Click="ListView_OnEndingClick">Ending</GridViewColumnHeader>
-                        </GridViewColumn.Header>
+                        <GridViewColumnHeader Tag="Ending" Click="ListView_OnEndingClick" Content="Extension"/>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
