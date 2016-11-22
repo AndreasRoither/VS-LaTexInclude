@@ -20,6 +20,7 @@ namespace LatechInclude.ViewModel
     public class MainViewModel : ViewModelBase
     {
         public ICommand PathFolderDialogCommand { get; private set; }
+        public ICommand TexMakerCommand { get; private set; }
 
         private CommonOpenFileDialog dlg = new CommonOpenFileDialog();
         private static ObservableCollection<MyFile> _empList = new ObservableCollection<MyFile>();
@@ -27,6 +28,7 @@ namespace LatechInclude.ViewModel
         public MainViewModel()
         {
             PathFolderDialogCommand = new RelayCommand(PathFolderDialogMethod);
+            TexMakerCommand = new RelayCommand(TexMakerMethod);
 
             dlg.Title = "Folder Selection";
             dlg.IsFolderPicker = true;
@@ -63,6 +65,14 @@ namespace LatechInclude.ViewModel
                     _empList.Add(new MyFile(System.IO.Path.GetFileNameWithoutExtension(file), file, System.IO.Path.GetExtension(file), i));
                     i++;
                 }
+            }
+        }
+
+        public void TexMakerMethod()
+        {
+            if(_empList.Count == 0)
+            {
+                
             }
         }
     }

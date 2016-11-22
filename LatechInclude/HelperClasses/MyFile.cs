@@ -26,15 +26,12 @@ namespace LatechInclude.HelperClasses
             this.Extension = Extension;
             this.Position = Position;
         }
+        public int Position { get; set; }
 
         public string FileName { get; set; }
 
-        public string Path { get; set; }
-
         public string Extension { get; set; }
 
-        public int Position { get; set; }
-
-        
+        public string Path { get; set; } 
     }
 }
