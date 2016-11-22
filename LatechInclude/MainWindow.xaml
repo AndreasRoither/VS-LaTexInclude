@@ -41,7 +41,7 @@
             </StackPanel>
         </DockPanel>
         <Button x:Name="PathButton" Command="{Binding PathFolderDialogCommand}" Content="Path" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.82,-0.025" Height="25"/>
-        <Button x:Name="makeTex" Command="{Binding TexMakerCommand}" Content="Tex" HorizontalAlignment="Left" Margin="90,38,0,0" VerticalAlignment="Top" Width="75" Height="25"/>
+        <Button x:Name="makeTex" Command="{Binding TexMakerCommand}" Content="Tex" HorizontalAlignment="Left" Margin="90,38,0,0" VerticalAlignment="Top" Width="75" Height="25" Click="makeTex_Click"/>
         <TextBox x:Name="path_TextBox" Height="25" Margin="170,38,10,0" VerticalAlignment="Top" MaxLines="1"/>
 
         <DataGrid Name="MainListView" ItemsSource="{Binding List, UpdateSourceTrigger=PropertyChanged}"
