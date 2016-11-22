@@ -8,13 +8,13 @@ C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\
 LatechInclude
 none
 false
-DEBUG;TRACE
+CODE_ANALYSIS;DEBUG;TRACE
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\App.xaml
-2-1344910042
+2-1356017796
 
-10-1226067145
-27285217441
-MainWindow.xaml;TextEditorWindow.xaml;
+16-905138726
+75545440107
+MainWindow.xaml;Skins\MainSkin.xaml;
 
-True
+False
 

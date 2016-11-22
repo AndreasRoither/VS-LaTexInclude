@@ -1,78 +1,87 @@
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\LatechInclude.exe.config
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\LatechInclude.exe
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\LatechInclude.pdb
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\LatechInclude.exe.CodeAnalysisLog.xml
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\LatechInclude.exe.lastcodeanalysissucceeded
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.dll
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.Extras.dll
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.Platform.dll
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\System.Windows.Interactivity.dll
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.pdb
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.xml
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.Extras.pdb
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.Extras.xml
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.Platform.pdb
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.Platform.xml
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\Microsoft.Practices.ServiceLocation.xml
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\obj\Debug\LatechInclude.csprojResolveAssemblyReference.cache
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\obj\Debug\MainWindow.baml
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\obj\Debug\Skins\MainSkin.baml
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\obj\Debug\MainWindow.g.cs
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\obj\Debug\App.g.cs
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\obj\Debug\GeneratedInternalTypeHelper.g.cs
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\obj\Debug\LatechInclude_MarkupCompile.cache
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\obj\Debug\LatechInclude_MarkupCompile.lref
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\obj\Debug\App.baml
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\obj\Debug\LatechInclude.g.resources
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\obj\Debug\LatechInclude.Properties.Resources.resources
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\obj\Debug\LatechInclude.csproj.GenerateResource.Cache
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\obj\Debug\LatechInclude.exe
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\obj\Debug\LatechInclude.pdb
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.dll
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.ExtendedLinguisticServices.dll
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.Sensors.dll
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.ShellExtensions.dll
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.xml
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.ExtendedLinguisticServices.xml
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.Sensors.xml
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.ShellExtensions.xml
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\LatechInclude.exe.config
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.exe
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.pdb
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\LatechInclude.exe
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\LatechInclude.pdb
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\LatechInclude.exe.CodeAnalysisLog.xml
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\LatechInclude.exe.lastcodeanalysissucceeded
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.dll
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.Extras.dll
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.Platform.dll
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.Practices.ServiceLocation.dll
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.dll
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.ExtendedLinguisticServices.dll
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.Sensors.dll
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.ShellExtensions.dll
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.pdb
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.xml
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.Extras.pdb
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.Extras.xml
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.Platform.pdb
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\GalaSoft.MvvmLight.Platform.xml
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.Practices.ServiceLocation.xml
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.xml
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.ExtendedLinguisticServices.xml
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.Sensors.xml
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.ShellExtensions.xml
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.csprojResolveAssemblyReference.cache
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\MainWindow.baml
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\Skins\MainSkin.baml
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\MainWindow.g.cs
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\App.g.cs
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude_MarkupCompile.cache
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude_MarkupCompile.lref
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\MainWindow.baml
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\App.baml
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.g.resources
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.Properties.Resources.resources
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.csproj.GenerateResource.Cache
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.exe
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.pdb
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\MahApps.Metro.dll
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\MahApps.Metro.pdb
 C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\MahApps.Metro.xml
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\de\System.Windows.Interactivity.resources.dll
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\en\System.Windows.Interactivity.resources.dll
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\es\System.Windows.Interactivity.resources.dll
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\fr\System.Windows.Interactivity.resources.dll
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\it\System.Windows.Interactivity.resources.dll
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\ja\System.Windows.Interactivity.resources.dll
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\ko\System.Windows.Interactivity.resources.dll
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\ru\System.Windows.Interactivity.resources.dll
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\LatechInclude.exe.config
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.exe
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.pdb
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\LatechInclude.exe
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\LatechInclude.pdb
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.ExtendedLinguisticServices.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.Sensors.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.ShellExtensions.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\System.Windows.Interactivity.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\MahApps.Metro.pdb
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\MahApps.Metro.xml
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.xml
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.ExtendedLinguisticServices.xml
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.Sensors.xml
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Microsoft.WindowsAPICodePack.ShellExtensions.xml
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\de\System.Windows.Interactivity.resources.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\en\System.Windows.Interactivity.resources.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\es\System.Windows.Interactivity.resources.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\fr\System.Windows.Interactivity.resources.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\it\System.Windows.Interactivity.resources.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\ja\System.Windows.Interactivity.resources.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\ko\System.Windows.Interactivity.resources.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\ru\System.Windows.Interactivity.resources.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.csprojResolveAssemblyReference.cache
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\MainWindow.g.cs
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\App.g.cs
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude_MarkupCompile.cache
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude_MarkupCompile.lref
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\MainWindow.baml
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.g.resources
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.Properties.Resources.resources
-C:\Users\Xer0\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\LatechInclude.csproj.GenerateResource.Cache
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\TextEditorWindow.g.cs
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\Xceed.Wpf.Toolkit.dll
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\TextEditorWindow.baml
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\bin\Debug\RibbonControlsLibrary.dll

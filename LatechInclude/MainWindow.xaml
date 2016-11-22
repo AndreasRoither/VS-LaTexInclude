@@ -1,54 +1,59 @@
-﻿<Window
+﻿<Controls:MetroWindow x:Class="LatechInclude.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LatechInclude"
-        xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="LatechInclude.MainWindow"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="439.273" Width="647">
-    <Grid>
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:ignore="http://www.galasoft.ch/ignore"
+        mc:Ignorable="d ignore"
+        Height="433.747"
+        Width="608.09"
+        Title="Latech Include"
+        BorderBrush="{DynamicResource AccentColorBrush}"
+        BorderThickness="1"
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Skins/MainSkin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid x:Name="LayoutRoot">
         <DockPanel>
-            <Menu DockPanel.Dock="Top" Height="25">
-                <MenuItem Header="_File" HorizontalAlignment="Center" Height="25" Width="35">
-                    <MenuItem Header="_Open" Click="onMenu_File_OpenClick"/>
-                    <MenuItem Header="_Save" Click="onMenu_File_SaveClick"/>
-                    <MenuItem Header="_Exit" Click="onMenu_File_ExitClick"/>
+            <Menu DockPanel.Dock="Top" Height="30">
+                <MenuItem Header="_File" HorizontalAlignment="Center" Height="30" Width="35">
+                    <MenuItem Header="_Open"/>
+                    <MenuItem Header="_Save"/>
+                    <MenuItem Header="_Exit"/>
                 </MenuItem>
-                <MenuItem Header="_Settings" HorizontalAlignment="Center" Height="25" Width="56">
-                    <MenuItem Header="extension exclude list" Click="onMenu_Settings_ExcludeClick"/>
-                    <MenuItem Header="extension whiteList" Click="onMenu_Settings_ExcludeClick"/>
+                <MenuItem Header="_Settings" HorizontalAlignment="Center" Height="30" Width="68">
                 </MenuItem>
-                <MenuItem Header="_TextEditor" HorizontalAlignment="Center" Height="25" Width="65" Click="onTextEditor_Click">
+                <MenuItem Header="_TextEditor" HorizontalAlignment="Center" Height="30" Width="76">
                 </MenuItem>
             </Menu>
-            <StackPanel VerticalAlignment="Bottom">
+            <StackPanel Height="31" VerticalAlignment="Bottom">
                 <StatusBar Height="31">
                     <TextBlock x:Name="statusBar_TextBlock" TextWrapping="Wrap"/>
                 </StatusBar>
             </StackPanel>
         </DockPanel>
-        <Button x:Name="button" Content="Path" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.82,-0.025" Click="MainWindow_onPathclick" Height="25"/>
-        <ListView x:Name="ListView" Margin="10,68,10,35">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="30" DisplayMemberBinding="{Binding Position}">
-                        <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="Pos">Pos.</GridViewColumnHeader>
-                        </GridViewColumn.Header>
-                    </GridViewColumn>
-                    <GridViewColumn Width="250" DisplayMemberBinding="{Binding FileName}">
-                        <GridViewColumnHeader Tag="FileName" Click="ListView_OnNameClick" Content="Filename"/>
-                    </GridViewColumn>
-                    <GridViewColumn Width="120" DisplayMemberBinding="{Binding Extension}">
-                        <GridViewColumnHeader Tag="Extension" Click="ListView_OnEndingClick" Content="Extension"/>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-            <Grid Height="100" Width="100"/>
-            <Border BorderBrush="Black" BorderThickness="1" Height="100" Width="100"/>
-        </ListView>
+        <Button x:Name="PathButton" Command="{Binding PathFolderDialogCommand}" Content="Path" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.82,-0.025" Height="25"/>
+        <Button x:Name="makeTex" Command="{Binding TexMakerCommand}" Content="Tex" HorizontalAlignment="Left" Margin="90,38,0,0" VerticalAlignment="Top" Width="75" Height="25"/>
         <TextBox x:Name="path_TextBox" Height="25" Margin="170,38,10,0" VerticalAlignment="Top" MaxLines="1"/>
-        <Button x:Name="makeTex" Content="Tex" HorizontalAlignment="Left" Margin="90,38,0,0" VerticalAlignment="Top" Width="75" Height="25"/>
+
+        <DataGrid Name="MainListView" ItemsSource="{Binding List, UpdateSourceTrigger=PropertyChanged}"
+                  Grid.Row="0"
+                  AutoGenerateColumns="True" Margin="10,69,10,41">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn ElementStyle="{DynamicResource MetroDataGridCheckBox}"
+                                        EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"
+                                        Header="IsSelected"
+                                        Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected, Mode=OneWay}"
+                                        />
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
-</Window>
+</Controls:MetroWindow>

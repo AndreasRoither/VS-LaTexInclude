@@ -1,0 +1,12 @@
+Framework:
+MVVM Light Toolkit
+
+Nuggets:
+Install-Package WindowsAPICodePack-Core
+Install-Package WindowsAPICodePack-ExtendedLinguisticServices
+Install-Package WindowsAPICodePack-Sensors
+Install-Package WindowsAPICodePack-Shell
+Install-Package WindowsAPICodePack-ShellExtensions
+
+UI Framework MahApps Metro:
+Install-Package MahApps.Metro
