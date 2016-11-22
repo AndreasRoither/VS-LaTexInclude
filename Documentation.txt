@@ -10,3 +10,6 @@ Install-Package WindowsAPICodePack-ShellExtensions
 
 UI Framework MahApps Metro:
 Install-Package MahApps.Metro
+
+Dependencies:
+ObservableList OrderBy needs using System.Linq;

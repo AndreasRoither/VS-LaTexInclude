@@ -3,15 +3,20 @@
 ######################
 
 	###############
-	#    To add   #
+	#    To do    #
 	###############
-	
-	- App Ressource for Programm settings
-	- whitelist
-	- settings file
-	- File extention filter (by Fx)
+
+	- PathFolderDialogMethod throws an exception if you have no permission to acess file or folder
+		we have to find a better solution
+	- Add Views + ViewModels for Settings
+	- search Code for unnecessary things
+	- Templates for texmaker
+	- Command Interface or whatever Pattern to Access MainView (bothersome to always make a new Object of mainwindow
+		also not really mvvm like
+	- Data extractor of the templates for .tex files
+	- add a whitelist
+	- add a extension filter
 	- A textbox where you can define the language which is written to \lstinputlisting[language=C] (by Fx)
-	
 	
 	###############
 	#    Ideas    #
@@ -19,7 +24,6 @@
 
 	- Extension depending texcode
 	- syntaxhighlighting
-	- Modern UI
 	- Parameters in source file header (project name, language, author, date, ... )
 		sample: 
 		/*
@@ -28,6 +32,17 @@
 		autor= Fx
 		date= 21.11.2016
 		*/
-		
+	- Maybe i can get the sorted list from Itemsource of the GridView when it was sorted by the gridview?
+
+	###############
+	#    Done     #
+	###############
+	
+	- Modern UI
+	- Data Grid and not listview
+	- MVVM Pattern
+	- Update for .gitignore to exclude unnecessary debug files
+	- Basic folder and subfolder search
+	- Databinding on gridview
 	
 		
