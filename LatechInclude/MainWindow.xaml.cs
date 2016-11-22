@@ -31,6 +31,7 @@ namespace LatechInclude
             MainListView.ItemContainerStyle = itemContainerStyle;
 
             this.DataContext = new MainViewModel();
+
         }
 
         void s_PreviewMouseLeftButtonDown(object sender, MouseEventArgs e)
@@ -80,6 +81,13 @@ namespace LatechInclude
             }
             mw.List = _empList;
             MainListView.Items.Refresh();
+        }
+
+        private void makeTex_Click(object sender, RoutedEventArgs e)
+        {
+            TexMaker t = new TexMaker();
+
+            Console.WriteLine("QQQQ" + t.getContent());
         }
     }
 }
