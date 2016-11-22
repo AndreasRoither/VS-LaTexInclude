@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\obj\Debug\
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\obj\Debug\
 LatechInclude
 none
 false
-DEBUG;TRACE
-C:\Users\Andreas\Documents\GitHub\VS-LatechInclude\LatechInclude\App.xaml
-5-1574849644
+CODE_ANALYSIS;DEBUG;TRACE
+c:\users\andreas\documents\visual studio 2015\Projects\LatechInclude\LatechInclude\App.xaml
+2-1356017796
 
-20-227678269
-27285217441
-MainWindow.xaml;Views\SettingsWindow.xaml;Views\TextEditorWindow.xaml;Views\ExcludeFilter.xaml;Views\WhiteList.xaml;
+16-905138726
+742102798346
+MainWindow.xaml;Skins\MainSkin.xaml;
 
-True
+False
 
