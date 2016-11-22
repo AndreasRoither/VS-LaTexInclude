@@ -41,18 +41,20 @@
             </StackPanel>
         </DockPanel>
         <Button x:Name="PathButton" Command="{Binding PathFolderDialogCommand}" Content="Path" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.82,-0.025" Height="25"/>
-        <Button x:Name="makeTex" Command="{Binding TexMakerCommand}" Content="Tex" HorizontalAlignment="Left" Margin="90,38,0,0" VerticalAlignment="Top" Width="75" Height="25" Click="makeTex_Click"/>
+        <Button x:Name="makeTex" Command="{Binding TexMakerCommand}" Content="Tex" HorizontalAlignment="Left" Margin="90,38,0,0" VerticalAlignment="Top" Width="75" Height="25"/>
         <TextBox x:Name="path_TextBox" Height="25" Margin="170,38,10,0" VerticalAlignment="Top" MaxLines="1"/>
 
-        <DataGrid Name="MainListView" ItemsSource="{Binding List, UpdateSourceTrigger=PropertyChanged}"
+        <DataGrid ItemsSource="{Binding List, UpdateSourceTrigger=PropertyChanged}"
                   Grid.Row="0"
-                  AutoGenerateColumns="True" Margin="10,69,10,41">
+                  AutoGenerateColumns="False" Margin="10,69,10,39" BorderThickness="1" BorderBrush="#CC119EDA">
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn ElementStyle="{DynamicResource MetroDataGridCheckBox}"
-                                        EditingElementStyle="{DynamicResource MetroDataGridCheckBox}"
-                                        Header="IsSelected"
-                                        Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected, Mode=OneWay}"
-                                        />
+                <DataGridTextColumn Header="Pos"
+                                    Binding="{Binding Position}" />
+                <DataGridTextColumn Header="Name"
+                                    Binding="{Binding FileName}" />
+                <DataGridTextColumn Header="Extension"
+                                    Binding="{Binding Extension}" />
+
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
