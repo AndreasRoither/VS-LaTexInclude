@@ -103,6 +103,7 @@
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="HelperClasses\MyFile.cs" />
     <Compile Include="HelperClasses\TexMaker.cs" />
+    <Compile Include="HelperClasses\TrulyObserveableCollection.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\IDataService.cs" />
@@ -157,7 +158,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\" />
+    <Folder Include="View\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

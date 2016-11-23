@@ -1,11 +1,13 @@
-﻿using System;
+﻿
 using LatechInclude.HelperClasses;
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 using LatechInclude.ViewModel;
 using MahApps.Metro.Controls;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Linq;
 
 namespace LatechInclude
 {
@@ -14,7 +16,10 @@ namespace LatechInclude
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        ObservableCollection<MyFile> _empList = new ObservableCollection<MyFile>();
+        TrulyObservableCollection<MyFile> _fileList = new TrulyObservableCollection<MyFile>();
+        MainViewModel mw = new MainViewModel();
+        public delegate Point GetPosition(IInputElement element);
+        int rowIndex = -1;
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
@@ -24,64 +29,149 @@ namespace LatechInclude
             InitializeComponent();
             Closing += (s, e) => ViewModelLocator.Cleanup();
 
-            //Style itemContainerStyle = new Style(typeof(ListBoxItem));
-            //itemContainerStyle.Setters.Add(new Setter(ListBoxItem.AllowDropProperty, true));
-            //itemContainerStyle.Setters.Add(new EventSetter(ListBoxItem.PreviewMouseMoveEvent, new MouseEventHandler(s_PreviewMouseLeftButtonDown)));
-            //itemContainerStyle.Setters.Add(new EventSetter(ListBoxItem.DropEvent, new DragEventHandler(listbox1_Drop)));
-            //MainListView.ItemContainerStyle = itemContainerStyle;
-
             this.DataContext = new MainViewModel();
+
+            MainView_DataGrid.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(productsDataGrid_PreviewMouseLeftButtonDown);
+            MainView_DataGrid.Drop += new System.Windows.DragEventHandler(MainView_DataGrid_Drop);
 
         }
 
-        void s_PreviewMouseLeftButtonDown(object sender, MouseEventArgs e)
+        void MainView_DataGrid_Drop(object sender, System.Windows.DragEventArgs e)
         {
-            MainViewModel mw = new MainViewModel();
-            _empList = mw.List;
+            _fileList = mw.List;
 
-            if (sender is ListBoxItem && e.LeftButton == MouseButtonState.Pressed)
+            if (rowIndex < 0)
+                return;
+            int index = this.GetCurrentRowIndex(e.GetPosition);
+            if (index < 0)
+                return;
+            if (index == rowIndex)
+                return;
+            if (index == MainView_DataGrid.Items.Count - 1)
             {
-                ListBoxItem draggedItem = sender as ListBoxItem;
-                DragDrop.DoDragDrop(draggedItem, draggedItem.DataContext, DragDropEffects.Move);
-                draggedItem.IsSelected = true;
+                System.Windows.MessageBox.Show("This row-index cannot be dropped");
+                return;
+            }
+
+            MyFile tempFile = MainView_DataGrid.SelectedItem as MyFile;
+            _fileList.RemoveAt(rowIndex);
+            _fileList.Insert(index, tempFile);
+
+            int i = 1;
+            foreach (MyFile file in _fileList)
+            {
+                file.Position = i;
+                i++;
+            }
+            mw.List = _fileList;
+            MainView_DataGrid.ItemsSource = null;
+            MainView_DataGrid.ItemsSource = mw.List;
+        }
+
+        void productsDataGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            rowIndex = GetCurrentRowIndex(e.GetPosition);
+            if (rowIndex < 0)
+                return;
+
+            MainView_DataGrid.SelectedIndex = rowIndex;
+            MyFile tempFile = MainView_DataGrid.Items[rowIndex] as MyFile;
+
+            if (tempFile == null)
+                return;
+
+            System.Windows.DragDropEffects dragdropeffects = System.Windows.DragDropEffects.Move;
+            if (DragDrop.DoDragDrop(MainView_DataGrid, tempFile, dragdropeffects)
+                                != System.Windows.DragDropEffects.None)
+            {
+                MainView_DataGrid.SelectedItem = tempFile;
             }
         }
 
-        //void listbox1_Drop(object sender, DragEventArgs e)
-        //{
-        //    MainViewModel mw = new MainViewModel();
-        //    _empList = mw.List;
+        private bool GetMouseTargetRow(Visual theTarget, GetPosition position)
+        {
+            if (theTarget != null)
+            {
+                Rect rect = VisualTreeHelper.GetDescendantBounds(theTarget);
+                Point point = position((IInputElement)theTarget);
+                return rect.Contains(point);
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
+        private DataGridRow GetRowItem(int index)
+        {
+            if (MainView_DataGrid.ItemContainerGenerator.Status
+                    != GeneratorStatus.ContainersGenerated)
+                return null;
+            return MainView_DataGrid.ItemContainerGenerator.ContainerFromIndex(index)
+                                                            as DataGridRow;
+        }
+        private int GetCurrentRowIndex(GetPosition pos)
+        {
+            int curIndex = -1;
+            for (int i = 0; i < MainView_DataGrid.Items.Count; i++)
+            {
+                DataGridRow itm = GetRowItem(i);
+                if (GetMouseTargetRow(itm, pos))
+                {
+                    curIndex = i;
+                    break;
+                }
+            }
+            return curIndex;
+        }
 
-        //    MyFile droppedData = e.Data.GetData(typeof(MyFile)) as MyFile;
-        //    MyFile target = ((ListBoxItem)(sender)).DataContext as MyFile;
+        private void columnHeader_Click(object sender, RoutedEventArgs e)
+        {
+            var columnHeader = sender as DataGridColumnHeader;
+            if(columnHeader != null)
+            {
+                int i;
 
-        //    int removedIdx = MainListView.Items.IndexOf(droppedData);
-        //    int targetIdx = MainListView.Items.IndexOf(target);
+                switch (columnHeader.Content.ToString())
+                {
+                    case "Name":
 
-        //    if (removedIdx < targetIdx)
-        //    {
-        //        _empList.Insert(targetIdx + 1, droppedData);
-        //        _empList.RemoveAt(removedIdx);
-        //    }
-        //    else
-        //    {
-        //        int remIdx = removedIdx + 1;
-        //        if (_empList.Count + 1 > remIdx)
-        //        {
-        //            _empList.Insert(targetIdx, droppedData);
-        //            _empList.RemoveAt(remIdx);
-        //        }
-        //    }
+                        _fileList = mw.List;
+                        _fileList = new TrulyObservableCollection<MyFile>(from file in _fileList orderby file.FileName select file);
 
-        //    int i = 1;
-        //    foreach (MyFile file in _empList)
-        //    {
-        //        file.Position = i;
-        //        i++;
-        //    }
-        //    mw.List = _empList;
-        //    MainListView.Items.Refresh();
-        //}
+                        i = 1;
+                        foreach (MyFile file in _fileList)
+                        {
+                            file.Position = i;
+                            i++;
+                        }
+
+                        mw.List = _fileList;
+                        MainView_DataGrid.ItemsSource = null;
+                        MainView_DataGrid.ItemsSource = mw.List;
+
+                        break;
+                    case "Extension":
+                        
+                        _fileList = mw.List;
+                        _fileList = new TrulyObservableCollection<MyFile>(from file in _fileList orderby file.Extension select file);
+
+                        i = 1;
+                        foreach (MyFile file in _fileList)
+                        {
+                            file.Position = i;
+                            i++;
+                        }
+
+                        mw.List = _fileList;
+                        MainView_DataGrid.ItemsSource = null;
+                        MainView_DataGrid.ItemsSource = mw.List;
+                        break;
+                }
+            }
+
+        }
+
 
         //private void makeTex_Click(object sender, RoutedEventArgs e)
         //{
