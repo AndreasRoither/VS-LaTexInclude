@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using LatechInclude.HelperClasses;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -72,10 +73,8 @@ namespace LatechInclude.ViewModel
 
         public void TexMakerMethod()
         {
-            if (_fileList.Count == 0)
-            {
-                
-            }
+            TexMaker tex = new TexMaker();
+            Console.WriteLine(tex.build());
         }
 
         public void SettingsMethod()
