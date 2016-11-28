@@ -12,6 +12,7 @@ namespace LatechInclude.HelperClasses
     {
 
         private String content = null;
+        private Boolean finalized = false;
 
         public TexMaker(){
             content = "";
@@ -19,32 +20,46 @@ namespace LatechInclude.HelperClasses
             content += "\\begin{document}\n";
         }
 
-        public String getContent(){
+        private TexMaker addPremable()
+        {
+            string path = Path.Combine(Environment.CurrentDirectory, @"Resources\premable.tex");
+            content += File.ReadAllText(path);
+            return this;
+        }
+
+        public String build(){
+            if (!finalized)
+                finalize();
             return content;
         }
 
-        public void finalize() {
+        public TexMaker finalize() {
+            if (finalized)
+                return this;
             content += "\n\\end{document}";
+            finalized = true;
+            return this;
         }
 
-        private void addPremable(){
-            string path = Path.Combine(Environment.CurrentDirectory, @"Resources\premable.tex");
-            content += File.ReadAllText(path);
-        }
-
-        public void addImage()
+        public TexMaker addImage()
         {
-
+            if (finalized)
+                return this;
+            return this;
         }
 
-        public void addCode()
+        public TexMaker addCode()
         {
-
+            if (finalized)
+                return this;
+            return this;
         }
 
-        public void addPDF()
+        public TexMaker addPDF()
         {
-
+            if (finalized)
+                return this;
+            return this;
         }
 
 
