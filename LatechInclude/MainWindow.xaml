@@ -29,7 +29,7 @@
                     <MenuItem Header="_Save"/>
                     <MenuItem Header="_Exit"/>
                 </MenuItem>
-                <MenuItem Header="_Settings" HorizontalAlignment="Center" Height="30" Width="68">
+                <MenuItem Header="_Settings" HorizontalAlignment="Center" Height="30" Width="68" Command="{Binding SettingsCommand}">
                 </MenuItem>
                 <MenuItem Header="_TextEditor" HorizontalAlignment="Center" Height="30" Width="76">
                 </MenuItem>

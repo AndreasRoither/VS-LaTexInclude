@@ -21,8 +21,7 @@ namespace LatechInclude.ViewModel
     {
         public ICommand PathFolderDialogCommand { get; private set; }
         public ICommand TexMakerCommand { get; private set; }
-        public ICommand NameSortCommand { get; private set; }
-        public ICommand ExtensionSortCommand { get; private set; }
+        public ICommand SettingsCommand { get; private set; }
 
         private CommonOpenFileDialog dlg = new CommonOpenFileDialog();
         private static TrulyObservableCollection<MyFile> _fileList = new TrulyObservableCollection<MyFile>();
@@ -31,8 +30,7 @@ namespace LatechInclude.ViewModel
         {
             PathFolderDialogCommand = new RelayCommand(PathFolderDialogMethod);
             TexMakerCommand = new RelayCommand(TexMakerMethod);
-            NameSortCommand = new RelayCommand(NameSortMethod);
-            ExtensionSortCommand = new RelayCommand(ExtensionSortMethod);
+            SettingsCommand = new RelayCommand(SettingsMethod);
 
             dlg.Title = "Folder Selection";
             dlg.IsFolderPicker = true;
@@ -79,26 +77,12 @@ namespace LatechInclude.ViewModel
             Console.WriteLine(tex.build());
         }
 
-        public void NameSortMethod()
+        public void SettingsMethod()
         {
-            _fileList = new TrulyObservableCollection<MyFile>(from file in _fileList orderby file.FileName select file);
-            int i = 1;
+            SwitchViewWindow svw = new SwitchViewWindow();
+            svw.DataContext = new SettingsViewModel();
 
-            foreach (MyFile file in _fileList)
-            {
-                file.Position = i;
-                i++;
-            }
-        }
-        public void ExtensionSortMethod()
-        {
-            _fileList = new TrulyObservableCollection<MyFile>(from file in _fileList orderby file.Extension select file);
-            int i = 1;
-            foreach (MyFile file in _fileList)
-            {
-                file.Position = i;
-                i++;
-            }
-        }  
+            svw.ShowDialog();
+        } 
     }
 }
