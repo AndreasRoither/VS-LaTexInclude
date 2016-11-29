@@ -22,6 +22,7 @@
 	#    Ideas    #
 	###############
 
+	- Regex expression for standard templates
 	- Extension depending texcode
 	- syntaxhighlighting
 	- Parameters in source file header (project name, language, author, date, ... )

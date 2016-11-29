@@ -103,6 +103,10 @@
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="HelperClasses\MyFile.cs" />
     <Compile Include="HelperClasses\TexMaker.cs" />
+    <Compile Include="HelperClasses\TexTemplate.cs" />
+    <Compile Include="HelperClasses\TexTemplate_Code.cs" />
+    <Compile Include="HelperClasses\TexTemplate_PDF.cs" />
+    <Compile Include="HelperClasses\TexTemplate_Picture.cs" />
     <Compile Include="HelperClasses\TrulyObserveableCollection.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
