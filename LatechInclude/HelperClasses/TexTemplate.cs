@@ -19,4 +19,5 @@ namespace LatechInclude.HelperClasses
 
         public string Type { get; set; }
     }
+
 }

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:src="clr-namespace:LatechInclude"
         xmlns:ignore="http://www.galasoft.ch/ignore"
         mc:Ignorable="d ignore"
         Height="433.747"
@@ -18,6 +19,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Skins/MainSkin.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
         </ResourceDictionary>
     </Window.Resources>
 
@@ -39,10 +41,11 @@
                     <TextBlock x:Name="statusBar_TextBlock" TextWrapping="Wrap"/>
                 </StatusBar>
             </StackPanel>
+
         </DockPanel>
         <Button x:Name="PathButton" Command="{Binding PathFolderDialogCommand}" Content="Path" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.82,-0.025" Height="25"/>
         <Button x:Name="makeTex" Command="{Binding TexMakerCommand}" Content="Tex" HorizontalAlignment="Left" Margin="90,38,0,0" VerticalAlignment="Top" Width="75" Height="25"/>
-        <TextBox x:Name="path_TextBox" Height="25" Margin="170,38,10,0" VerticalAlignment="Top" MaxLines="1"/>
+        <Controls:DropDownButton ItemsSource="{Binding Languages}" Height="25" VerticalAlignment="Top" Margin="170,38,237,0"/>
 
         <DataGrid Name="MainView_DataGrid" ItemsSource="{Binding List, UpdateSourceTrigger=PropertyChanged}"
                   Grid.Row="0"
