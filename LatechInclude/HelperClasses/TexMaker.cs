@@ -36,15 +36,18 @@ namespace LatechInclude.HelperClasses
         public TexMaker finalize() {
             if (finalized)
                 return this;
-            content += "\n\\end{document}";
+            content += "\\end{document}";
             finalized = true;
             return this;
         }
 
-        public TexMaker addImage()
+        public TexMaker addImage(String relativePath, float size)
         {
             if (finalized)
                 return this;
+
+            //TODO: Convert Path to Latex Format (Replace \ by /)
+            content += "\\begin{figure}[H]\n\\centering\n\\includegraphics[scale = " + size + "]{" + relativePath + "}\n\\end{figure}";
             return this;
         }
 
