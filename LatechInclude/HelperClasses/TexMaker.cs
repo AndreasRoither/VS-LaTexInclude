@@ -14,7 +14,8 @@ namespace LatechInclude.HelperClasses
         private String content = null;
         private Boolean finalized = false;
 
-        public TexMaker(){
+        public TexMaker()
+        {
             content = "";
             addPremable();
             content += "\\begin{document}\n";
@@ -27,13 +28,15 @@ namespace LatechInclude.HelperClasses
             return this;
         }
 
-        public String build(){
+        public String build()
+        {
             if (!finalized)
                 finalize();
             return content;
         }
 
-        public TexMaker finalize() {
+        public TexMaker finalize()
+        {
             if (finalized)
                 return this;
             content += "\\end{document}";

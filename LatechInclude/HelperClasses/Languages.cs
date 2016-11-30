@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LatechInclude.HelperClasses
 {
-    public class MyFile : INotifyPropertyChanged
+    public class Languages : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -19,19 +19,10 @@ namespace LatechInclude.HelperClasses
             }
         }
 
-        public MyFile(string FileName, string Path, string Extension, int Position)
+        public Languages(string Language)
         {
-            this.FileName = FileName;
-            this.Path = Path;
-            this.Extension = Extension;
-            this.Position = Position;
+            this.Language = Language;
         }
-        public string FileName { get; set; }
-
-        public string Path { get; set; }
-
-        public string Extension { get; set; }
-
-        public int Position { get; set; } 
+        public string Language { get; set; }
     }
 }

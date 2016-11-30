@@ -2,11 +2,16 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using LatechInclude.HelperClasses;
+using MahApps.Metro.Controls.Dialogs;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 namespace LatechInclude.ViewModel
@@ -25,8 +30,14 @@ namespace LatechInclude.ViewModel
 
         private CommonOpenFileDialog dlg = new CommonOpenFileDialog();
         private static TrulyObservableCollection<MyFile> _fileList = new TrulyObservableCollection<MyFile>();
+        private static string[] _Languages;
 
-        public MainViewModel()
+        public static string currentLanguage = null;
+        private readonly string regexPattern = @"\$(.*?)\$";
+
+        public List<string> FilterList = new List<string>();
+
+        public MainViewModel() 
         {
             PathFolderDialogCommand = new RelayCommand(PathFolderDialogMethod);
             TexMakerCommand = new RelayCommand(TexMakerMethod);
@@ -45,6 +56,55 @@ namespace LatechInclude.ViewModel
             dlg.EnsureValidNames = true;
             dlg.Multiselect = false;
             dlg.ShowPlacesList = true;
+
+            try
+            {
+                string[] FilterListLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\FilterList.txt"));
+
+                foreach (string s in FilterListLines)
+                {
+                    if (s.StartsWith("."))
+                    {
+                        FilterList.Add(s);
+                    }
+                }
+
+                //string line;
+
+                //// Read the file and display it line by line.
+                //System.IO.StreamReader file =
+                //   new System.IO.StreamReader(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\Languages.txt"));
+                //while ((line = file.ReadLine()) != null)
+                //{
+                //    _Languages.Add(new Languages(line));
+                //}
+
+                //file.Close();
+
+                _Languages = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\Languages.txt"));
+
+
+            }
+            catch(Exception ex)
+            { }
+
+            Console.WriteLine();
+        }
+
+        public override void Cleanup()
+        {
+            PathFolderDialogCommand = null;
+            TexMakerCommand = null;
+            SettingsCommand = null;
+            dlg = null;
+
+            base.Cleanup();
+        }
+
+        public string[] Languages
+        {
+            get { return _Languages; }
+            set { _Languages = value; }
         }
 
         public TrulyObservableCollection<MyFile> List
@@ -59,22 +119,82 @@ namespace LatechInclude.ViewModel
             {
                 var folder = dlg.FileName;
                 //Throws exception if no permissions
-                string[] files = Directory.GetFiles(dlg.FileName, "*", SearchOption.AllDirectories);
-                _fileList.Clear();
-
-                int i = 1;
-                foreach (string file in files)
+                try
                 {
-                    _fileList.Add(new MyFile(System.IO.Path.GetFileNameWithoutExtension(file), file, System.IO.Path.GetExtension(file), i));
-                    i++;
+                    string[] files = Directory.GetFiles(folder, "*", SearchOption.AllDirectories);
+                    _fileList.Clear();
+
+                    int i = 1;
+                    foreach (string file in files)
+                    {
+                        if (!FilterList.Contains(System.IO.Path.GetExtension(file)))
+                        {
+                            _fileList.Add(new MyFile(System.IO.Path.GetFileNameWithoutExtension(file), file, System.IO.Path.GetExtension(file), i));
+                            i++;
+                        }
+                        
+                    }
                 }
+                catch(Exception ex)
+                { }
             }
         }
 
         public void TexMakerMethod()
         {
-            TexMaker tex = new TexMaker();
-            Console.WriteLine(tex.build());
+            MainWindow mw = new MainWindow();
+
+            if (_fileList.Count > 0)
+            {
+                Regex re = new Regex(regexPattern, RegexOptions.Compiled);
+                try
+                {
+                    string TexCodeTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexCodeTemplate.tex"));
+                    string TexImageTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexImageTemplate.tex"));
+                    string TexPDFTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexPDFTemplate.tex"));
+
+                    StringDictionary fields = new StringDictionary();
+
+                    string output = re.Replace(TexCodeTemplate, delegate (Match match)
+                    {
+                        return fields[match.Groups[1].Value];
+                    });
+                    
+
+                    string outputString = "";
+
+                    foreach (MyFile file in _fileList)
+                    {
+                        if (currentLanguage == null)
+                        {
+                            fields.Add("Language", "Test");
+                        }
+                        else
+                        {
+                            fields.Add("Language", currentLanguage);
+                        }
+                        
+                        fields.Add("Path", file.Path);
+                        outputString += re.Replace(TexCodeTemplate, delegate (Match match)
+                        {
+                            return fields[match.Groups[1].Value];
+                        });
+                        outputString += "\n";
+                        fields.Clear();
+                    }
+
+                    System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\output.tex"), outputString);
+
+                    Console.WriteLine(outputString);
+                }
+                catch(Exception ex)
+                { }
+            }
+            else
+            {
+                
+            }
+
         }
 
         public void SettingsMethod()
@@ -83,6 +203,6 @@ namespace LatechInclude.ViewModel
             svw.DataContext = new SettingsViewModel();
 
             svw.ShowDialog();
-        } 
+        }
     }
 }
