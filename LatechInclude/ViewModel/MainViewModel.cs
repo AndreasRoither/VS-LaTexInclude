@@ -30,12 +30,12 @@ namespace LatechInclude.ViewModel
 
         private CommonOpenFileDialog dlg = new CommonOpenFileDialog();
         private static TrulyObservableCollection<MyFile> _fileList = new TrulyObservableCollection<MyFile>();
-        private static string[] _Languages;
+        private List<string> _Languages = new List<string>();
 
         public static string currentLanguage = null;
         private readonly string regexPattern = @"\$(.*?)\$";
 
-        public List<string> FilterList = new List<string>();
+        public List<string> WhiteList = new List<string>();
 
         public MainViewModel() 
         {
@@ -59,13 +59,13 @@ namespace LatechInclude.ViewModel
 
             try
             {
-                string[] FilterListLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\FilterList.txt"));
+                string[] WhiteListLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\WhiteList.txt"));
 
-                foreach (string s in FilterListLines)
+                foreach (string s in WhiteListLines)
                 {
                     if (s.StartsWith("."))
                     {
-                        FilterList.Add(s);
+                        WhiteList.Add(s);
                     }
                 }
 
@@ -81,7 +81,14 @@ namespace LatechInclude.ViewModel
 
                 //file.Close();
 
-                _Languages = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\Languages.txt"));
+                //_Languages = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\Languages.txt"));
+                foreach (string s in WhiteListLines)
+                {
+                    if (s.StartsWith("#"))
+                    {               
+                        _Languages.Add(s.Remove(0, 1));
+                    }
+                }
 
 
             }
@@ -101,7 +108,7 @@ namespace LatechInclude.ViewModel
             base.Cleanup();
         }
 
-        public string[] Languages
+        public List<string> Languages
         {
             get { return _Languages; }
             set { _Languages = value; }
@@ -127,7 +134,7 @@ namespace LatechInclude.ViewModel
                     int i = 1;
                     foreach (string file in files)
                     {
-                        if (!FilterList.Contains(System.IO.Path.GetExtension(file)))
+                        if (WhiteList.Contains(System.IO.Path.GetExtension(file)))
                         {
                             _fileList.Add(new MyFile(System.IO.Path.GetFileNameWithoutExtension(file), file, System.IO.Path.GetExtension(file), i));
                             i++;
