@@ -103,6 +103,7 @@
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="HelperClasses\Languages.cs" />
     <Compile Include="HelperClasses\MyFile.cs" />
+    <Compile Include="HelperClasses\StringNotify.cs" />
     <Compile Include="HelperClasses\TexMaker.cs" />
     <Compile Include="HelperClasses\TexTemplate.cs" />
     <Compile Include="HelperClasses\TrulyObserveableCollection.cs" />

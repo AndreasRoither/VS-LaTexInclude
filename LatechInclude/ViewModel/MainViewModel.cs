@@ -8,13 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 
-namespace LatechInclude.ViewModel
+namespace LatechInclude.ViewModel 
 {
     /// <summary>
     /// This class contains properties that the main View can data bind to.
@@ -22,17 +23,21 @@ namespace LatechInclude.ViewModel
     /// See http://www.mvvmlight.net
     /// </para>
     /// </summary>
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, INotifyPropertyChanged
     {
         public ICommand PathFolderDialogCommand { get; private set; }
         public ICommand TexMakerCommand { get; private set; }
         public ICommand SettingsCommand { get; private set; }
+         
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private CommonOpenFileDialog dlg = new CommonOpenFileDialog();
         private static TrulyObservableCollection<MyFile> _fileList = new TrulyObservableCollection<MyFile>();
         private List<string> _Languages = new List<string>();
 
         public static string currentLanguage = null;
+        private StringNotify pathString = null;
+
         private readonly string regexPattern = @"\$(.*?)\$";
 
         public List<string> WhiteList = new List<string>();
@@ -56,6 +61,8 @@ namespace LatechInclude.ViewModel
             dlg.EnsureValidNames = true;
             dlg.Multiselect = false;
             dlg.ShowPlacesList = true;
+
+            pathString = new StringNotify("");
 
             try
             {
@@ -98,6 +105,16 @@ namespace LatechInclude.ViewModel
             Console.WriteLine();
         }
 
+        protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
+        {
+            if (this.PropertyChanged != null)
+            {
+                Console.WriteLine(propertyName);
+                var e = new PropertyChangedEventArgs(propertyName);
+                this.PropertyChanged(this, e);
+            }
+        }
+
         public override void Cleanup()
         {
             PathFolderDialogCommand = null;
@@ -114,6 +131,14 @@ namespace LatechInclude.ViewModel
             set { _Languages = value; }
         }
 
+        public String fPath
+        {
+            get { return pathString.text; }
+            set { pathString.text = value;
+                OnPropertyChanged("fPath");
+            }
+        }
+
         public TrulyObservableCollection<MyFile> List
         {
             get { return _fileList; }
@@ -125,6 +150,8 @@ namespace LatechInclude.ViewModel
             if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 var folder = dlg.FileName;
+                fPath = dlg.FileName;
+
                 //Throws exception if no permissions
                 try
                 {

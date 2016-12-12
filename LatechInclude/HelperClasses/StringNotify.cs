@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace LatechInclude.HelperClasses
 {
-    public class Languages : INotifyPropertyChanged
+    public class StringNotify : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private string _Language;
+        private string _text;
 
         private void NotifyPropertyChanged(string Obj)
         {
@@ -20,38 +20,26 @@ namespace LatechInclude.HelperClasses
             }
         }
 
-        public Languages(string Language)
+        public StringNotify(string s)
         {
-            this._Language = Language;
+            this._text = s;
         }
 
-        public string Language
+        public StringNotify()
         {
-            get
-            {
-                return _Language;
-            }
-            set
-            {
-                if (value != _Language)
-                {
-                    this._Language = value;
-                    NotifyPropertyChanged("Language");
-                }
-            }
         }
 
-        public string text
-        {
-            get { return text; }
+        public string text {
+            get { return _text; }
             set
             {
                 if (value != text)
                 {
-                    text = value;
-                    NotifyPropertyChanged("Text");
+                    this._text = value;
+                    NotifyPropertyChanged("fPath");
                 }
             }
         }
     }
 }
+

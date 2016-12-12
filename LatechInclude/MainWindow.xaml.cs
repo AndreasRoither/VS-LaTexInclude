@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Linq;
 using MahApps.Metro.Controls.Dialogs;
+using System.Windows.Data;
 
 namespace LatechInclude
 {
@@ -34,7 +35,6 @@ namespace LatechInclude
 
             MainView_DataGrid.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(productsDataGrid_PreviewMouseLeftButtonDown);
             MainView_DataGrid.Drop += new System.Windows.DragEventHandler(MainView_DataGrid_Drop);
-
         }
 
         void MainView_DataGrid_Drop(object sender, System.Windows.DragEventArgs e)
