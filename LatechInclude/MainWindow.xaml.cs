@@ -10,6 +10,10 @@ using System.Windows.Media;
 using System.Linq;
 using MahApps.Metro.Controls.Dialogs;
 using System.Windows.Data;
+using System.Diagnostics;
+using GalaSoft.MvvmLight.Messaging;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace LatechInclude
 {
@@ -28,7 +32,24 @@ namespace LatechInclude
         /// </summary>
         public MainWindow()
         {
+
+            if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1)
+            {
+                MessageBoxResult result = MessageBox.Show("An Instance is already open, do you want to close it?", "Instance already open", MessageBoxButton.YesNo);
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        var current = Process.GetCurrentProcess();
+                        Process.GetProcessesByName(current.ProcessName).Where(t => t.Id != current.Id).ToList().ForEach(t => t.Kill());
+                        break;
+                    case MessageBoxResult.No:
+                        System.Diagnostics.Process.GetCurrentProcess().Kill();
+                        break;
+                }   
+            }            
+
             InitializeComponent();
+
             Closing += (s, e) => ViewModelLocator.Cleanup();
 
             this.DataContext = new MainViewModel();
@@ -170,15 +191,36 @@ namespace LatechInclude
                         break;
                 }
             }
-
         }
 
+        private void OnLanguageBox_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            mw.currentLanguage = (sender as ComboBox).SelectedItem as string;
+            WhiteList_Grid.ItemsSource = null;
 
-        //private void makeTex_Click(object sender, RoutedEventArgs e)
-        //{
-        //    TexMaker t = new TexMaker();
+            if (mw.currentLanguage == "All")
+            {
+                mw.currentWhiteList = mw.whiteList;
+            }
+            else
+            {
+                List<WhiteList> tempList = new List<WhiteList>();
 
-        //    Console.WriteLine("QQQQ" + t.getContent());
-        //}
+                foreach (WhiteList wl in mw.whiteList)
+                {
+                    if (wl.Language == mw.currentLanguage)
+                    {
+                        tempList.Add(new WhiteList
+                        {
+                            Language = wl.Language,
+                            Extension = wl.Extension
+                        });
+                    }
+                }
+
+                mw.currentWhiteList = tempList;
+            }
+            WhiteList_Grid.ItemsSource = mw.currentWhiteList;
+        }
     }
 }

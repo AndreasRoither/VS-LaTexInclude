@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="LatechInclude.View.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LatechInclude.View"
+             mc:Ignorable="d" Height="303.178" Width="410.593">
+    <Grid>
+        <TreeView x:Name="treeView" HorizontalAlignment="Left" Height="280" Margin="10,10,0,0" VerticalAlignment="Top" Width="137">
+            <TreeViewItem Header="Test" IsExpanded="True">
+                <TreeViewItem Header="test1"/>
+            </TreeViewItem>
+            <TreeViewItem Header="Test"/>
+        </TreeView>
+
+        <Grid HorizontalAlignment="Left" Height="280" Margin="152,10,0,0" VerticalAlignment="Top" Width="249">
+            <ContentControl Content="{Binding}" />
+        </Grid>
+    </Grid>
+</UserControl>

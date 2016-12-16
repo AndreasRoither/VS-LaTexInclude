@@ -1,4 +1,5 @@
-﻿#C++
+﻿#All
+#C++
 .h
 .cpp
 
@@ -10,5 +11,4 @@
 .html
 
 #VHDL
-.vhd
-
+.vhdl

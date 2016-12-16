@@ -9,5 +9,6 @@ namespace LatechInclude.ViewModel
 {
     class SettingsViewModel : ViewModelBase
     {
+        public ViewModelBase CurrentView { get; set; }
     }
 }
