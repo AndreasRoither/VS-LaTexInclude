@@ -18,7 +18,14 @@ namespace LatechInclude.HelperClasses
 
         public int CompareTo(WhiteList that)
         {           
-            return this.Extension.CompareTo(that.Extension);
+            if (this.Language == that.Language)
+            {
+                return this.Extension.CompareTo(that.Extension);
+            }
+            else
+            {
+                return this.Language.CompareTo(that.Language);
+            }       
         }
 
         public WhiteList()

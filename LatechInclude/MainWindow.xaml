@@ -12,16 +12,17 @@
         Title="Latech Include"
         BorderBrush="{DynamicResource AccentColorBrush}"
         BorderThickness="1"
-        DataContext="{Binding Main, Source={StaticResource Locator}}">
+        DataContext="{Binding Main, Source={StaticResource Locator}}" Closing="OnMainWindow_Closing">
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Skins/MainSkin.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
         </ResourceDictionary>
     </Window.Resources>
+    
+    
 
     <Grid x:Name="LayoutRoot">
         <DockPanel>
@@ -33,7 +34,7 @@
                 </MenuItem>
                 <MenuItem Header="_Settings" HorizontalAlignment="Center" Height="30" Width="68" Command="{Binding SettingsCommand}">
                 </MenuItem>
-                <MenuItem Header="_TextEditor" HorizontalAlignment="Center" Height="30" Width="76">
+                <MenuItem Header="_TextEditor" HorizontalAlignment="Center" Height="30" Width="76" Command="{Binding TextEditorCommand}">
                 </MenuItem>
             </Menu>
             <StackPanel Height="31" VerticalAlignment="Bottom">
@@ -51,9 +52,14 @@
 
         <Button x:Name="PathButton_Copy" Command="{Binding AddExtensionCommand}" Content="Add Extension" Margin="519,351,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.82,-0.025" Height="25" HorizontalAlignment="Left" Width="159"/>
 
-        <DataGrid Name="MainView_DataGrid" ItemsSource="{Binding List, UpdateSourceTrigger=PropertyChanged}"
-                  Grid.Row="0"
-                  AutoGenerateColumns="False" Margin="10,69,0,39" BorderThickness="1" BorderBrush="#CC119EDA" AllowDrop="True" HorizontalAlignment="Left" Width="505">
+        <DataGrid Name="MainView_DataGrid" ItemsSource="{Binding List, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0"
+                  AutoGenerateColumns="False" Margin="10,69,0,39" BorderThickness="1" BorderBrush="#CC119EDA" AllowDrop="True" HorizontalAlignment="Left" Width="505" IsReadOnly="True">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Clear">
+                    </MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                     <EventSetter Event="Click" Handler="columnHeader_Click" />
@@ -66,11 +72,18 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <DataGrid x:Name="WhiteList_Grid" ItemsSource="{Binding currentWhiteList, UpdateSourceTrigger=PropertyChanged}"
-            Grid.Row="0"
-            AutoGenerateColumns="False" Margin="520,69,10,69" BorderThickness="1" BorderBrush="#CC119EDA" AllowDrop="True">
+        <DataGrid x:Name="WhiteList_Grid" ItemsSource="{Binding currentWhiteList, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0"
+            AutoGenerateColumns="False" Margin="520,69,10,69" BorderThickness="1" BorderBrush="#CC119EDA" AllowDrop="True" IsReadOnly="True">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Clear"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            
             <DataGrid.Columns>
-                <DataGridTextColumn Header="WhiteList" Binding="{Binding Extension}" MinWidth="155" />
+                <DataGridTextColumn Header="WhiteList" Binding="{Binding Extension}" MinWidth="155" >
+
+                </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 

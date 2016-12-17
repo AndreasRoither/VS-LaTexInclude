@@ -30,7 +30,8 @@ namespace LatechInclude.ViewModel
         public ICommand TexMakerCommand { get; private set; }
         public ICommand AddExtensionCommand { get; private set; }
         public ICommand SettingsCommand { get; private set; }
-         
+        public ICommand TextEditorCommand { get; private set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public static string _currentLanguage;
@@ -49,6 +50,12 @@ namespace LatechInclude.ViewModel
 
         public MainViewModel() 
         {
+            PathFolderDialogCommand = new RelayCommand(PathFolderDialogMethod);
+            TexMakerCommand = new RelayCommand(TexMakerMethod);
+            AddExtensionCommand = new RelayCommand(AddExtensionMethod);
+            SettingsCommand = new RelayCommand(SettingsMethod);
+            TextEditorCommand = new RelayCommand(TextEditorMethod);
+
             currentLanguage = "";
             _fileList = new TrulyObservableCollection<MyFile>();
 
@@ -61,10 +68,8 @@ namespace LatechInclude.ViewModel
             regexPattern = @"\$(.*?)\$";
             regexReplacePattern = @"[\\]";
 
-            PathFolderDialogCommand = new RelayCommand(PathFolderDialogMethod);
-            TexMakerCommand = new RelayCommand(TexMakerMethod);
-            AddExtensionCommand = new RelayCommand(AddExtensionMethod);
-            SettingsCommand = new RelayCommand(SettingsMethod);
+            
+
 
             dlg.Title = "Folder Selection";
             dlg.IsFolderPicker = true;
@@ -88,7 +93,9 @@ namespace LatechInclude.ViewModel
             }
             catch(Exception ex)
             {
-
+                string outputString = ex.ToString();
+                System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), outputString);
+                outputString = null;
             }
 
             Console.WriteLine();
@@ -193,7 +200,11 @@ namespace LatechInclude.ViewModel
                     statusText = (i-1) + " Files found";
                 }
                 catch(Exception ex)
-                { }
+                {
+                    string outputString = ex.ToString();
+                    System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), outputString);
+                    outputString = null;
+                }
             }
         }
 
@@ -252,7 +263,9 @@ namespace LatechInclude.ViewModel
                 }
                 catch(Exception ex)
                 {
-                    statusText = "Exception in Tex";
+                    string outputString = ex.ToString();
+                    System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), outputString);
+                    outputString = null;
                 }
             }
             else
@@ -275,8 +288,21 @@ namespace LatechInclude.ViewModel
         public void SettingsMethod()
         {
             SwitchViewWindow svw = new SwitchViewWindow();
-            svw.DataContext = new SettingsViewModel();
+            SettingsViewModel svm = new SettingsViewModel();
+            svw.DataContext = svm;
+            svw.Title = "Settings";
+            svw.Owner = Application.Current.MainWindow;
 
+            svw.ShowDialog();
+        }
+
+        public void TextEditorMethod()
+        {
+            SwitchViewWindow svw = new SwitchViewWindow();
+            TextEditorViewModel tevm = new TextEditorViewModel();
+            svw.DataContext = tevm;
+            svw.Title = "TextEditor";
+            svw.Owner = Application.Current.MainWindow;
 
             svw.ShowDialog();
         }
@@ -284,6 +310,7 @@ namespace LatechInclude.ViewModel
         public void Init_WhiteList(string[] WhiteListLines)
         {
             WhiteList wl = new WhiteList();
+            _Languages.Add("All");
 
             foreach (string s in WhiteListLines)
             {   

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:LatechInclude.View"
              mc:Ignorable="d" Height="303.178" Width="410.593">
     <Grid>
-        <TreeView x:Name="treeView" HorizontalAlignment="Left" Height="280" Margin="10,10,0,0" VerticalAlignment="Top" Width="137">
+        <TreeView x:Name="treeView" HorizontalAlignment="Left" Height="280" Margin="0,10,0,0" VerticalAlignment="Top" Width="137">
             <TreeViewItem Header="Test" IsExpanded="True">
                 <TreeViewItem Header="test1"/>
             </TreeViewItem>
@@ -14,7 +14,7 @@
         </TreeView>
 
         <Grid HorizontalAlignment="Left" Height="280" Margin="152,10,0,0" VerticalAlignment="Top" Width="249">
-            <ContentControl Content="{Binding}" />
+            <ContentControl  />
         </Grid>
     </Grid>
 </UserControl>

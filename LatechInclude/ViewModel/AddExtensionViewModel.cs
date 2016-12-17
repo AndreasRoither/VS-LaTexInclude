@@ -60,20 +60,32 @@ namespace LatechInclude.ViewModel
         public void AddExtensionMethod()
         {
             if (_maskedTxtBoxInput != "" && _maskedTxtBoxInput != ".")
-            {
+            {       
                 List<WhiteList> tempList = new List<WhiteList>();
                 tempList = mvm.whiteList;
+                Boolean notFound = true;
 
-
-                tempList.Add(new WhiteList
+                foreach (WhiteList wl in tempList)
                 {
-                    Language = CurrentLanguage,
-                    Extension = _maskedTxtBoxInput
-                });
+                    if (wl.Extension == _maskedTxtBoxInput) notFound = false;
+                }
 
-                //tempList.Sort(delegate (WhiteList w1, WhiteList w2) { return w1.Extension.CompareTo(w2.Extension); });
-                tempList.Sort();
-                mvm.whiteList = tempList;
+                if (notFound)
+                {
+                    tempList.Add(new WhiteList
+                    {
+                        Language = CurrentLanguage,
+                        Extension = _maskedTxtBoxInput
+                    });
+
+                    //tempList.Sort(delegate (WhiteList w1, WhiteList w2) { return w1.Extension.CompareTo(w2.Extension); });
+                    tempList.Sort();
+                    mvm.whiteList = tempList;
+                }
+                else
+                {
+
+                }
             }
         }
 

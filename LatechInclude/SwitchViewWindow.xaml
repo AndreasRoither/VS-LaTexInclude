@@ -15,7 +15,10 @@
             <View:AddExtension/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type ViewModel:SettingsViewModel}">
-            <View:SettingsView/>
+            <View:SettingsView HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModel:TextEditorViewModel}">
+            <View:TextEditorView />
         </DataTemplate>
     </Window.Resources>
 

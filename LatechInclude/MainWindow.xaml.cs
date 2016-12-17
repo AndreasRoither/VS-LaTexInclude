@@ -14,6 +14,8 @@ using System.Diagnostics;
 using GalaSoft.MvvmLight.Messaging;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reflection;
+using System;
 
 namespace LatechInclude
 {
@@ -221,6 +223,43 @@ namespace LatechInclude
                 mw.currentWhiteList = tempList;
             }
             WhiteList_Grid.ItemsSource = mw.currentWhiteList;
+        }
+
+        private void OnMainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            List<WhiteList> tempWList = mw.whiteList;
+            string outputString = "";
+            string compareLanguage = "";
+
+            foreach(WhiteList wl in tempWList)
+            {
+                if (compareLanguage != wl.Language)
+                {
+                    compareLanguage = wl.Language;
+                    outputString += "#" + wl.Language;
+                    outputString += Environment.NewLine;
+                    outputString += wl.Extension;
+                    
+                }
+                else
+                {
+                    outputString += wl.Extension;
+                }
+                outputString += Environment.NewLine;
+            }
+
+            try
+            {
+                System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\WhiteList.txt"), outputString);
+            }
+            catch(Exception ex)
+            {
+                outputString = "";
+                outputString = ex.ToString();
+                System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), outputString);
+                outputString = null;
+            }
+            
         }
     }
 }
