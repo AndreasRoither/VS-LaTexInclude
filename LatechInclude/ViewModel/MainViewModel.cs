@@ -15,6 +15,9 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
+using System.Diagnostics;
+using GalaSoft.MvvmLight.Ioc;
+using System.Windows.Media.Imaging;
 
 namespace LatechInclude.ViewModel 
 {
@@ -35,10 +38,10 @@ namespace LatechInclude.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
 
         public static string _currentLanguage;
-        private static TrulyObservableCollection<MyFile> _fileList = null;
-        private static List<WhiteList> _whiteList = null;
-        private static List<WhiteList> _currentWhiteList = null;
-        private static List<string> _Languages = null;
+        private static TrulyObservableCollection<MyFile> _fileList = new TrulyObservableCollection<MyFile>();
+        private static List<WhiteList> _whiteList = new List<WhiteList>();
+        private static List<WhiteList> _currentWhiteList = new List<WhiteList>();
+        private static List<string> _Languages = new List<string>();
 
         private CommonOpenFileDialog dlg = new CommonOpenFileDialog();
 
@@ -48,7 +51,8 @@ namespace LatechInclude.ViewModel
         private readonly string regexPattern;
         private readonly string regexReplacePattern;
 
-        public MainViewModel() 
+        [PreferredConstructor]
+        public MainViewModel()
         {
             PathFolderDialogCommand = new RelayCommand(PathFolderDialogMethod);
             TexMakerCommand = new RelayCommand(TexMakerMethod);
@@ -57,19 +61,11 @@ namespace LatechInclude.ViewModel
             TextEditorCommand = new RelayCommand(TextEditorMethod);
 
             currentLanguage = "";
-            _fileList = new TrulyObservableCollection<MyFile>();
-
             _statusText = "";
             pathString = new StringNotify("");
-            _Languages = new List<string>();
-            _whiteList = new List<WhiteList>();
-            _currentWhiteList = new List<WhiteList>();
 
             regexPattern = @"\$(.*?)\$";
             regexReplacePattern = @"[\\]";
-
-            
-
 
             dlg.Title = "Folder Selection";
             dlg.IsFolderPicker = true;
@@ -89,9 +85,9 @@ namespace LatechInclude.ViewModel
             {
                 string[] WhiteListLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\WhiteList.txt"));
 
-                Init_WhiteList(WhiteListLines);           
+                Init_WhiteList(WhiteListLines);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 string outputString = ex.ToString();
                 System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), outputString);
@@ -256,16 +252,24 @@ namespace LatechInclude.ViewModel
                         fields.Clear();
                     }
 
-                    System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\output.tex"), outputString);
+                    SwitchViewWindow svw = new SwitchViewWindow();
+                    TextEditorViewModel tevm = new TextEditorViewModel(outputString);
+                    svw.DataContext = tevm;
+                    svw.Title = "TextEditor";
+                    svw.Owner = Application.Current.MainWindow;
+
+                    svw.ShowDialog();
+
+                    //System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\output.tex"), outputString);
                     statusText = "Tex successful";
 
                     Console.WriteLine(outputString);
                 }
                 catch(Exception ex)
                 {
-                    string outputString = ex.ToString();
-                    System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), outputString);
-                    outputString = null;
+                    string output = ex.ToString();
+                    System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), output);
+                    output = null;
                 }
             }
             else
@@ -299,41 +303,46 @@ namespace LatechInclude.ViewModel
         public void TextEditorMethod()
         {
             SwitchViewWindow svw = new SwitchViewWindow();
-            TextEditorViewModel tevm = new TextEditorViewModel();
+            TextEditorViewModel tevm = new TextEditorViewModel("");
             svw.DataContext = tevm;
             svw.Title = "TextEditor";
             svw.Owner = Application.Current.MainWindow;
+            
 
             svw.ShowDialog();
         }
 
         public void Init_WhiteList(string[] WhiteListLines)
         {
-            WhiteList wl = new WhiteList();
-            _Languages.Add("All");
+            if (_whiteList.Count == 0)
+            {
+                WhiteList wl = new WhiteList();
+                _Languages.Add("All");
 
-            foreach (string s in WhiteListLines)
-            {   
-                if (s.StartsWith("#"))
+                foreach (string s in WhiteListLines)
                 {
-                    _Languages.Add(s.Remove(0, 1));
-                    wl.Language = s.Remove(0, 1);
-                }
-
-                if (s.StartsWith("."))
-                {
-                    wl.Extension = s;
-
-                    _whiteList.Add(new WhiteList {
-                        Language = wl.Language,
-                        Extension = wl.Extension    
-                    });
-
-                    currentWhiteList.Add(new WhiteList
+                    if (s.StartsWith("#"))
                     {
-                        Language = wl.Language,
-                        Extension = wl.Extension
-                    });
+                        _Languages.Add(s.Remove(0, 1));
+                        wl.Language = s.Remove(0, 1);
+                    }
+
+                    if (s.StartsWith("."))
+                    {
+                        wl.Extension = s;
+
+                        _whiteList.Add(new WhiteList
+                        {
+                            Language = wl.Language,
+                            Extension = wl.Extension
+                        });
+
+                        currentWhiteList.Add(new WhiteList
+                        {
+                            Language = wl.Language,
+                            Extension = wl.Extension
+                        });
+                    }
                 }
             }
         }

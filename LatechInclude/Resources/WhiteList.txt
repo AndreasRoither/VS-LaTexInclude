@@ -1,14 +1,10 @@
-﻿#All
 #C++
 .h
 .cpp
-
 #C
 .c
 .h
-
 #HTML
 .html
-
 #VHDL
 .vhdl

@@ -25,9 +25,10 @@ namespace LatechInclude
     public partial class MainWindow : MetroWindow
     {
         TrulyObservableCollection<MyFile> _fileList = new TrulyObservableCollection<MyFile>();
-        MainViewModel mw = new MainViewModel();
         public delegate Point GetPosition(IInputElement element);
         int rowIndex = -1;
+
+        private MainViewModel _viewModel;
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
@@ -54,7 +55,8 @@ namespace LatechInclude
 
             Closing += (s, e) => ViewModelLocator.Cleanup();
 
-            this.DataContext = new MainViewModel();
+            _viewModel = new MainViewModel();
+            this.DataContext = _viewModel;
 
             MainView_DataGrid.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(productsDataGrid_PreviewMouseLeftButtonDown);
             MainView_DataGrid.Drop += new System.Windows.DragEventHandler(MainView_DataGrid_Drop);
@@ -62,7 +64,7 @@ namespace LatechInclude
 
         void MainView_DataGrid_Drop(object sender, System.Windows.DragEventArgs e)
         {
-            _fileList = mw.List;
+            _fileList = _viewModel.List;
 
             if (rowIndex < 0)
                 return;
@@ -87,9 +89,9 @@ namespace LatechInclude
                 file.Position = i;
                 i++;
             }
-            mw.List = _fileList;
+            _viewModel.List = _fileList;
             MainView_DataGrid.ItemsSource = null;
-            MainView_DataGrid.ItemsSource = mw.List;
+            MainView_DataGrid.ItemsSource = _viewModel.List;
         }
 
         void productsDataGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -160,7 +162,7 @@ namespace LatechInclude
                 {
                     case "Name":
 
-                        _fileList = mw.List;
+                        _fileList = _viewModel.List;
                         _fileList = new TrulyObservableCollection<MyFile>(from file in _fileList orderby file.FileName select file);
 
                         i = 1;
@@ -170,14 +172,14 @@ namespace LatechInclude
                             i++;
                         }
 
-                        mw.List = _fileList;
+                        _viewModel.List = _fileList;
                         MainView_DataGrid.ItemsSource = null;
-                        MainView_DataGrid.ItemsSource = mw.List;
+                        MainView_DataGrid.ItemsSource = _viewModel.List;
 
                         break;
                     case "Extension":
                         
-                        _fileList = mw.List;
+                        _fileList = _viewModel.List;
                         _fileList = new TrulyObservableCollection<MyFile>(from file in _fileList orderby file.Extension select file);
 
                         i = 1;
@@ -187,9 +189,9 @@ namespace LatechInclude
                             i++;
                         }
 
-                        mw.List = _fileList;
+                        _viewModel.List = _fileList;
                         MainView_DataGrid.ItemsSource = null;
-                        MainView_DataGrid.ItemsSource = mw.List;
+                        MainView_DataGrid.ItemsSource = _viewModel.List;
                         break;
                 }
             }
@@ -197,20 +199,20 @@ namespace LatechInclude
 
         private void OnLanguageBox_Changed(object sender, SelectionChangedEventArgs e)
         {
-            mw.currentLanguage = (sender as ComboBox).SelectedItem as string;
+            _viewModel.currentLanguage = (sender as ComboBox).SelectedItem as string;
             WhiteList_Grid.ItemsSource = null;
 
-            if (mw.currentLanguage == "All")
+            if (_viewModel.currentLanguage == "All")
             {
-                mw.currentWhiteList = mw.whiteList;
+                _viewModel.currentWhiteList = _viewModel.whiteList;
             }
             else
             {
                 List<WhiteList> tempList = new List<WhiteList>();
 
-                foreach (WhiteList wl in mw.whiteList)
+                foreach (WhiteList wl in _viewModel.whiteList)
                 {
-                    if (wl.Language == mw.currentLanguage)
+                    if (wl.Language == _viewModel.currentLanguage)
                     {
                         tempList.Add(new WhiteList
                         {
@@ -220,14 +222,14 @@ namespace LatechInclude
                     }
                 }
 
-                mw.currentWhiteList = tempList;
+                _viewModel.currentWhiteList = tempList;
             }
-            WhiteList_Grid.ItemsSource = mw.currentWhiteList;
+            WhiteList_Grid.ItemsSource = _viewModel.currentWhiteList;
         }
 
         private void OnMainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            List<WhiteList> tempWList = mw.whiteList;
+            List<WhiteList> tempWList = _viewModel.whiteList;
             string outputString = "";
             string compareLanguage = "";
 

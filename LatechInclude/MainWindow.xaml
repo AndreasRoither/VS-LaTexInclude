@@ -21,8 +21,6 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
-    
 
     <Grid x:Name="LayoutRoot">
         <DockPanel>
@@ -42,7 +40,6 @@
                     <TextBlock Margin="10,0,0,0" x:Name="statusBar_TextBlock" Text="{Binding Path=statusText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextWrapping="Wrap"/>
                 </StatusBar>
             </StackPanel>
-
         </DockPanel>
         
         <Button x:Name="PathButton" Command="{Binding PathFolderDialogCommand}" Content="Path" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.82,-0.025" Height="25"/>
@@ -81,9 +78,7 @@
             </DataGrid.ContextMenu>
             
             <DataGrid.Columns>
-                <DataGridTextColumn Header="WhiteList" Binding="{Binding Extension}" MinWidth="155" >
-
-                </DataGridTextColumn>
+                <DataGridTextColumn Header="WhiteList" Binding="{Binding Extension}" MinWidth="155" />
             </DataGrid.Columns>
         </DataGrid>
 

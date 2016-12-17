@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LatechInclude.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,8 @@ namespace LatechInclude.View
     /// </summary>
     public partial class TextEditorView : UserControl
     {
+        TextEditorViewModel tevm = new TextEditorViewModel();
+
         public TextEditorView()
         {
             InitializeComponent();
