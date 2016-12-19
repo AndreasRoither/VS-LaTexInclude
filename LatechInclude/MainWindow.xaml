@@ -26,13 +26,9 @@
         <DockPanel>
             <Menu DockPanel.Dock="Top" Height="30">
                 <MenuItem Header="_File" HorizontalAlignment="Center" Height="30" Width="35">
-                    <MenuItem Header="_Open"/>
-                    <MenuItem Header="_Save"/>
                     <MenuItem Header="_Exit"/>
                 </MenuItem>
                 <MenuItem Header="_Settings" HorizontalAlignment="Center" Height="30" Width="68" Command="{Binding SettingsCommand}">
-                </MenuItem>
-                <MenuItem Header="_TextEditor" HorizontalAlignment="Center" Height="30" Width="76" Command="{Binding TextEditorCommand}">
                 </MenuItem>
             </Menu>
             <StackPanel Height="31" VerticalAlignment="Bottom">

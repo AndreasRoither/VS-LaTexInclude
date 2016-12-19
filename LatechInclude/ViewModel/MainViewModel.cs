@@ -230,12 +230,12 @@ namespace LatechInclude.ViewModel
 
                     foreach (MyFile file in _fileList)
                     {
-                        if (_currentLanguage == "")
+                        if (_currentLanguage == "" | _currentLanguage == "All")
                         {
-                            fields.Add("Language", "Test");
+                            fields.Add("Language", "FillMe");
                         }
                         else
-                        {
+                        {                         
                             fields.Add("Language", _currentLanguage);
                         }
 
