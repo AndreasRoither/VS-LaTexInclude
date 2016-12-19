@@ -15,7 +15,5 @@
 
         <Button x:Name="button" Content="Add" Command="{Binding AddExtensionCommand}" HorizontalAlignment="Left" Margin="55,86,0,0" VerticalAlignment="Top" Width="75"/>
         <Button x:Name="button1" Content="Cancel" Command="{Binding CloseWindowCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=SwitchWindow}" HorizontalAlignment="Left" Margin="135,86,0,0" VerticalAlignment="Top" Width="75"/>
-        
-
     </Grid>
 </UserControl>
