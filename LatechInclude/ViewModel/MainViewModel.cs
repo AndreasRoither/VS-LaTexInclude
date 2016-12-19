@@ -37,7 +37,7 @@ namespace LatechInclude.ViewModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public static string _currentLanguage;
+        public static string _currentLanguage = "";
         private static TrulyObservableCollection<MyFile> _fileList = new TrulyObservableCollection<MyFile>();
         private static List<WhiteList> _whiteList = new List<WhiteList>();
         private static List<WhiteList> _currentWhiteList = new List<WhiteList>();
@@ -60,7 +60,6 @@ namespace LatechInclude.ViewModel
             SettingsCommand = new RelayCommand(SettingsMethod);
             TextEditorCommand = new RelayCommand(TextEditorMethod);
 
-            currentLanguage = "";
             _statusText = "";
             pathString = new StringNotify("");
 
