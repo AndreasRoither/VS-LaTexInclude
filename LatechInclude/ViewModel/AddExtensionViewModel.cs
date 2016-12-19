@@ -35,6 +35,7 @@ namespace LatechInclude.ViewModel
             mvm = new MainViewModel();
 
             _Languages = mvm.Languages;
+            _Languages.Remove("All");
         }
 
         public override void Cleanup()
@@ -78,13 +79,11 @@ namespace LatechInclude.ViewModel
                         Extension = _maskedTxtBoxInput
                     });
 
-                    //tempList.Sort(delegate (WhiteList w1, WhiteList w2) { return w1.Extension.CompareTo(w2.Extension); });
                     tempList.Sort();
                     mvm.whiteList = tempList;
                 }
                 else
                 {
-
                 }
             }
         }

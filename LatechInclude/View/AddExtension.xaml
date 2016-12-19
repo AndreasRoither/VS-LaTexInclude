@@ -10,7 +10,7 @@
         <Label x:Name="label" Content="Language" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label1" Content="Extension" HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top"/>
 
-        <ComboBox x:Name="comboBox" ItemsSource="{Binding Languages}" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="1" SelectionChanged="OnLanguageSelection_Changed"/>
+        <ComboBox x:Name="comboBox" ItemsSource="{Binding Languages}" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" SelectionChanged="OnLanguageSelection_Changed"/>
         <xctk:MaskedTextBox x:Name="maskedTextBox" HorizontalAlignment="Left" Margin="135,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="120" Mask=",aaaaaaaaaa" PromptChar=" "/>
 
         <Button x:Name="button" Content="Add" Command="{Binding AddExtensionCommand}" HorizontalAlignment="Left" Margin="55,86,0,0" VerticalAlignment="Top" Width="75"/>

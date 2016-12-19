@@ -262,7 +262,6 @@ namespace LatechInclude.ViewModel
                     
                     svw.ShowDialog();
 
-                    //System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\output.tex"), outputString);
                     statusText = "Tex successful";
 
                     Console.WriteLine(outputString);
