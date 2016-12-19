@@ -4,23 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LatechInclude.View"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class="LatechInclude.View.TextEditorView"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="LatechInclude.View.TextEditorView"
              mc:Ignorable="d" MinWidth="500" MinHeight="300">
     <Grid>
         <DockPanel>
             <ToolBar DockPanel.Dock="Top">
-                <Button Command="{Binding SaveFileCommand}">
+                <Button Click="SaveButton_Click">
                     <Image Source="/EmbeddedRessources/Images/Save.png" Width="16" Height="16" />
                 </Button>
                 <Separator />
             </ToolBar>
-            <xctk:RichTextBox x:Name="richTextBox" AcceptsTab="True">
-                <FlowDocument>
-                    <Paragraph>
-                        <Run Text="{Binding outputString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                    </Paragraph>
-                </FlowDocument>
-            </xctk:RichTextBox>
+            <RichTextBox x:Name="richTextBox" AcceptsTab="True" Loaded="RichTextBox_Loaded" VerticalScrollBarVisibility="Visible" AutoWordSelection="False"/>
         </DockPanel>
     </Grid>
 </UserControl>

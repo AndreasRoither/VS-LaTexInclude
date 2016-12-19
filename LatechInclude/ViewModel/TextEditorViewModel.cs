@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -10,25 +11,31 @@ using System.Windows.Input;
 
 namespace LatechInclude.ViewModel
 {
-    class TextEditorViewModel : ViewModelBase
+    class TextEditorViewModel : ViewModelBase, INotifyPropertyChanged
     {
         public static string _outputString = null;
-        public ICommand SaveFileCommand { get; private set; }
+        private static bool _isOpen = false;
+        private static string _notifyMessage = "Saved to workdirectory as output.tex";
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public TextEditorViewModel(string outputString)
         {
             _outputString = outputString;
-            Init();
         }
 
         public TextEditorViewModel()
         {
-            Init();
         }
 
-        public void Init()
+        protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = "")
         {
-            SaveFileCommand = new RelayCommand(SaveFileMethod);
+            if (this.PropertyChanged != null)
+            {
+                Console.WriteLine(propertyName);
+                var e = new PropertyChangedEventArgs(propertyName);
+                this.PropertyChanged(this, e);
+            }
         }
 
         public string outputString
@@ -36,7 +43,29 @@ namespace LatechInclude.ViewModel
             get { return _outputString; }
             set { _outputString = value; }
         }
-          
+
+        public bool IsFlyoutOpen
+        {
+            get { return _isOpen; }
+            set
+            {
+                if (_isOpen == value) return;
+                _isOpen = value;
+                OnPropertyChanged("IsFlyoutOpen");
+            }
+        }
+
+        public string NotifyMessage
+        {
+            get { return _notifyMessage; }
+            set
+            {
+                if (_notifyMessage == value) return;
+                _notifyMessage = value;
+                OnPropertyChanged("NotifyMessage");
+            }
+        }
+
         public void SaveFileMethod()
         {
             try
@@ -48,8 +77,7 @@ namespace LatechInclude.ViewModel
                 string output = ex.ToString();
                 System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), output);
                 outputString = null;
-            }
-            
+            }       
         }
     }
 }

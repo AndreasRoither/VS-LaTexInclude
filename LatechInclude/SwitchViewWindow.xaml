@@ -7,6 +7,7 @@
         xmlns:ViewModel="clr-namespace:LatechInclude.ViewModel"
         xmlns:View="clr-namespace:LatechInclude.View"
         xmlns:local="clr-namespace:LatechInclude"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         Title="SwitchViewWindow" Height="280.139" Width="518.467" WindowStartupLocation="CenterOwner">
     
@@ -24,5 +25,8 @@
 
     <Grid>
         <ContentControl Content="{Binding}" />
+        <Controls:Flyout Position="Bottom" Header="" Width="Auto" IsOpen="{Binding IsFlyoutOpen, UpdateSourceTrigger=PropertyChanged}" AutoCloseInterval="5000" Background="{DynamicResource AccentColorBrush}" CloseButtonVisibility="Hidden" IsAutoCloseEnabled="True" Height="25">
+            <Label x:Name="label" Content="{Binding NotifyMessage}" HorizontalAlignment="Left" Margin="-50,0,0,0" VerticalAlignment="Top"/>
+        </Controls:Flyout>
     </Grid>
 </Window>

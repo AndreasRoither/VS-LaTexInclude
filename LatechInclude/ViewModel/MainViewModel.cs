@@ -252,12 +252,15 @@ namespace LatechInclude.ViewModel
                         fields.Clear();
                     }
 
-                    SwitchViewWindow svw = new SwitchViewWindow();
+                    //TextEditorViewModel has to be instantiated before SwitchView
                     TextEditorViewModel tevm = new TextEditorViewModel(outputString);
+                    SwitchViewWindow svw = new SwitchViewWindow();
+                    svw.Owner = Application.Current.MainWindow;
                     svw.DataContext = tevm;
                     svw.Title = "TextEditor";
-                    svw.Owner = Application.Current.MainWindow;
-
+                    svw.Height = 350;
+                    svw.Width = 550;
+                    
                     svw.ShowDialog();
 
                     //System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\output.tex"), outputString);

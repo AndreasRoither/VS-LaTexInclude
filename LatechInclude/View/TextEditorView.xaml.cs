@@ -27,5 +27,19 @@ namespace LatechInclude.View
         {
             InitializeComponent();
         }
+
+        private void RichTextBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            richTextBox.Document.Blocks.Clear();
+            richTextBox.Document.Blocks.Add(new Paragraph(new Run(tevm.outputString)));
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            tevm.outputString = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
+            tevm.SaveFileMethod();
+            tevm.IsFlyoutOpen = true;
+            tevm.NotifyMessage = "blalb";
+        }
     }
 }

@@ -25,6 +25,7 @@ namespace LatechInclude
         public SwitchViewWindow()
         {
             InitializeComponent();
+
             Closing += (s, e) => ViewModelLocator.Cleanup();
         }
     }
