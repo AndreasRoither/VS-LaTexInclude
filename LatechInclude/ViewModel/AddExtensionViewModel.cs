@@ -3,21 +3,25 @@ using GalaSoft.MvvmLight.Command;
 using LatechInclude.HelperClasses;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace LatechInclude.ViewModel
 {
+    /// <summary>
+    /// This class contains properties that the SwitchView can bind to
+    /// <para>
+    /// Inherits from ViewModelBase
+    /// </para>
+    /// </summary>
     class AddExtensionViewModel : ViewModelBase
     {
         public ICommand AddExtensionCommand { get; private set; }
         public RelayCommand<Window> CloseWindowCommand { get; private set; }
 
         private List<string> _Languages = null;
+        private bool isFlyoutOpen;
+        private string _NotifyMessage = "";
 
         private static string _currentLanguage;
         private static string _maskedTxtBoxInput;
@@ -36,6 +40,8 @@ namespace LatechInclude.ViewModel
 
             _Languages = mvm.Languages;
             _Languages.Remove("All");
+
+            isFlyoutOpen = false;
         }
 
         public override void Cleanup()
@@ -56,6 +62,26 @@ namespace LatechInclude.ViewModel
         {
             get { return _maskedTxtBoxInput; }
             set { _maskedTxtBoxInput = value; }
+        }
+
+        public bool FlyoutOpen
+        {
+            get { return isFlyoutOpen; }
+            set
+            {
+                isFlyoutOpen = value;
+                RaisePropertyChanged("FlyoutOpen");
+            }
+        }
+
+        public string NotifyMessage
+        {
+            get { return _NotifyMessage; }
+            set
+            {
+                _NotifyMessage = value;
+                RaisePropertyChanged("NotifyMessage");
+            }
         }
 
         public void AddExtensionMethod()
@@ -81,11 +107,22 @@ namespace LatechInclude.ViewModel
 
                     tempList.Sort();
                     mvm.whiteList = tempList;
+
+                    NotifyMessage = "Extension added";
+                    FlyoutOpen = true;
                 }
                 else
                 {
+                    NotifyMessage = "Already in the WhiteList";
+                    FlyoutOpen = true;
                 }
             }
+            else
+            {
+                NotifyMessage = "Textbox is empty, add something";
+                FlyoutOpen = true;
+            }
+            
         }
 
         public string CurrentLanguage

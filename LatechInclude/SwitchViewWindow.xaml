@@ -18,14 +18,14 @@
         <DataTemplate DataType="{x:Type ViewModel:SettingsViewModel}">
             <View:SettingsView HorizontalAlignment="Left" VerticalAlignment="Top"/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type ViewModel:TextEditorViewModel}">
-            <View:TextEditorView />
+        <DataTemplate DataType="{x:Type ViewModel:TxtEditorViewModel}">
+            <View:TxtEditorView />
         </DataTemplate>
     </Window.Resources>
 
     <Grid>
         <ContentControl Content="{Binding}" />
-        <Controls:Flyout Position="Bottom" Header="" Width="Auto" IsOpen="True" AutoCloseInterval="5000" Background="{DynamicResource AccentColorBrush}" CloseButtonVisibility="Hidden" IsAutoCloseEnabled="True" Height="25">
+        <Controls:Flyout Name="NotifyFlyout" Position="Bottom" Header="" Width="Auto" IsOpen="{Binding FlyoutOpen }" AutoCloseInterval="5000" Background="Orange" CloseButtonVisibility="Hidden" IsAutoCloseEnabled="True" Height="30">
             <Label x:Name="label" Content="{Binding NotifyMessage}" HorizontalAlignment="Left" Margin="-50,0,0,0" VerticalAlignment="Top"/>
         </Controls:Flyout>
     </Grid>

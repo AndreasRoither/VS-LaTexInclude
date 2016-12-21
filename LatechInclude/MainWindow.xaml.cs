@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System;
+using System.Security.Permissions;
 
 namespace LatechInclude
 {
@@ -28,14 +29,17 @@ namespace LatechInclude
         public delegate Point GetPosition(IInputElement element);
         int rowIndex = -1;
 
+        AppDomain currentDomain;
+
         private MainViewModel _viewModel;
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// </summary>
+        [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.ControlAppDomain)]
         public MainWindow()
         {
-
+            //Check for multiple instances, kill old instance or kill the starting process
             if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1)
             {
                 MessageBoxResult result = MessageBox.Show("An Instance is already open, do you want to close it?", "Instance already open", MessageBoxButton.YesNo);
@@ -53,6 +57,10 @@ namespace LatechInclude
 
             InitializeComponent();
 
+            //Add Global Exception Handling
+            currentDomain = AppDomain.CurrentDomain;
+            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(MyHandler);
+
             Closing += (s, e) => ViewModelLocator.Cleanup();
 
             _viewModel = new MainViewModel();
@@ -62,6 +70,35 @@ namespace LatechInclude
             MainView_DataGrid.Drop += new System.Windows.DragEventHandler(MainView_DataGrid_Drop);
         }
 
+        /// <summary>
+        /// Handler for exceptions, will be called if a exception happened
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        static void MyHandler(object sender, UnhandledExceptionEventArgs args)
+        {
+
+            Exception e = (Exception)args.ExceptionObject;
+            Console.WriteLine("Exception caught : " + e.Message);
+            Console.WriteLine("Runtime terminating: {0}", args.IsTerminating);
+
+            string outputString;
+            outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + e.ToString() + Environment.NewLine + "Runtime terminating: " + args.IsTerminating;
+
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
+            {
+                file.WriteLine(outputString);
+            }
+
+            outputString = null;
+        }
+
+        /// <summary>
+        /// When an griditem is dropped
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void MainView_DataGrid_Drop(object sender, System.Windows.DragEventArgs e)
         {
             _fileList = _viewModel.List;
@@ -94,6 +131,11 @@ namespace LatechInclude
             MainView_DataGrid.ItemsSource = _viewModel.List;
         }
 
+        /// <summary>
+        /// Preview for the drag & drop
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void productsDataGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             rowIndex = GetCurrentRowIndex(e.GetPosition);
@@ -128,6 +170,7 @@ namespace LatechInclude
             }
             
         }
+
         private DataGridRow GetRowItem(int index)
         {
             if (MainView_DataGrid.ItemContainerGenerator.Status
@@ -136,6 +179,7 @@ namespace LatechInclude
             return MainView_DataGrid.ItemContainerGenerator.ContainerFromIndex(index)
                                                             as DataGridRow;
         }
+
         private int GetCurrentRowIndex(GetPosition pos)
         {
             int curIndex = -1;
@@ -197,6 +241,11 @@ namespace LatechInclude
             }
         }
 
+        /// <summary>
+        /// Saves the new selected item in the viewmodel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnLanguageBox_Changed(object sender, SelectionChangedEventArgs e)
         {
             _viewModel.currentLanguage = (sender as ComboBox).SelectedItem as string;
@@ -227,6 +276,11 @@ namespace LatechInclude
             WhiteList_Grid.ItemsSource = _viewModel.currentWhiteList;
         }
 
+        /// <summary>
+        /// When the program is closing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnMainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             List<WhiteList> tempWList = _viewModel.whiteList;

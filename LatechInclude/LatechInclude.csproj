@@ -141,7 +141,7 @@
     <Compile Include="ViewModel\AddExtensionViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
-    <Compile Include="ViewModel\TextEditorViewModel.cs" />
+    <Compile Include="ViewModel\TxtEditorViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\AddExtension.xaml.cs">
       <DependentUpon>AddExtension.xaml</DependentUpon>
@@ -149,8 +149,8 @@
     <Compile Include="View\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\TextEditorView.xaml.cs">
-      <DependentUpon>TextEditorView.xaml</DependentUpon>
+    <Compile Include="View\TxtEditorView.xaml.cs">
+      <DependentUpon>TxtEditorView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -180,7 +180,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\TextEditorView.xaml">
+    <Page Include="View\TxtEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

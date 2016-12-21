@@ -31,11 +31,17 @@ namespace LatechInclude.View
             aevm.CurrentLanguage = comboBox.SelectedItem as string;
         }
 
+        /// <summary>
+        /// Sets the language in the ViewModel
+        /// </summary>
         private void OnLanguageSelection_Changed(object sender, SelectionChangedEventArgs e)
         {
             aevm.CurrentLanguage = (sender as ComboBox).SelectedItem as string;
         }
 
+        /// <summary>
+        /// Saves changes to the ViewModel
+        /// </summary>
         private void OnTxtBox_KeyUp(object sender, KeyEventArgs e)
         {
             string temp = maskedTextBox.Text.ToString();

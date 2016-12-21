@@ -17,29 +17,34 @@ using System.Windows.Shapes;
 namespace LatechInclude.View
 {
     /// <summary>
-    /// Interaktionslogik für TextEditorView.xaml
+    /// Interaction logic for TxtEditorView.xaml
     /// </summary>
-    public partial class TextEditorView : UserControl
+    public partial class TxtEditorView : UserControl
     {
-        TextEditorViewModel tevm = new TextEditorViewModel();
+        TxtEditorViewModel tevm;
 
-        public TextEditorView()
+        public TxtEditorView()
         {
             InitializeComponent();
+            tevm = new TxtEditorViewModel();
         }
 
+        /// <summary>
+        /// When the RichTextBox has loaded, text will be set to output text
+        /// </summary>
         private void RichTextBox_Loaded(object sender, RoutedEventArgs e)
         {
             richTextBox.Document.Blocks.Clear();
             richTextBox.Document.Blocks.Add(new Paragraph(new Run(tevm.outputString)));
         }
 
+        /// <summary>
+        /// Save ButtonClick, saves the text to output.tex
+        /// </summary>
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             tevm.outputString = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
             tevm.SaveFileMethod();
-            tevm.IsFlyoutOpen = true;
-            tevm.NotifyMessage = "blalb";
         }
     }
 }

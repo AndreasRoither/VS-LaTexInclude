@@ -24,7 +24,7 @@ namespace LatechInclude.ViewModel
     /// <summary>
     /// This class contains properties that the main View can data bind to.
     /// <para>
-    /// Inherits from INotifyPropertyChanged, ViewModelBase
+    /// Inherits from ViewModelBase, INotifyPropertyChanged
     /// </para>
     /// </summary>
     public class MainViewModel : ViewModelBase, INotifyPropertyChanged
@@ -33,7 +33,7 @@ namespace LatechInclude.ViewModel
         public ICommand TexMakerCommand { get; private set; }
         public ICommand AddExtensionCommand { get; private set; }
         public ICommand SettingsCommand { get; private set; }
-        public ICommand TextEditorCommand { get; private set; }
+        public ICommand TestCommand { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -47,7 +47,10 @@ namespace LatechInclude.ViewModel
 
         private string _statusText = null;
         private StringNotify pathString = null;
-  
+        private bool isFlyoutOpen;
+        private string _notifyMessage;
+
+
         private readonly string regexPattern;
         private readonly string regexReplacePattern;
 
@@ -58,10 +61,12 @@ namespace LatechInclude.ViewModel
             TexMakerCommand = new RelayCommand(TexMakerMethod);
             AddExtensionCommand = new RelayCommand(AddExtensionMethod);
             SettingsCommand = new RelayCommand(SettingsMethod);
-            TextEditorCommand = new RelayCommand(TextEditorMethod);
+            TestCommand = new RelayCommand(TestMethod);
 
             _statusText = "";
             pathString = new StringNotify("");
+            isFlyoutOpen = false;
+            _notifyMessage = "";
 
             regexPattern = @"\$(.*?)\$";
             regexReplacePattern = @"[\\]";
@@ -166,6 +171,27 @@ namespace LatechInclude.ViewModel
             }
         }      
 
+        public bool FlyoutOpen
+        {
+            get { return isFlyoutOpen; }
+            set
+            {
+                isFlyoutOpen = value;
+                OnPropertyChanged("FlyoutOpen");
+            }
+        }
+
+        public string NotifyMessage
+        {
+            get { return _notifyMessage; }
+            set
+            {
+                if (_notifyMessage == value) return;
+                _notifyMessage = value;
+                OnPropertyChanged("NotifyMessage");
+            }
+        }
+
         public void PathFolderDialogMethod()
         {
             if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
@@ -196,8 +222,17 @@ namespace LatechInclude.ViewModel
                 }
                 catch(Exception ex)
                 {
-                    string outputString = ex.ToString();
-                    System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), outputString);
+                    Console.WriteLine("Exception caught : " + ex.Message);
+
+                    string outputString;
+                    outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.ToString() + Environment.NewLine + "Runtime terminating: ";
+
+                    using (System.IO.StreamWriter file =
+                    new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
+                    {
+                        file.WriteLine(outputString);
+                    }
+
                     outputString = null;
                 }
             }
@@ -251,34 +286,34 @@ namespace LatechInclude.ViewModel
                         fields.Clear();
                     }
 
-                    //TextEditorViewModel has to be instantiated before SwitchView
-                    TextEditorViewModel tevm = new TextEditorViewModel(outputString);
-                    SwitchViewWindow svw = new SwitchViewWindow();
-                    svw.Owner = Application.Current.MainWindow;
-                    svw.DataContext = tevm;
-                    svw.Title = "TextEditor";
-                    svw.Height = 350;
-                    svw.Width = 550;
-                    
-                    svw.ShowDialog();
-
-                    statusText = "Tex successful";
-
-                    Console.WriteLine(outputString);
+                    TextEditorMethod(outputString);
                 }
                 catch(Exception ex)
                 {
-                    string output = ex.ToString();
-                    System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), output);
-                    output = null;
+                    Console.WriteLine("Exception caught : " + ex.Message);
+
+                    string outputString;
+                    outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.ToString() + Environment.NewLine + "Runtime terminating: ";
+
+                    using (System.IO.StreamWriter file =
+                    new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
+                    {
+                        file.WriteLine(outputString);
+                    }
+
+                    outputString = null;
                 }
             }
             else
             {
-                statusText = @"Nothing to write ¯\_(ツ)_/¯";
+                NotifyMessage = @"Nothing to write ¯\_(ツ)_/¯";
+                FlyoutOpen = true;
             }
         }
 
+        /// <summary>
+        /// Shows the AddeExtensionView
+        /// </summary>
         public void AddExtensionMethod()
         {
 
@@ -287,9 +322,13 @@ namespace LatechInclude.ViewModel
             svw.DataContext = aevm;
             svw.Title = "Add Extension";
             svw.Owner = Application.Current.MainWindow;
+
             svw.ShowDialog();
         }
 
+        /// <summary>
+        /// Shows the SettingsView
+        /// </summary>
         public void SettingsMethod()
         {
             SwitchViewWindow svw = new SwitchViewWindow();
@@ -301,18 +340,26 @@ namespace LatechInclude.ViewModel
             svw.ShowDialog();
         }
 
-        public void TextEditorMethod()
+        /// <summary>
+        /// Shows the TxtEditorView
+        /// </summary>
+        /// <param name="outputString"></param>
+        public void TextEditorMethod(string outputString)
         {
             SwitchViewWindow svw = new SwitchViewWindow();
-            TextEditorViewModel tevm = new TextEditorViewModel("");
+            TxtEditorViewModel tevm = new TxtEditorViewModel();
+            tevm.outputString = outputString;
             svw.DataContext = tevm;
             svw.Title = "TextEditor";
             svw.Owner = Application.Current.MainWindow;
-            
 
             svw.ShowDialog();
         }
 
+        /// <summary>
+        /// Initialize the WhiteList
+        /// </summary>
+        /// <param name="WhiteListLines">string[] with lines containing the extension names</param>
         public void Init_WhiteList(string[] WhiteListLines)
         {
             if (_whiteList.Count == 0)
@@ -348,9 +395,18 @@ namespace LatechInclude.ViewModel
             }
         }
 
+        /// <summary>
+        /// Clears the currentWhiteList
+        /// </summary>
         public void clearCurrentWhiteList()
         {
             _currentWhiteList.Clear();
+        }
+
+        public void TestMethod()
+        {
+            NotifyMessage = "You clicked exit!!";
+            FlyoutOpen = true;
         }
     }
 }
