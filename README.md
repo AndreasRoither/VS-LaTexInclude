@@ -1,38 +1,31 @@
-### VS-LatechInclude
+# VS-LatechInclude
 ----
-### LatechIncludeWPF
+## What it does
 
-Latech Include WPF creates a .tex file which includes all files in a folder you specified.
+VS-LatechInclude creates a .tex file which includes all files in a folder you specified...
 
-### Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
-
-### Prerequisites
-
-Visual Studio - (if you wish to participate)
-Visual C++ Redistributable für Visual Studio 2015
-
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Step 1:
-
-```
-Clone or download the zip
-```
-
-Step 2:
-
-```
-Unpack zip
-```
+## Installation
+Clone or donwload this project and unzip it.
 
 ## Running the programm
+Plase the executable wherever you desire and run it.
 
-Start the .exe
+## Technology used
+Built with [Visual Studio](https://www.visualstudio.com/downloads/)
 
-## Built With
+### Framework:
+* MVVM Light Toolkit
 
-* [Visual Studio](https://www.visualstudio.com/downloads/) - The IDE used
+### Nuggets:
+* Install-Package WindowsAPICodePack-Core
+* Install-Package WindowsAPICodePack-ExtendedLinguisticServices
+* Install-Package WindowsAPICodePack-Sensors
+* Install-Package WindowsAPICodePack-Shell
+* Install-Package WindowsAPICodePack-ShellExtensions
+* Install-Package Extended.Wpf.Toolkit
+
+### UI Framework MahApps Metro:
+* Install-Package MahApps.Metro
+
+### Dependencies:
+* ObservableList OrderBy needs using System.Linq;
