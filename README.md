@@ -1,5 +1,5 @@
 # VS-LatechInclude
-----
+
 ## What it does
 
 VS-LatechInclude creates a .tex file which includes all files in a folder you specified...
