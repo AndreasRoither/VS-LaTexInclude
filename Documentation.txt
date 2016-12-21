@@ -7,6 +7,7 @@ Install-Package WindowsAPICodePack-ExtendedLinguisticServices
 Install-Package WindowsAPICodePack-Sensors
 Install-Package WindowsAPICodePack-Shell
 Install-Package WindowsAPICodePack-ShellExtensions
+Install-Package Extended.Wpf.Toolkit
 
 UI Framework MahApps Metro:
 Install-Package MahApps.Metro

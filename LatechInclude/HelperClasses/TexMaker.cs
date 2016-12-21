@@ -14,11 +14,26 @@ namespace LatechInclude.HelperClasses
         private String content = null;
         private Boolean finalized = false;
 
+        string TexCodeTemplate = null;
+        string TexImageTemplate = null;
+        string TexPDFTemplate = null;
+
         public TexMaker()
         {
             content = "";
-            addPremable();
-            content += "\\begin{document}\n";
+
+            //try
+            //{
+            //    TexCodeTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexCodeTemplate.tex"));
+            //    TexImageTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexImageTemplate.tex"));
+            //    TexPDFTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexPDFTemplate.tex"));
+            //}
+            //catch(Exception ex)
+            //{
+            //    string outputString = ex.ToString();
+            //    System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), outputString);
+            //    outputString = null;
+            //}
         }
 
         private TexMaker addPremable()
@@ -39,7 +54,7 @@ namespace LatechInclude.HelperClasses
         {
             if (finalized)
                 return this;
-            content += "\\end{document}";
+            //content += "\\end{document}";
             finalized = true;
             return this;
         }
