@@ -10,7 +10,10 @@ You can customize the output .tex according to your needs.
 
 #### Example
 Say you want to include different files in different folders in a .tex file.
-![Example folder structure](images/example_folderstructure.png)
+<p align="center">
+  <img src="images/example_folderstructure.png" width="100"/>
+</p>
+
 VS-LaTeX-Include does the job for you so you don't have to worry about those pesky path declerations.
 
 
