@@ -136,13 +136,21 @@ namespace LatechInclude.ViewModel
         public List<WhiteList> whiteList
         {
             get { return _whiteList; }
-            set { _whiteList = value; }
+            set
+            {
+                _whiteList = value;
+                OnPropertyChanged("whiteList");
+            }
         }
 
         public List<WhiteList> currentWhiteList
         {
             get { return _currentWhiteList; }
-            set { _currentWhiteList = value; }
+            set
+            {
+                _currentWhiteList = value;
+                OnPropertyChanged("currentWhiteList");
+            }
         }
 
         public string fPath
@@ -324,6 +332,12 @@ namespace LatechInclude.ViewModel
             svw.Owner = Application.Current.MainWindow;
 
             svw.ShowDialog();
+
+            if(svw.DialogResult == false)
+            {
+                OnPropertyChanged("currentWhiteList");
+            }
+            
         }
 
         /// <summary>

@@ -65,8 +65,8 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <DataGrid x:Name="WhiteList_Grid" ItemsSource="{Binding currentWhiteList, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0"
-            AutoGenerateColumns="False" Margin="0,69,10,69" BorderThickness="1" BorderBrush="#CC119EDA" AllowDrop="True" IsReadOnly="True" HorizontalAlignment="Right" Width="148">
+        <DataGrid x:Name="WhiteList_Grid" ItemsSource="{Binding currentWhiteList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Row="0"
+            AutoGenerateColumns="False" Margin="0,69,10,69" BorderThickness="1" BorderBrush="#CC119EDA" AllowDrop="False" IsReadOnly="True" HorizontalAlignment="Right" Width="148">
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Clear"/>
