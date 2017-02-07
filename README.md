@@ -36,6 +36,8 @@ Built with [Visual Studio](https://www.visualstudio.com/downloads/)
 * Install-Package WindowsAPICodePack-Shell
 * Install-Package WindowsAPICodePack-ShellExtensions
 * Install-Package Extended.Wpf.Toolkit
+* Install-Package Costura.Fody
+* Install-CleanReferencesTarget
 
 #### UI Framework MahApps Metro:
 * Install-Package MahApps.Metro
