@@ -1,22 +1,23 @@
 ﻿
-using LatechInclude.HelperClasses;
-using LatechInclude.ViewModel;
-using MahApps.Metro.Controls;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Linq;
-using MahApps.Metro.Controls.Dialogs;
 using System.Windows.Data;
 using System.Diagnostics;
 using GalaSoft.MvvmLight.Messaging;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
-using System;
 using System.Security.Permissions;
+using System.Data;
+using LatechInclude.HelperClasses;
+using LatechInclude.ViewModel;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace LatechInclude
 {
@@ -316,6 +317,110 @@ namespace LatechInclude
                 outputString = null;
             }
             
+        }
+
+        private void OnRemoveItemClick_Main(object sender, RoutedEventArgs e)
+        {
+            if (MainView_DataGrid.SelectedItems.Count != 0)
+            {
+                int count = 1;
+                string fileName;
+                MyFile row = (MyFile)MainView_DataGrid.SelectedItems[0];
+
+                if(row.FileName.Length > 20)
+                {
+                    fileName = row.FileName.Substring(0, 20) + row.Extension;
+                }
+                else
+                {
+                    fileName = row.FileName + row.Extension;
+                }
+                
+                _viewModel.NotifyMessage = "Removed " + fileName;
+                _viewModel.List.Remove(row);
+        
+                foreach (MyFile file in _viewModel.List )
+                {
+                    file.Position = count;
+                    count++;
+                }
+                
+                _viewModel.FlyoutOpen = true;
+                MainView_DataGrid.ItemsSource = null;
+                MainView_DataGrid.ItemsSource = _viewModel.List;
+
+                fileName = null;
+                row = null;
+            }
+            else
+            {
+                _viewModel.NotifyMessage = "No Item selected";
+                _viewModel.FlyoutOpen = true;
+            }
+        }
+
+        private void OnClearClick__Main(object sender, RoutedEventArgs e)
+        {
+            _viewModel.List.Clear();
+            _viewModel.NotifyMessage = "Cleared";
+            _viewModel.FlyoutOpen = true;
+            MainView_DataGrid.ItemsSource = null;
+            MainView_DataGrid.ItemsSource = _viewModel.List;
+        }
+
+        private void OnWhiteListRemoveClick_Main(object sender, RoutedEventArgs e)
+        {
+            if (WhiteList_Grid.SelectedItems.Count != 0)
+            {
+                int count = 0;
+                WhiteList row = (WhiteList)WhiteList_Grid.SelectedItems[0];
+                WhiteList temp = new WhiteList();
+
+                _viewModel.NotifyMessage = "Removed " + row.Extension + " from "+ row.Language;
+
+                foreach(WhiteList w in _viewModel.whiteList)
+                {
+                    if(w.Extension == row.Extension && w.Language == row.Language)
+                    {
+                        temp = w;      
+                    }
+
+                    if(w.Language == row.Language)
+                    {
+                        count++;
+                    }
+                }
+
+                if(count <= 1)
+                {
+                    _viewModel.Languages.Remove(row.Language);
+                }
+
+                _viewModel.whiteList.Remove(temp); ;
+                _viewModel.currentWhiteList.Remove(row);
+
+                _viewModel.FlyoutOpen = true;
+                WhiteList_Grid.ItemsSource = null;
+                WhiteList_Grid.ItemsSource = _viewModel.currentWhiteList;
+
+                row = null;
+                temp = null;
+            }
+            else
+            {
+                _viewModel.NotifyMessage = "No Item selected";
+                _viewModel.FlyoutOpen = true;
+            }
+        }
+
+        private void OnWhiteListClearClick_Main(object sender, RoutedEventArgs e)
+        {
+            _viewModel.whiteList.Clear();
+            _viewModel.clearCurrentWhiteList();
+            _viewModel.NotifyMessage = "Cleared";
+            _viewModel.FlyoutOpen = true;
+            WhiteList_Grid.ItemsSource = null;
+            WhiteList_Grid.ItemsSource = _viewModel.whiteList;
         }
     }
 }

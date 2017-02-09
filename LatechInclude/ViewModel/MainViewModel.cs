@@ -33,7 +33,7 @@ namespace LatechInclude.ViewModel
         public ICommand TexMakerCommand { get; private set; }
         public ICommand AddExtensionCommand { get; private set; }
         public ICommand SettingsCommand { get; private set; }
-        public ICommand TestCommand { get; private set; }
+        public ICommand ExitCommand { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -61,7 +61,7 @@ namespace LatechInclude.ViewModel
             TexMakerCommand = new RelayCommand(TexMakerMethod);
             AddExtensionCommand = new RelayCommand(AddExtensionMethod);
             SettingsCommand = new RelayCommand(SettingsMethod);
-            TestCommand = new RelayCommand(TestMethod);
+            ExitCommand = new RelayCommand(ExitMethod);
 
             _statusText = "";
             pathString = new StringNotify("");
@@ -87,6 +87,23 @@ namespace LatechInclude.ViewModel
 
             try
             {
+                string[] WhiteListLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\WhiteList.txt"));
+
+                Init_WhiteList(WhiteListLines);
+            }
+            catch(FileNotFoundException fnfe)
+            {
+                string[] exampleLines = {"#C++", ".h", ".cpp", "#C", ".c", "#Pascal", ".pas", "#HTML", ".html", ".css", "#VHDL",".vhdl" };
+
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\WhiteList.txt")))
+                {
+                    foreach (string line in exampleLines)
+                    {
+                        file.WriteLine(line);
+                    }
+                }
+
                 string[] WhiteListLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\WhiteList.txt"));
 
                 Init_WhiteList(WhiteListLines);
@@ -371,6 +388,14 @@ namespace LatechInclude.ViewModel
         }
 
         /// <summary>
+        /// Closes the program
+        /// </summary>
+        public void ExitMethod()
+        {    
+            System.Windows.Forms.Application.Exit();
+        }
+
+        /// <summary>
         /// Initialize the WhiteList
         /// </summary>
         /// <param name="WhiteListLines">string[] with lines containing the extension names</param>
@@ -415,12 +440,6 @@ namespace LatechInclude.ViewModel
         public void clearCurrentWhiteList()
         {
             _currentWhiteList.Clear();
-        }
-
-        public void TestMethod()
-        {
-            NotifyMessage = "You clicked exit!!";
-            FlyoutOpen = true;
-        }
+        }     
     }
 }

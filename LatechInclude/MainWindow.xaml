@@ -26,8 +26,12 @@
         <DockPanel>
             <Menu DockPanel.Dock="Top" Height="30">
                 <MenuItem Header="_File" HorizontalAlignment="Center" Height="30" Width="35">
-                    <MenuItem Header="_Exit" Command="{Binding TestCommand}"/>
-                </MenuItem>
+                    <MenuItem Header="_Exit" Command="{Binding ExitCommand}" >
+                            <MenuItem.Icon>
+                                <Image Source="/EmbeddedRessources/Images/delete.png" Width="16" Height="16" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
                 <MenuItem Header="_Settings" HorizontalAlignment="Center" Height="30" Width="68" Command="{Binding SettingsCommand}">
                 </MenuItem>
             </Menu>
@@ -49,7 +53,9 @@
                   AutoGenerateColumns="False" Margin="10,69,163,39" BorderThickness="1" BorderBrush="#CC119EDA" AllowDrop="True" IsReadOnly="True">
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Clear">
+                    <MenuItem Header="Remove Item" Click="OnRemoveItemClick_Main">
+                    </MenuItem>
+                    <MenuItem Header="Clear" Click="OnClearClick__Main">
                     </MenuItem>
                 </ContextMenu>
             </DataGrid.ContextMenu>
@@ -60,7 +66,7 @@
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Pos" Binding="{Binding Position}" />
-                <DataGridTextColumn Header="Name" Binding="{Binding FileName}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding FileName}" MinWidth="250"/>
                 <DataGridTextColumn Header="Extension" Binding="{Binding Extension}" />
             </DataGrid.Columns>
         </DataGrid>
@@ -69,7 +75,10 @@
             AutoGenerateColumns="False" Margin="0,69,10,69" BorderThickness="1" BorderBrush="#CC119EDA" AllowDrop="False" IsReadOnly="True" HorizontalAlignment="Right" Width="148">
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Clear"/>
+                    <MenuItem Header="Remove Item" Click="OnWhiteListRemoveClick_Main">
+                    </MenuItem>
+                    <MenuItem Header="Clear" Click="OnWhiteListClearClick_Main">
+                    </MenuItem>
                 </ContextMenu>
             </DataGrid.ContextMenu>
 
