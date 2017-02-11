@@ -14,13 +14,13 @@
         BorderThickness="1"
         DataContext="{Binding Main, Source={StaticResource Locator}}" Closing="OnMainWindow_Closing">
 
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Skins/MainSkin.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
+        <Window.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="Skins/MainSkin.xaml" />
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Window.Resources>
 
     <Grid x:Name="LayoutRoot">
         <DockPanel>
