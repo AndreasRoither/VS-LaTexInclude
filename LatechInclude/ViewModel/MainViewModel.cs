@@ -85,37 +85,8 @@ namespace LatechInclude.ViewModel
             dlg.Multiselect = false;
             dlg.ShowPlacesList = true;
 
-            try
-            {
-                string[] WhiteListLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\WhiteList.txt"));
-
-                Init_WhiteList(WhiteListLines);
-            }
-            catch(FileNotFoundException fnfe)
-            {
-                string[] exampleLines = {"#C++", ".h", ".cpp", "#C", ".c", "#Pascal", ".pas", "#HTML", ".html", ".css", "#VHDL",".vhdl" };
-
-                using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\WhiteList.txt")))
-                {
-                    foreach (string line in exampleLines)
-                    {
-                        file.WriteLine(line);
-                    }
-                }
-
-                string[] WhiteListLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\WhiteList.txt"));
-
-                Init_WhiteList(WhiteListLines);
-            }
-            catch (Exception ex)
-            {
-                string outputString = ex.ToString();
-                System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), outputString);
-                outputString = null;
-            }
-
-            Console.WriteLine();
+            LoadFiles();
+            
         }
 
         public override void Cleanup()
@@ -132,7 +103,6 @@ namespace LatechInclude.ViewModel
         {
             if (this.PropertyChanged != null)
             {
-                Console.WriteLine(propertyName);
                 var e = new PropertyChangedEventArgs(propertyName);
                 this.PropertyChanged(this, e);
             }
@@ -191,8 +161,11 @@ namespace LatechInclude.ViewModel
             get { return _statusText; }
             set
             {
-                _statusText = value;
-                OnPropertyChanged("statusText");
+                if (Properties.Settings.Default.Setting_General_StatusBar)
+                {
+                    _statusText = value;
+                    OnPropertyChanged("statusText");
+                }
             }
         }      
 
@@ -214,6 +187,96 @@ namespace LatechInclude.ViewModel
                 if (_notifyMessage == value) return;
                 _notifyMessage = value;
                 OnPropertyChanged("NotifyMessage");
+            }
+        }
+
+        public void LoadFiles()
+        {
+            bool missingFiles = false;
+            string message = "Missing ";
+
+            if (File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\WhiteList.txt")))
+            {
+                string[] WhiteListLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\WhiteList.txt"));
+
+                Init_WhiteList(WhiteListLines);
+            }
+            else
+            {
+                string[] exampleLines = { "#C++", ".h", ".cpp", "#C", ".c", "#Pascal", ".pas", "#HTML", ".html", ".css", "#VHDL", ".vhdl" };
+
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\WhiteList.txt")))
+                {
+                    foreach (string line in exampleLines)
+                    {
+                        file.WriteLine(line);
+                    }
+                }
+
+                string[] WhiteListLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\WhiteList.txt"));
+
+                Init_WhiteList(WhiteListLines);
+                message += "WhiteList ";
+                missingFiles = true;
+            }
+
+            if (File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexCodeTemplate.tex")))
+            {
+                string[] TexCodeLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexCodeTemplate.tex"));
+            }
+            else
+            {
+                string exampleLine = "\\lstinputlisting[language=$Language$] {$Path$}";
+
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\TexCodeTemplate.tex")))
+                {
+                    file.WriteLine(exampleLine);
+                }
+                message += "CodeTemplate";
+                missingFiles = true;
+            }
+
+            if (File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexImageTemplate.tex")))
+            {
+                string[] TexImageLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexImageTemplate.tex"));
+            }
+            else
+            {
+                string exampleLine = "\\begin{figure}[H]\n\\centering\n\\includegraphics[scale = { Scale }]{ { $Path$ } }\n" +
+                    "\\caption{ { Caption} }\n\\label{ fig: { Label } }\n\\end{ figure}";
+
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\TexImageTemplate.tex")))
+                {
+                    file.WriteLine(exampleLine);
+                }
+                message += "ImageTemplate ";
+                missingFiles = true;
+            }
+
+            if (File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexPDFTemplate.tex")))
+            {
+                string[] TexPdfLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexPDFTemplate.tex"));
+            }
+            else
+            {
+                string exampleLine = "\\includepdf[pages=1-,pagecommand={}]{{ $Path$ }}";
+
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\TexPDFTemplate.tex")))
+                {
+                    file.WriteLine(exampleLine);
+                }
+                message += "PDFTemplate ";
+                missingFiles = true;
+            }
+
+            if (missingFiles)
+            {
+                NotifyMessage = message + "... added file(s)!";
+                FlyoutOpen = true;
             }
         }
 
@@ -328,6 +391,8 @@ namespace LatechInclude.ViewModel
 
                     outputString = null;
                 }
+
+                mw = null;
             }
             else
             {
@@ -347,6 +412,8 @@ namespace LatechInclude.ViewModel
             svw.DataContext = aevm;
             svw.Title = "Add Extension";
             svw.Owner = Application.Current.MainWindow;
+            svw.Height = 220;
+            svw.Width = 320;
 
             svw.ShowDialog();
 
@@ -354,7 +421,8 @@ namespace LatechInclude.ViewModel
             {
                 OnPropertyChanged("currentWhiteList");
             }
-            
+            svw = null;
+            aevm = null;
         }
 
         /// <summary>
@@ -367,8 +435,12 @@ namespace LatechInclude.ViewModel
             svw.DataContext = svm;
             svw.Title = "Settings";
             svw.Owner = Application.Current.MainWindow;
+            svw.Height = 339;
+            svw.Width = 426;
 
             svw.ShowDialog();
+            svw = null;
+            svm = null;
         }
 
         /// <summary>
@@ -383,16 +455,24 @@ namespace LatechInclude.ViewModel
             svw.DataContext = tevm;
             svw.Title = "TextEditor";
             svw.Owner = Application.Current.MainWindow;
+            svw.ResizeMode = ResizeMode.CanResize;
 
             svw.ShowDialog();
+            svw = null;
+            tevm = null;
         }
 
         /// <summary>
         /// Closes the program
         /// </summary>
         public void ExitMethod()
-        {    
-            System.Windows.Forms.Application.Exit();
+        {
+            if (Properties.Settings.Default.Setting_General_SaveWhiteList)
+            {
+                Save();
+            }
+
+            Environment.Exit(1);
         }
 
         /// <summary>
@@ -401,11 +481,11 @@ namespace LatechInclude.ViewModel
         /// <param name="WhiteListLines">string[] with lines containing the extension names</param>
         public void Init_WhiteList(string[] WhiteListLines)
         {
-            if (_whiteList.Count == 0)
+            if (_whiteList.Count == 0 && _Languages.Count == 0)
             {
                 WhiteList wl = new WhiteList();
                 _Languages.Add("All");
-
+            
                 foreach (string s in WhiteListLines)
                 {
                     if (s.StartsWith("#"))
@@ -440,6 +520,44 @@ namespace LatechInclude.ViewModel
         public void clearCurrentWhiteList()
         {
             _currentWhiteList.Clear();
-        }     
+        }
+
+        /// <summary>
+        /// Saving WhiteList
+        /// </summary>
+        public void Save()
+        {
+            List<WhiteList> tempWList = this.whiteList;
+            string outputString = "";
+            string compareLanguage = "";
+
+            foreach (WhiteList wl in tempWList)
+            {
+                if (compareLanguage != wl.Language)
+                {
+                    compareLanguage = wl.Language;
+                    outputString += "#" + wl.Language;
+                    outputString += Environment.NewLine;
+                    outputString += wl.Extension;
+
+                }
+                else
+                {
+                    outputString += wl.Extension;
+                }
+                outputString += Environment.NewLine;
+            }
+
+            try
+            {
+                System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\WhiteList.txt"), outputString);
+            }
+            catch (Exception ex)
+            {
+                outputString = ex.ToString() + "\n";
+                System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), outputString);
+                outputString = null;
+            }
+        }
     }
 }

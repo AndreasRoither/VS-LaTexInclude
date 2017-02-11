@@ -32,7 +32,7 @@ namespace LatechInclude
 
         AppDomain currentDomain;
 
-        private MainViewModel _viewModel;
+        private MainViewModel _viewModel = new MainViewModel();
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
@@ -64,8 +64,8 @@ namespace LatechInclude
 
             Closing += (s, e) => ViewModelLocator.Cleanup();
 
-            _viewModel = new MainViewModel();
-            this.DataContext = _viewModel;
+            this.DataContext = this._viewModel;
+            comboBox.SelectedIndex = 0;
 
             MainView_DataGrid.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(productsDataGrid_PreviewMouseLeftButtonDown);
             MainView_DataGrid.Drop += new System.Windows.DragEventHandler(MainView_DataGrid_Drop);
@@ -93,6 +93,45 @@ namespace LatechInclude
             }
 
             outputString = null;
+        }
+
+        /// <summary>
+        /// Saving WhiteList
+        /// </summary>
+        public void Save()
+        {
+            List<WhiteList> tempWList = _viewModel.whiteList;
+            string outputString = "";
+            string compareLanguage = "";
+
+            foreach (WhiteList wl in tempWList)
+            {
+                if (compareLanguage != wl.Language)
+                {
+                    compareLanguage = wl.Language;
+                    outputString += "#" + wl.Language;
+                    outputString += Environment.NewLine;
+                    outputString += wl.Extension;
+
+                }
+                else
+                {
+                    outputString += wl.Extension;
+                }
+                outputString += Environment.NewLine;
+            }
+
+            try
+            {
+                System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\WhiteList.txt"), outputString);
+            }
+            catch (Exception ex)
+            {
+                outputString = "";
+                outputString = ex.ToString();
+                System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), outputString);
+                outputString = null;
+            }
         }
 
         /// <summary>
@@ -284,39 +323,12 @@ namespace LatechInclude
         /// <param name="e"></param>
         private void OnMainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            List<WhiteList> tempWList = _viewModel.whiteList;
-            string outputString = "";
-            string compareLanguage = "";
+            Properties.Settings.Default.Save();
 
-            foreach(WhiteList wl in tempWList)
+            if (Properties.Settings.Default.Setting_General_SaveWhiteList)
             {
-                if (compareLanguage != wl.Language)
-                {
-                    compareLanguage = wl.Language;
-                    outputString += "#" + wl.Language;
-                    outputString += Environment.NewLine;
-                    outputString += wl.Extension;
-                    
-                }
-                else
-                {
-                    outputString += wl.Extension;
-                }
-                outputString += Environment.NewLine;
+                Save();
             }
-
-            try
-            {
-                System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\WhiteList.txt"), outputString);
-            }
-            catch(Exception ex)
-            {
-                outputString = "";
-                outputString = ex.ToString();
-                System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), outputString);
-                outputString = null;
-            }
-            
         }
 
         private void OnRemoveItemClick_Main(object sender, RoutedEventArgs e)
@@ -351,6 +363,47 @@ namespace LatechInclude
 
                 fileName = null;
                 row = null;
+            }
+            else
+            {
+                _viewModel.NotifyMessage = "No Item selected";
+                _viewModel.FlyoutOpen = true;
+            }
+        }
+
+        private void OnRemoveExtensions_Main(object sender, RoutedEventArgs e)
+        {
+            if (MainView_DataGrid.SelectedItems.Count != 0)
+            {
+                int count = 1;
+                MyFile row = (MyFile)MainView_DataGrid.SelectedItems[0];
+                List<MyFile> temp = new List<MyFile>();
+
+                foreach (MyFile file in _viewModel.List)
+                {
+                    if (file.Extension != row.Extension)
+                    {
+                        file.Position = count;
+                        count++;
+                    }
+                    else
+                    {
+                        temp.Add(file);
+                    }
+                }
+
+                foreach (MyFile file in temp)
+                {
+                    _viewModel.List.Remove(file);
+                }
+
+                _viewModel.NotifyMessage = "Removed all with " + row.Extension + " extension";
+                _viewModel.FlyoutOpen = true;
+                MainView_DataGrid.ItemsSource = null;
+                MainView_DataGrid.ItemsSource = _viewModel.List;
+
+                row = null;
+                temp = null;
             }
             else
             {
@@ -394,6 +447,9 @@ namespace LatechInclude
                 if(count <= 1)
                 {
                     _viewModel.Languages.Remove(row.Language);
+                    comboBox.ItemsSource = null;
+                    comboBox.ItemsSource = _viewModel.Languages;
+                    comboBox.SelectedIndex = 0;
                 }
 
                 _viewModel.whiteList.Remove(temp); ;
@@ -415,12 +471,45 @@ namespace LatechInclude
 
         private void OnWhiteListClearClick_Main(object sender, RoutedEventArgs e)
         {
-            _viewModel.whiteList.Clear();
-            _viewModel.clearCurrentWhiteList();
-            _viewModel.NotifyMessage = "Cleared";
-            _viewModel.FlyoutOpen = true;
-            WhiteList_Grid.ItemsSource = null;
-            WhiteList_Grid.ItemsSource = _viewModel.whiteList;
+            if (comboBox.SelectedIndex == 0 || comboBox.SelectedIndex == -1)
+            {
+                _viewModel.whiteList.Clear();
+                _viewModel.clearCurrentWhiteList();
+                _viewModel.NotifyMessage = "Cleared";
+                _viewModel.FlyoutOpen = true;
+                WhiteList_Grid.ItemsSource = null;
+                WhiteList_Grid.ItemsSource = _viewModel.whiteList;
+            }
+            else
+            {
+                List<WhiteList> temp = new List<WhiteList>();
+                string language = comboBox.SelectedItem.ToString();
+
+                foreach (WhiteList w in _viewModel.whiteList)
+                {
+                    if (w.Language == language)
+                    {
+                        temp.Add(w);
+                    }
+                }
+
+                foreach (WhiteList w in temp)
+                {
+                    _viewModel.whiteList.Remove(w);
+                }
+
+                _viewModel.currentWhiteList = _viewModel.whiteList;
+                _viewModel.Languages.Remove(language);
+
+                comboBox.ItemsSource = null;
+                comboBox.ItemsSource = _viewModel.Languages;
+                WhiteList_Grid.ItemsSource = null;
+                WhiteList_Grid.ItemsSource = _viewModel.currentWhiteList;
+                comboBox.SelectedIndex = 0;
+
+                temp = null;
+                language = null;
+            }
         }
     }
 }

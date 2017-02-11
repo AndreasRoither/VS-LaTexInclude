@@ -46,5 +46,17 @@ namespace LatechInclude.View
             tevm.outputString = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
             tevm.SaveFileMethod();
         }
+
+        private void OnReplaceClick(object sender, RoutedEventArgs e)
+        {
+            if (searchTxtBox.Text.Length != 0)
+            {
+                string temp = tevm.outputString.Replace(searchTxtBox.Text.ToString(), replaceTxtBox.Text.ToString());
+                tevm.outputString = temp;
+                richTextBox.Document.Blocks.Clear();
+                richTextBox.Document.Blocks.Add(new Paragraph(new Run(tevm.outputString)));
+                temp = null;
+            }
+        }
     }
 }

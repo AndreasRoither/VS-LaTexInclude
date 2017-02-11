@@ -26,7 +26,7 @@
         <DockPanel>
             <Menu DockPanel.Dock="Top" Height="30">
                 <MenuItem Header="_File" HorizontalAlignment="Center" Height="30" Width="35">
-                    <MenuItem Header="_Exit" Command="{Binding ExitCommand}" >
+                    <MenuItem Header="_Exit" Command="{Binding ExitCommand}">
                             <MenuItem.Icon>
                                 <Image Source="/EmbeddedRessources/Images/delete.png" Width="16" Height="16" />
                             </MenuItem.Icon>
@@ -55,6 +55,8 @@
                 <ContextMenu>
                     <MenuItem Header="Remove Item" Click="OnRemoveItemClick_Main">
                     </MenuItem>
+                    <MenuItem Header="Remove extensions" Click="OnRemoveExtensions_Main">
+                    </MenuItem>
                     <MenuItem Header="Clear" Click="OnClearClick__Main">
                     </MenuItem>
                 </ContextMenu>
@@ -75,7 +77,7 @@
             AutoGenerateColumns="False" Margin="0,69,10,69" BorderThickness="1" BorderBrush="#CC119EDA" AllowDrop="False" IsReadOnly="True" HorizontalAlignment="Right" Width="148">
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Remove Item" Click="OnWhiteListRemoveClick_Main">
+                    <MenuItem Header="Remove item" Click="OnWhiteListRemoveClick_Main">
                     </MenuItem>
                     <MenuItem Header="Clear" Click="OnWhiteListClearClick_Main">
                     </MenuItem>
@@ -89,6 +91,5 @@
         <Controls:Flyout Position="Bottom" Header="" Width="Auto" IsOpen="{Binding FlyoutOpen }" AutoCloseInterval="5000" Background="Orange" CloseButtonVisibility="Hidden" IsAutoCloseEnabled="True" Height="30">
             <Label x:Name="label" Content="{Binding NotifyMessage}" HorizontalAlignment="Left" Margin="-50,0,0,0" VerticalAlignment="Top"/>
         </Controls:Flyout>
-
     </Grid>
 </Controls:MetroWindow>
