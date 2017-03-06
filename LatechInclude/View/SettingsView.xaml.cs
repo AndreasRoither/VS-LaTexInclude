@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+using System;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows;
+using LatechInclude.HelperClasses;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
-using LatechInclude;
 
 namespace LatechInclude.View
 {
@@ -22,6 +14,8 @@ namespace LatechInclude.View
     /// </summary>
     public partial class SettingsView : UserControl
     {
+        ExplorerContextMenu ecm = new ExplorerContextMenu();
+
         public SettingsView()
         {
             InitializeComponent();
@@ -38,6 +32,24 @@ namespace LatechInclude.View
         private void IsCheckedChanged_StatusBar(object sender, EventArgs e)
         {
             Properties.Settings.Default.Setting_General_StatusBar = !Properties.Settings.Default.Setting_General_StatusBar;
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            string path_temp = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            // sample usage to register
+            // get full path to self, %L is a placeholder for the selected file
+            string menuCommand = string.Format("\"{0}\" \"%L\"",
+                                                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            ecm.Register("*", "LatexIncludeMenu",
+                                        "Open with LaTexInclude", menuCommand);
+        }
+
+        private void button_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            // sample usage to unregister
+            ecm.Unregister("*", "LatexIncludeMenu");
         }
     }
 }

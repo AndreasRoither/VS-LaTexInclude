@@ -129,6 +129,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Design\DesignDataService.cs" />
+    <Compile Include="HelperClasses\ExplorerContextMenu.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\IDataService.cs" />
@@ -213,9 +214,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <EmbeddedResource Include="Resources\premable.tex">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\premable.tex" />
     <EmbeddedResource Include="Resources\TexCodeTemplate.tex" />
     <EmbeddedResource Include="Resources\TexImageTemplate.tex" />
     <EmbeddedResource Include="Resources\TexPDFTemplate.tex" />

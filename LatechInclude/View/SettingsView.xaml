@@ -12,6 +12,8 @@
                 <Grid Background="#FFE5E5E5">
                     <Custom:ToggleSwitch Name="SaveWhiteList_ToggleB" Header="Save WhiteList" Margin="10,20,284,170" IsChecked="False" IsCheckedChanged="IsCheckedChanged_SaveWhiteList"/>
                     <Custom:ToggleSwitch Name="StatusBar_ToggleB" Header="Status Bar" Margin="125,20,169,170" IsChecked="False" IsCheckedChanged="IsCheckedChanged_StatusBar"/>
+                    <Button x:Name="button" Content="Register" HorizontalAlignment="Left" Margin="10,128,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
+                    <Button x:Name="button_Copy" Content="Unregister" HorizontalAlignment="Left" Margin="90,128,0,0" VerticalAlignment="Top" Width="75" Click="button_Copy_Click"/>
                 </Grid>
             </TabItem>
 

@@ -475,6 +475,12 @@ namespace LatechInclude
             {
                 _viewModel.whiteList.Clear();
                 _viewModel.clearCurrentWhiteList();
+                _viewModel.Languages.Clear();
+
+                _viewModel.Languages.Add("All");
+                comboBox.ItemsSource = null;
+                comboBox.ItemsSource = _viewModel.Languages;
+                comboBox.SelectedIndex = 0;
                 _viewModel.NotifyMessage = "Cleared";
                 _viewModel.FlyoutOpen = true;
                 WhiteList_Grid.ItemsSource = null;

@@ -194,10 +194,16 @@ namespace LatechInclude.ViewModel
         {
             bool missingFiles = false;
             string message = "Missing ";
+            string path_temp = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            if (File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\WhiteList.txt")))
+            if (!Directory.Exists(Path.Combine(path_temp, "\\Resources")))
             {
-                string[] WhiteListLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\WhiteList.txt"));
+                Directory.CreateDirectory(path_temp + "\\Resources");
+            }
+
+            if (File.Exists(Path.Combine(path_temp, @"Resources\WhiteList.txt")))
+            {
+                string[] WhiteListLines = System.IO.File.ReadAllLines(Path.Combine(path_temp, @"Resources\WhiteList.txt"));
 
                 Init_WhiteList(WhiteListLines);
             }
@@ -206,7 +212,7 @@ namespace LatechInclude.ViewModel
                 string[] exampleLines = { "#C++", ".h", ".cpp", "#C", ".c", "#Pascal", ".pas", "#HTML", ".html", ".css", "#VHDL", ".vhdl" };
 
                 using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\WhiteList.txt")))
+                new System.IO.StreamWriter((path_temp + "\\Resources\\WhiteList.txt")))
                 {
                     foreach (string line in exampleLines)
                     {
@@ -214,23 +220,23 @@ namespace LatechInclude.ViewModel
                     }
                 }
 
-                string[] WhiteListLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\WhiteList.txt"));
+                string[] WhiteListLines = System.IO.File.ReadAllLines(Path.Combine(path_temp, @"Resources\WhiteList.txt"));
 
                 Init_WhiteList(WhiteListLines);
                 message += "WhiteList ";
                 missingFiles = true;
             }
 
-            if (File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexCodeTemplate.tex")))
+            if (File.Exists(Path.Combine(path_temp, @"Resources\TexCodeTemplate.tex")))
             {
-                string[] TexCodeLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexCodeTemplate.tex"));
+                string[] TexCodeLines = System.IO.File.ReadAllLines(Path.Combine(path_temp, @"Resources\TexCodeTemplate.tex"));
             }
             else
             {
                 string exampleLine = "\\lstinputlisting[language=$Language$] {$Path$}";
 
                 using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\TexCodeTemplate.tex")))
+                new System.IO.StreamWriter((path_temp + "\\Resources\\TexCodeTemplate.tex")))
                 {
                     file.WriteLine(exampleLine);
                 }
@@ -238,9 +244,9 @@ namespace LatechInclude.ViewModel
                 missingFiles = true;
             }
 
-            if (File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexImageTemplate.tex")))
+            if (File.Exists(Path.Combine(path_temp, @"Resources\TexImageTemplate.tex")))
             {
-                string[] TexImageLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexImageTemplate.tex"));
+                string[] TexImageLines = System.IO.File.ReadAllLines(Path.Combine(path_temp, @"Resources\TexImageTemplate.tex"));
             }
             else
             {
@@ -258,14 +264,14 @@ namespace LatechInclude.ViewModel
 
             if (File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexPDFTemplate.tex")))
             {
-                string[] TexPdfLines = System.IO.File.ReadAllLines(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexPDFTemplate.tex"));
+                string[] TexPdfLines = System.IO.File.ReadAllLines(Path.Combine(path_temp, @"Resources\TexPDFTemplate.tex"));
             }
             else
             {
                 string exampleLine = "\\includepdf[pages=1-,pagecommand={}]{{ $Path$ }}";
 
                 using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\TexPDFTemplate.tex")))
+                new System.IO.StreamWriter((path_temp + "\\Resources\\TexPDFTemplate.tex")))
                 {
                     file.WriteLine(exampleLine);
                 }
