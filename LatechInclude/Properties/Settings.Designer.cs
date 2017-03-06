@@ -46,5 +46,29 @@ namespace LatechInclude.Properties {
                 this["Setting_General_StatusBar"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Setting_Advanced_FileRegistry {
+            get {
+                return ((bool)(this["Setting_Advanced_FileRegistry"]));
+            }
+            set {
+                this["Setting_Advanced_FileRegistry"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Setting_Advanced_FolderRegistry {
+            get {
+                return ((bool)(this["Setting_Advanced_FolderRegistry"]));
+            }
+            set {
+                this["Setting_Advanced_FolderRegistry"] = value;
+            }
+        }
     }
 }

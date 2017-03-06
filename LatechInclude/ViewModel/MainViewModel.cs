@@ -29,6 +29,8 @@ namespace LatechInclude.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase, INotifyPropertyChanged
     {
+        public static SettingsViewModel svm_temp = new SettingsViewModel();
+
         public ICommand PathFolderDialogCommand { get; private set; }
         public ICommand TexMakerCommand { get; private set; }
         public ICommand AddExtensionCommand { get; private set; }
@@ -437,8 +439,8 @@ namespace LatechInclude.ViewModel
         public void SettingsMethod()
         {
             SwitchViewWindow svw = new SwitchViewWindow();
-            SettingsViewModel svm = new SettingsViewModel();
-            svw.DataContext = svm;
+            //SettingsViewModel svm = new SettingsViewModel();
+            svw.DataContext = svm_temp;
             svw.Title = "Settings";
             svw.Owner = Application.Current.MainWindow;
             svw.Height = 339;
@@ -446,7 +448,6 @@ namespace LatechInclude.ViewModel
 
             svw.ShowDialog();
             svw = null;
-            svm = null;
         }
 
         /// <summary>

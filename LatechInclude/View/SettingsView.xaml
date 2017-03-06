@@ -9,11 +9,21 @@
     <Grid>
         <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="300" VerticalAlignment="Top" Width="410">
             <TabItem Header="General">
-                <Grid Background="#FFE5E5E5">
+                <Grid>
                     <Custom:ToggleSwitch Name="SaveWhiteList_ToggleB" Header="Save WhiteList" Margin="10,20,284,170" IsChecked="False" IsCheckedChanged="IsCheckedChanged_SaveWhiteList"/>
                     <Custom:ToggleSwitch Name="StatusBar_ToggleB" Header="Status Bar" Margin="125,20,169,170" IsChecked="False" IsCheckedChanged="IsCheckedChanged_StatusBar"/>
-                    <Button x:Name="button" Content="Register" HorizontalAlignment="Left" Margin="10,128,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
-                    <Button x:Name="button_Copy" Content="Unregister" HorizontalAlignment="Left" Margin="90,128,0,0" VerticalAlignment="Top" Width="75" Click="button_Copy_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Advanced" HorizontalAlignment="Left" Height="39" VerticalAlignment="Top" Width="127" Margin="0,0,-22,0">
+                <Grid>
+                    <Label Content="Use this at your own risk." HorizontalAlignment="Left" VerticalAlignment="Top" Width="384" Foreground="#FFEC2323" Margin="5,0,0,0"/>
+                    <Label x:Name="label" Content="If checked an entry will be written to the registry" HorizontalAlignment="Left" Margin="5,31,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label_Copy" Content="This will allow you to use LaTexInclude from the explorer context menu" HorizontalAlignment="Left" Margin="5,46,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label1_Copy" Content="Folder context" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label1" Content="File context" HorizontalAlignment="Left" Margin="168,82,0,0" VerticalAlignment="Top"/>
+                    <Button x:Name="button" Content="Register/Unregister" HorizontalAlignment="Left" Command="{Binding FileCommand}" Margin="10,113,0,0" VerticalAlignment="Top" Width="123"/>
+                    <Button x:Name="button_Copy" Content="Register/Unregister" HorizontalAlignment="Left" Command="{Binding FolderCommand}" Margin="168,113,0,0" VerticalAlignment="Top" Width="123"/>
+                              
                 </Grid>
             </TabItem>
 

@@ -69,6 +69,24 @@ namespace LatechInclude
 
             MainView_DataGrid.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(productsDataGrid_PreviewMouseLeftButtonDown);
             MainView_DataGrid.Drop += new System.Windows.DragEventHandler(MainView_DataGrid_Drop);
+
+            string[] args = Environment.GetCommandLineArgs();
+
+            string outputString;
+            outputString = Environment.NewLine + "CommandLineArgs" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine;
+
+            foreach (string s in args)
+            {
+                outputString += s + Environment.NewLine;
+            }
+
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Args.txt", true))
+            {
+                file.WriteLine(outputString);
+            }
+
+            outputString = null;
         }
 
         /// <summary>
