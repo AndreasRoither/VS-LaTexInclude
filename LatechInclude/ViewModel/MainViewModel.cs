@@ -321,7 +321,7 @@ namespace LatechInclude.ViewModel
                     Console.WriteLine("Exception caught : " + ex.Message);
 
                     string outputString;
-                    outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.ToString() + Environment.NewLine + "Runtime terminating: ";
+                    outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
 
                     using (System.IO.StreamWriter file =
                     new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
@@ -389,7 +389,7 @@ namespace LatechInclude.ViewModel
                     Console.WriteLine("Exception caught : " + ex.Message);
 
                     string outputString;
-                    outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.ToString() + Environment.NewLine + "Runtime terminating: ";
+                    outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
 
                     using (System.IO.StreamWriter file =
                     new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
@@ -561,9 +561,17 @@ namespace LatechInclude.ViewModel
             }
             catch (Exception ex)
             {
-                outputString = ex.ToString() + "\n";
-                System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), outputString);
-                outputString = null;
+                Console.WriteLine("Exception caught : " + ex.Message);
+
+                string temp_outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
+
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
+                {
+                    file.WriteLine(temp_outputString);
+                }
+
+                temp_outputString = null;
             }
         }
     }

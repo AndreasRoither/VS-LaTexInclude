@@ -18,6 +18,7 @@ using LatechInclude.HelperClasses;
 using LatechInclude.ViewModel;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using System.IO;
 
 namespace LatechInclude
 {
@@ -41,7 +42,11 @@ namespace LatechInclude
         public MainWindow()
         {
             //Check for multiple instances, kill old instance or kill the starting process
-            if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1)
+            if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 2)
+            {
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
+            }
+            else if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1)
             {
                 MessageBoxResult result = MessageBox.Show("An Instance is already open, do you want to close it?", "Instance already open", MessageBoxButton.YesNo);
                 switch (result)
@@ -53,8 +58,8 @@ namespace LatechInclude
                     case MessageBoxResult.No:
                         System.Diagnostics.Process.GetCurrentProcess().Kill();
                         break;
-                }   
-            }            
+                }
+            }
 
             InitializeComponent();
 
@@ -71,6 +76,41 @@ namespace LatechInclude
             MainView_DataGrid.Drop += new System.Windows.DragEventHandler(MainView_DataGrid_Drop);
 
             string[] args = Environment.GetCommandLineArgs();
+
+            if (args.Length > 1)
+            {
+                string[] temp = args.SubArray(1, args.Length - 1);
+
+                int i = 1;
+                _viewModel.List.Clear();
+
+                foreach (string s in temp)
+                {
+                    if (Path.HasExtension(s))
+                    {
+                        _viewModel.List.Add(new MyFile(System.IO.Path.GetFileNameWithoutExtension(s), s, System.IO.Path.GetExtension(s), i));
+                        i++;
+                    }
+                    else
+                    {
+                        string[] files = Directory.GetFiles(args[1], "*", SearchOption.AllDirectories);
+
+                        foreach (string file in files)
+                        {
+                            foreach (WhiteList wl in _viewModel.currentWhiteList)
+                            {
+                                if (wl.Extension == Path.GetExtension(file))
+                                {
+                                    _viewModel.List.Add(new MyFile(System.IO.Path.GetFileNameWithoutExtension(file), file, System.IO.Path.GetExtension(file), i));
+                                    i++;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                _viewModel.statusText = (i - 1) + " Files found";
+            }
 
             string outputString;
             outputString = Environment.NewLine + "CommandLineArgs" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine;
@@ -102,7 +142,7 @@ namespace LatechInclude
             Console.WriteLine("Runtime terminating: {0}", args.IsTerminating);
 
             string outputString;
-            outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + e.ToString() + Environment.NewLine + "Runtime terminating: " + args.IsTerminating;
+            outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + e.Message + Environment.NewLine + Environment.NewLine + e.ToString() + Environment.NewLine + "Runtime terminating: " + args.IsTerminating;
 
             using (System.IO.StreamWriter file =
             new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
@@ -145,10 +185,17 @@ namespace LatechInclude
             }
             catch (Exception ex)
             {
-                outputString = "";
-                outputString = ex.ToString();
-                System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt"), outputString);
-                outputString = null;
+                Console.WriteLine("Exception caught : " + ex.Message);
+
+                string temp_outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
+
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
+                {
+                    file.WriteLine(temp_outputString);
+                }
+
+                temp_outputString = null;
             }
         }
 
@@ -226,7 +273,7 @@ namespace LatechInclude
             {
                 return false;
             }
-            
+
         }
 
         private DataGridRow GetRowItem(int index)
@@ -256,7 +303,7 @@ namespace LatechInclude
         private void columnHeader_Click(object sender, RoutedEventArgs e)
         {
             var columnHeader = sender as DataGridColumnHeader;
-            if(columnHeader != null)
+            if (columnHeader != null)
             {
                 int i;
 
@@ -280,7 +327,7 @@ namespace LatechInclude
 
                         break;
                     case "Extension":
-                        
+
                         _fileList = _viewModel.List;
                         _fileList = new TrulyObservableCollection<MyFile>(from file in _fileList orderby file.Extension select file);
 
@@ -357,7 +404,7 @@ namespace LatechInclude
                 string fileName;
                 MyFile row = (MyFile)MainView_DataGrid.SelectedItems[0];
 
-                if(row.FileName.Length > 20)
+                if (row.FileName.Length > 20)
                 {
                     fileName = row.FileName.Substring(0, 20) + row.Extension;
                 }
@@ -365,16 +412,16 @@ namespace LatechInclude
                 {
                     fileName = row.FileName + row.Extension;
                 }
-                
+
                 _viewModel.NotifyMessage = "Removed " + fileName;
                 _viewModel.List.Remove(row);
-        
-                foreach (MyFile file in _viewModel.List )
+
+                foreach (MyFile file in _viewModel.List)
                 {
                     file.Position = count;
                     count++;
                 }
-                
+
                 _viewModel.FlyoutOpen = true;
                 MainView_DataGrid.ItemsSource = null;
                 MainView_DataGrid.ItemsSource = _viewModel.List;
@@ -447,22 +494,22 @@ namespace LatechInclude
                 WhiteList row = (WhiteList)WhiteList_Grid.SelectedItems[0];
                 WhiteList temp = new WhiteList();
 
-                _viewModel.NotifyMessage = "Removed " + row.Extension + " from "+ row.Language;
+                _viewModel.NotifyMessage = "Removed " + row.Extension + " from " + row.Language;
 
-                foreach(WhiteList w in _viewModel.whiteList)
+                foreach (WhiteList w in _viewModel.whiteList)
                 {
-                    if(w.Extension == row.Extension && w.Language == row.Language)
+                    if (w.Extension == row.Extension && w.Language == row.Language)
                     {
-                        temp = w;      
+                        temp = w;
                     }
 
-                    if(w.Language == row.Language)
+                    if (w.Language == row.Language)
                     {
                         count++;
                     }
                 }
 
-                if(count <= 1)
+                if (count <= 1)
                 {
                     _viewModel.Languages.Remove(row.Language);
                     comboBox.ItemsSource = null;

@@ -54,22 +54,32 @@ namespace LatechInclude.HelperClasses
             Registry.ClassesRoot.DeleteSubKeyTree(regPath);
         }
 
-        public void Register_Folder(string shellKeyName, string menuText, string path)
+        public void Register_Folder(string shellKeyName, string menuText, string path, string menuCommand)
         {
-            RegistryKey _key = Registry.ClassesRoot.OpenSubKey("Folder\\Shell", true);
-            RegistryKey newkey = _key.CreateSubKey(shellKeyName);
-            RegistryKey subNewkey = newkey.CreateSubKey("Command");
-            subNewkey.SetValue(menuText, path);
-            subNewkey.Close();
-            newkey.Close();
-            _key.Close();
+            // create path to registry location
+            string regPath = string.Format(@"Folder\Shell\{0}", shellKeyName);
+
+            // add context menu to the registry
+            using (RegistryKey key = Registry.ClassesRoot.CreateSubKey(regPath))
+            {
+                key.SetValue(null, menuText);
+            }
+
+            // add command that is invoked to the registry
+            using (RegistryKey key = Registry.ClassesRoot.CreateSubKey(
+                string.Format(@"{0}\command", regPath)))
+            {
+                key.SetValue(null, menuCommand);
+            }
         }
 
         public void Unregister_Folder(string shellKeyName)
         {
-            RegistryKey _key = Registry.ClassesRoot.OpenSubKey("Folder\\Shell\\", true);
-            _key.DeleteSubKey(shellKeyName);
-            _key.Close();
+            // path to the registry location
+            string regPath = string.Format(@"Folder\Shell\{0}", shellKeyName);
+
+            // remove context menu from the registry
+            Registry.ClassesRoot.DeleteSubKeyTree(regPath);
         }
     }
 }

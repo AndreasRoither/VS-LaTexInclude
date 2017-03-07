@@ -19,8 +19,8 @@
                     <Label Content="Use this at your own risk." HorizontalAlignment="Left" VerticalAlignment="Top" Width="384" Foreground="#FFEC2323" Margin="5,0,0,0"/>
                     <Label x:Name="label" Content="If checked an entry will be written to the registry" HorizontalAlignment="Left" Margin="5,31,0,0" VerticalAlignment="Top"/>
                     <Label x:Name="label_Copy" Content="This will allow you to use LaTexInclude from the explorer context menu" HorizontalAlignment="Left" Margin="5,46,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label1_Copy" Content="Folder context" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top"/>
-                    <Label x:Name="label1" Content="File context" HorizontalAlignment="Left" Margin="168,82,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label1_Copy" Content="File context" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label1" Content="Folder context" HorizontalAlignment="Left" Margin="168,82,0,0" VerticalAlignment="Top"/>
                     <Button x:Name="button" Content="Register/Unregister" HorizontalAlignment="Left" Command="{Binding FileCommand}" Margin="10,113,0,0" VerticalAlignment="Top" Width="123"/>
                     <Button x:Name="button_Copy" Content="Register/Unregister" HorizontalAlignment="Left" Command="{Binding FolderCommand}" Margin="168,113,0,0" VerticalAlignment="Top" Width="123"/>
                               
