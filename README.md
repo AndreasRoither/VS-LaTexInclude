@@ -26,11 +26,12 @@ Place the executable wherever you desire and run it.
 ### INFO
 There is a possibility to register the .exe in the registry. This allows you to use LaTexInclude via the context menu (right click on a file or a folder) and start LaTexInclude with the file(s) in its List. If you uncheck the "Start with context" setting under "Settings -> General" an output.tex file will be generated in the folder you are in.
 
-In order to add the context menu item you need to do the following:
-1. Start the .exe as administrator
-2. Go to settings -> advanced
-3. Click one of the buttons (File/Folder)
-4. Enjoy
+In order to add the context menu item you need to do the following:  
+
+- Start the .exe as administrator
+- Go to settings -> advanced
+- Click one of the buttons (File/Folder)
+- Enjoy
 
 ### Technology used
 Built with [Visual Studio](https://www.visualstudio.com/downloads/)
