@@ -19,6 +19,7 @@ VS-LaTeX-Include does the job for you so you don't have to worry about those pes
 
 ### Installation
 Latest release [Releases](https://github.com/AndiRoither/VS-LaTexInclude/releases)
+
 Clone or [download](https://github.com/AndiRoither/VS-LatechInclude/archive/master.zip) this project and unzip it.
 
 ### How to use
