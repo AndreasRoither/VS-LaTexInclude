@@ -1,27 +1,24 @@
 ﻿
 using System;
+using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Linq;
-using System.Windows.Data;
 using System.Diagnostics;
-using GalaSoft.MvvmLight.Messaging;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Reflection;
-using System.Security.Permissions;
 using System.Data;
 using LatechInclude.HelperClasses;
 using LatechInclude.ViewModel;
 using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
 using System.IO;
 
 namespace LatechInclude
 {
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -42,7 +39,7 @@ namespace LatechInclude
         public MainWindow()
         {
             //Check for multiple instances, kill old instance or kill the starting process
-            if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 2)
+            if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() >= 2)
             {
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
             }

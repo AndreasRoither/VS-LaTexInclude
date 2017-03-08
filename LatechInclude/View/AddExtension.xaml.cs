@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,10 +44,21 @@ namespace LatechInclude.View
         /// Saves changes to the ViewModel
         /// </summary>
         private void OnTxtBox_KeyUp(object sender, KeyEventArgs e)
-        {
-            string temp = maskedTextBox.Text.ToString();
+        {  
+            string temp = textBox.Text.ToString();
+
             temp = new string(temp.Where(c => !char.IsWhiteSpace(c)).ToArray());
-            aevm.maskedTxtBoxInput = temp;
+            aevm.TxtBoxInput = temp; 
+        }
+
+        private void textBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Check for a naughty character in the KeyDown event.
+            if (System.Text.RegularExpressions.Regex.IsMatch(e.Key.ToString().ToLower(), @"[^0-9^+^\-^\/^\*^\(^\)]"))
+            {
+                // Stop the character from being entered into the control since it is illegal.
+                e.Handled = true;
+            }
         }
     }
 }

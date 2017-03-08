@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using LatechInclude.HelperClasses;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 
@@ -24,7 +25,7 @@ namespace LatechInclude.ViewModel
         private string _NotifyMessage = "";
 
         private static string _currentLanguage;
-        private static string _maskedTxtBoxInput;
+        private static string _TxtBoxInput;
 
         MainViewModel mvm = null;
 
@@ -34,7 +35,7 @@ namespace LatechInclude.ViewModel
             this.CloseWindowCommand = new RelayCommand<Window>(this.CloseWindow);
 
             _Languages = new List<string>();
-            _maskedTxtBoxInput = "";
+            _TxtBoxInput = "";
 
             mvm = new MainViewModel();
 
@@ -58,10 +59,10 @@ namespace LatechInclude.ViewModel
             set { _Languages = value; }
         }
 
-        public string maskedTxtBoxInput
+        public string TxtBoxInput
         {
-            get { return _maskedTxtBoxInput; }
-            set { _maskedTxtBoxInput = value; }
+            get { return _TxtBoxInput; }
+            set { _TxtBoxInput = value; }
         }
 
         public bool FlyoutOpen
@@ -86,7 +87,14 @@ namespace LatechInclude.ViewModel
 
         public void AddExtensionMethod()
         {
-            if (_maskedTxtBoxInput != "" && _maskedTxtBoxInput != ".")
+            Regex regex = new Regex(@"[^0-9^+^\-^\/^\*^\(^\)]");
+            MatchCollection matches = regex.Matches(_TxtBoxInput);
+            if (matches.Count > 0)
+            {
+                NotifyMessage = "At least on character is not allowed";
+                FlyoutOpen = true;
+            }
+            else if (_TxtBoxInput != "" && _TxtBoxInput != ".")
             {       
                 List<WhiteList> tempList = new List<WhiteList>();
                 tempList = mvm.whiteList;
@@ -94,7 +102,7 @@ namespace LatechInclude.ViewModel
 
                 foreach (WhiteList wl in tempList)
                 {
-                    if (wl.Extension == _maskedTxtBoxInput) notFound = false;
+                    if (wl.Extension == _TxtBoxInput) notFound = false;
                 }
 
                 if (notFound)
@@ -102,7 +110,7 @@ namespace LatechInclude.ViewModel
                     tempList.Add(new WhiteList
                     {
                         Language = CurrentLanguage,
-                        Extension = _maskedTxtBoxInput
+                        Extension = _TxtBoxInput
                     });
 
                     tempList.Sort();
