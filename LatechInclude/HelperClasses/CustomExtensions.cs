@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Input;
 
 namespace LatechInclude.HelperClasses
 {

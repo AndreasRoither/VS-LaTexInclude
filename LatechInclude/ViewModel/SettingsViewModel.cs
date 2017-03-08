@@ -99,8 +99,6 @@ namespace LatechInclude.ViewModel
                 Properties.Settings.Default.Setting_Advanced_FileRegistry = !Properties.Settings.Default.Setting_Advanced_FileRegistry;
                 Properties.Settings.Default.Save();
 
-                Console.WriteLine("Exception caught : " + ex.Message);
-
                 string outputString;
                 outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
 
@@ -160,8 +158,6 @@ namespace LatechInclude.ViewModel
             {
                 Properties.Settings.Default.Setting_Advanced_FolderRegistry = !Properties.Settings.Default.Setting_Advanced_FolderRegistry;
                 Properties.Settings.Default.Save();
-
-                Console.WriteLine("Exception caught : " + ex.Message);
 
                 string outputString;
                 outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;

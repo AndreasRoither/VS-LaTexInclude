@@ -70,5 +70,17 @@ namespace LatechInclude.Properties {
                 this["Setting_Advanced_FolderRegistry"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Setting_General_ContextStartup {
+            get {
+                return ((bool)(this["Setting_General_ContextStartup"]));
+            }
+            set {
+                this["Setting_General_ContextStartup"] = value;
+            }
+        }
     }
 }

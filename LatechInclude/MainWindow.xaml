@@ -12,7 +12,7 @@
         Title="Latech Include"
         BorderBrush="#FF41B1E1"
         BorderThickness="1"
-        DataContext="{Binding Main, Source={StaticResource Locator}}" Closing="OnMainWindow_Closing">
+        DataContext="{Binding Main, Source={StaticResource Locator}}" Closing="OnMainWindow_Closing" Loaded="MainWindow_Loaded">
 
         <Window.Resources>
             <ResourceDictionary>

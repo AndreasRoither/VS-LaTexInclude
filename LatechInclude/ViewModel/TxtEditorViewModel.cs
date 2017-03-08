@@ -87,8 +87,6 @@ namespace LatechInclude.ViewModel
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception caught : " + ex.Message);
-
                 string outputString;
                 outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine + "Runtime terminating: ";
 
@@ -97,7 +95,6 @@ namespace LatechInclude.ViewModel
                 {
                     file.WriteLine(outputString);
                 }
-
                 outputString = null;
             }
         }

@@ -15,6 +15,8 @@ using LatechInclude.HelperClasses;
 using LatechInclude.ViewModel;
 using MahApps.Metro.Controls;
 using System.IO;
+using System.Text.RegularExpressions;
+using System.Collections.Specialized;
 
 namespace LatechInclude
 {
@@ -28,8 +30,7 @@ namespace LatechInclude
         public delegate Point GetPosition(IInputElement element);
         int rowIndex = -1;
 
-        AppDomain currentDomain;
-
+        private AppDomain currentDomain;
         private MainViewModel _viewModel = new MainViewModel();
 
         /// <summary>
@@ -57,20 +58,6 @@ namespace LatechInclude
                         break;
                 }
             }
-
-            InitializeComponent();
-
-            //Add Global Exception Handling
-            currentDomain = AppDomain.CurrentDomain;
-            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(MyHandler);
-
-            Closing += (s, e) => ViewModelLocator.Cleanup();
-
-            this.DataContext = this._viewModel;
-            comboBox.SelectedIndex = 0;
-
-            MainView_DataGrid.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(productsDataGrid_PreviewMouseLeftButtonDown);
-            MainView_DataGrid.Drop += new System.Windows.DragEventHandler(MainView_DataGrid_Drop);
 
             string[] args = Environment.GetCommandLineArgs();
 
@@ -107,23 +94,39 @@ namespace LatechInclude
                 }
 
                 _viewModel.statusText = (i - 1) + " Files found";
+
+                if (!Properties.Settings.Default.Setting_General_ContextStartup)
+                {
+                    if (Path.HasExtension(args[1]))
+                    {
+                        GenerateOutputTex(Path.GetDirectoryName(args[1])); 
+                    }
+                    else
+                    {
+                        GenerateOutputTex(System.IO.Directory.GetParent(args[1]).FullName);
+                    }
+                    System.Diagnostics.Process.GetCurrentProcess().Kill();
+                }
             }
 
-            string outputString;
-            outputString = Environment.NewLine + "CommandLineArgs" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine;
+            InitializeComponent();
 
-            foreach (string s in args)
-            {
-                outputString += s + Environment.NewLine;
-            }
+            //Add Global Exception Handling
+            currentDomain = AppDomain.CurrentDomain;
+            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(MyHandler);
 
-            using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Args.txt", true))
-            {
-                file.WriteLine(outputString);
-            }
+            Closing += (s, e) => ViewModelLocator.Cleanup();
 
-            outputString = null;
+            this.DataContext = this._viewModel;
+            
+
+            MainView_DataGrid.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(productsDataGrid_PreviewMouseLeftButtonDown);
+            MainView_DataGrid.Drop += new System.Windows.DragEventHandler(MainView_DataGrid_Drop);   
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            comboBox.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -133,10 +136,7 @@ namespace LatechInclude
         /// <param name="args"></param>
         static void MyHandler(object sender, UnhandledExceptionEventArgs args)
         {
-
             Exception e = (Exception)args.ExceptionObject;
-            Console.WriteLine("Exception caught : " + e.Message);
-            Console.WriteLine("Runtime terminating: {0}", args.IsTerminating);
 
             string outputString;
             outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + e.Message + Environment.NewLine + Environment.NewLine + e.ToString() + Environment.NewLine + "Runtime terminating: " + args.IsTerminating;
@@ -148,6 +148,75 @@ namespace LatechInclude
             }
 
             outputString = null;
+        }
+
+        public void GenerateOutputTex(string path)
+        {
+            if (_viewModel.List.Count > 0)
+            {
+                Regex re = new Regex(@"\$(.*?)\$", RegexOptions.Compiled);
+                Regex reg = new Regex(@"[\\]");
+                string temp = "";
+
+                string TexCodeTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexCodeTemplate.tex"));
+                string TexImageTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexImageTemplate.tex"));
+                string TexPDFTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexPDFTemplate.tex"));
+
+                StringDictionary fields = new StringDictionary();
+
+                string output = re.Replace(TexCodeTemplate, delegate (Match match)
+                {
+                    return fields[match.Groups[1].Value];
+                });
+
+                string outputString = "";
+                bool found = false;
+
+                foreach (MyFile file in _viewModel.List)
+                {
+                    foreach (WhiteList wl in _viewModel.currentWhiteList)
+                    {
+                        if (file.Extension == wl.Extension)
+                        {
+                            found = true;
+                            fields.Add("Language", wl.Language);
+                        }
+                    }
+
+                    if(!found)
+                    {
+                        fields.Add("Language", "FillMe");
+                    }
+
+                    temp = file.Path;
+                    temp = reg.Replace(temp, "/");
+                    fields.Add("Path", temp);
+
+                    outputString += re.Replace(TexCodeTemplate, delegate (Match match)
+                    {
+                        return fields[match.Groups[1].Value];
+                    });
+                    outputString += "\n";
+                    fields.Clear();
+                }
+
+                try
+                {
+                    System.IO.File.WriteAllText((path + "\\output.tex"), outputString);
+                }
+                catch (Exception ex)
+                {
+                    string t;
+                    t = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine + "Runtime terminating: ";
+
+                    using (System.IO.StreamWriter file =
+                    new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
+                    {
+                        file.WriteLine(t);
+                    }
+                    t = null;
+                }
+            }
         }
 
         /// <summary>
@@ -182,8 +251,6 @@ namespace LatechInclude
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception caught : " + ex.Message);
-
                 string temp_outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
 
                 using (System.IO.StreamWriter file =
@@ -578,6 +645,6 @@ namespace LatechInclude
                 temp = null;
                 language = null;
             }
-        }
+        }  
     }
 }

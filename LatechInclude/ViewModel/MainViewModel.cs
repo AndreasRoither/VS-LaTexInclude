@@ -318,8 +318,6 @@ namespace LatechInclude.ViewModel
                 }
                 catch(Exception ex)
                 {
-                    Console.WriteLine("Exception caught : " + ex.Message);
-
                     string outputString;
                     outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
 
@@ -358,12 +356,25 @@ namespace LatechInclude.ViewModel
                     });
                     
                     string outputString = "";
+                    bool found = false;
 
                     foreach (MyFile file in _fileList)
                     {
                         if (_currentLanguage == "" | _currentLanguage == "All")
                         {
-                            fields.Add("Language", "FillMe");
+                            foreach (WhiteList wl in currentWhiteList)
+                            {
+                                if (file.Extension == wl.Extension)
+                                {
+                                    found = true;
+                                    fields.Add("Language", wl.Language);
+                                }
+                            }
+
+                            if (!found)
+                            {
+                                fields.Add("Language", "FillMe");
+                            }
                         }
                         else
                         {                         
@@ -386,8 +397,6 @@ namespace LatechInclude.ViewModel
                 }
                 catch(Exception ex)
                 {
-                    Console.WriteLine("Exception caught : " + ex.Message);
-
                     string outputString;
                     outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
 
@@ -561,8 +570,6 @@ namespace LatechInclude.ViewModel
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception caught : " + ex.Message);
-
                 string temp_outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
 
                 using (System.IO.StreamWriter file =

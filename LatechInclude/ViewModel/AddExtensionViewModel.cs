@@ -20,7 +20,7 @@ namespace LatechInclude.ViewModel
         public ICommand AddExtensionCommand { get; private set; }
         public RelayCommand<Window> CloseWindowCommand { get; private set; }
 
-        private List<string> _Languages = null;
+        private List<string> _Languages = new List<string>();
         private bool isFlyoutOpen;
         private string _NotifyMessage = "";
 
@@ -39,8 +39,10 @@ namespace LatechInclude.ViewModel
 
             mvm = new MainViewModel();
 
-            _Languages = mvm.Languages;
-            _Languages.Remove("All");
+            foreach (string s in mvm.Languages)
+            {
+                if(s != "All") _Languages.Add(s);
+            }
 
             isFlyoutOpen = false;
         }
@@ -87,22 +89,16 @@ namespace LatechInclude.ViewModel
 
         public void AddExtensionMethod()
         {
-            Regex regex = new Regex(@"[^0-9^+^\-^\/^\*^\(^\)]");
-            MatchCollection matches = regex.Matches(_TxtBoxInput);
-            if (matches.Count > 0)
-            {
-                NotifyMessage = "At least on character is not allowed";
-                FlyoutOpen = true;
-            }
-            else if (_TxtBoxInput != "" && _TxtBoxInput != ".")
+            if (_TxtBoxInput != "" && _TxtBoxInput != ".")
             {       
                 List<WhiteList> tempList = new List<WhiteList>();
-                tempList = mvm.whiteList;
+                string temp = "." + _TxtBoxInput;
+                tempList = mvm.whiteList;      
                 Boolean notFound = true;
 
                 foreach (WhiteList wl in tempList)
                 {
-                    if (wl.Extension == _TxtBoxInput) notFound = false;
+                    if (wl.Extension == temp) notFound = false;
                 }
 
                 if (notFound)
@@ -110,7 +106,7 @@ namespace LatechInclude.ViewModel
                     tempList.Add(new WhiteList
                     {
                         Language = CurrentLanguage,
-                        Extension = _TxtBoxInput
+                        Extension = temp
                     });
 
                     tempList.Sort();
@@ -130,7 +126,6 @@ namespace LatechInclude.ViewModel
                 NotifyMessage = "Textbox is empty, add something";
                 FlyoutOpen = true;
             }
-            
         }
 
         public string CurrentLanguage
