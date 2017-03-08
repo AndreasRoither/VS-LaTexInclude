@@ -41,6 +41,3 @@ Built with [Visual Studio](https://www.visualstudio.com/downloads/)
 
 #### UI Framework MahApps Metro:
 * Install-Package MahApps.Metro
-
-#### Dependencies:
-* ObservableList OrderBy needs using System.Linq;
