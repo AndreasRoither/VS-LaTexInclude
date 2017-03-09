@@ -16,22 +16,18 @@ namespace LatechInclude.HelperClasses
             }
         }
 
-        public int CompareTo(WhiteList that)
-        {           
-            if (this.Language == that.Language)
-            {
-                return this.Extension.CompareTo(that.Extension);
-            }
-            else
-            {
-                return this.Language.CompareTo(that.Language);
-            }       
-        }
-
+        /// <summary>
+        /// WhiteList constructor
+        /// </summary>
         public WhiteList()
         {
         }
 
+        /// <summary>
+        /// WhiteList Constructor
+        /// </summary>
+        /// <param name="Language">The language used</param>
+        /// <param name="Extension">The extension</param>
         public WhiteList(string Language, string Extension)
         {
             this.Language = Language;
@@ -42,6 +38,17 @@ namespace LatechInclude.HelperClasses
 
         public string Extension { get; set; }
 
-       
+        public int CompareTo(WhiteList that)
+        {
+            if (this.Language == that.Language)
+            {
+                return this.Extension.CompareTo(that.Extension);
+            }
+            else
+            {
+                return this.Language.CompareTo(that.Language);
+            }
+        }
+
     }
 }

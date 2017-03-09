@@ -1,25 +1,20 @@
 ﻿
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Ioc;
 using LatechInclude.HelperClasses;
-using MahApps.Metro.Controls.Dialogs;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
-using System.Diagnostics;
-using GalaSoft.MvvmLight.Ioc;
-using System.Windows.Media.Imaging;
 
-namespace LatechInclude.ViewModel 
+namespace LatechInclude.ViewModel
 {
     /// <summary>
     /// This class contains properties that the main View can data bind to.
@@ -51,7 +46,6 @@ namespace LatechInclude.ViewModel
         private StringNotify pathString = null;
         private bool isFlyoutOpen;
         private string _notifyMessage;
-
 
         private readonly string regexPattern;
         private readonly string regexReplacePattern;
@@ -88,7 +82,7 @@ namespace LatechInclude.ViewModel
             dlg.ShowPlacesList = true;
 
             LoadFiles();
-            
+
         }
 
         public override void Cleanup()
@@ -169,7 +163,7 @@ namespace LatechInclude.ViewModel
                     OnPropertyChanged("statusText");
                 }
             }
-        }      
+        }
 
         public bool FlyoutOpen
         {
@@ -192,6 +186,53 @@ namespace LatechInclude.ViewModel
             }
         }
 
+        /// <summary>
+        /// Saving WhiteList
+        /// </summary>
+        public void Save()
+        {
+            List<WhiteList> tempWList = this.whiteList;
+            string outputString = "";
+            string compareLanguage = "";
+
+            foreach (WhiteList wl in tempWList)
+            {
+                if (compareLanguage != wl.Language)
+                {
+                    compareLanguage = wl.Language;
+                    outputString += "#" + wl.Language;
+                    outputString += Environment.NewLine;
+                    outputString += wl.Extension;
+
+                }
+                else
+                {
+                    outputString += wl.Extension;
+                }
+                outputString += Environment.NewLine;
+            }
+
+            try
+            {
+                System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\WhiteList.txt"), outputString);
+            }
+            catch (Exception ex)
+            {
+                string temp_outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
+
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
+                {
+                    file.WriteLine(temp_outputString);
+                }
+
+                temp_outputString = null;
+            }
+        }
+
+        /// <summary>
+        /// Loads an checks for missing files
+        /// </summary>
         public void LoadFiles()
         {
             bool missingFiles = false;
@@ -288,6 +329,56 @@ namespace LatechInclude.ViewModel
             }
         }
 
+        /// <summary>
+        /// Initialize the WhiteList
+        /// </summary>
+        /// <param name="WhiteListLines">string[] with lines containing the extension names</param>
+        public void Init_WhiteList(string[] WhiteListLines)
+        {
+            if (_whiteList.Count == 0 && _Languages.Count == 0)
+            {
+                WhiteList wl = new WhiteList();
+                _Languages.Add("All");
+
+                foreach (string s in WhiteListLines)
+                {
+                    if (s.StartsWith("#"))
+                    {
+                        _Languages.Add(s.Remove(0, 1));
+                        wl.Language = s.Remove(0, 1);
+                    }
+
+                    if (s.StartsWith("."))
+                    {
+                        wl.Extension = s;
+
+                        _whiteList.Add(new WhiteList
+                        {
+                            Language = wl.Language,
+                            Extension = wl.Extension
+                        });
+
+                        currentWhiteList.Add(new WhiteList
+                        {
+                            Language = wl.Language,
+                            Extension = wl.Extension
+                        });
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Clears the currentWhiteList
+        /// </summary>
+        public void clearCurrentWhiteList()
+        {
+            _currentWhiteList.Clear();
+        }
+
+        /// <summary>
+        /// Opens up the path folder dialog
+        /// </summary>
         public void PathFolderDialogMethod()
         {
             if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
@@ -304,19 +395,19 @@ namespace LatechInclude.ViewModel
                     int i = 1;
                     foreach (string file in files)
                     {
-                        foreach(WhiteList wl in _currentWhiteList)
+                        foreach (WhiteList wl in _currentWhiteList)
                         {
-                            if(wl.Extension == Path.GetExtension(file))
+                            if (wl.Extension == Path.GetExtension(file))
                             {
                                 _fileList.Add(new MyFile(System.IO.Path.GetFileNameWithoutExtension(file), file, System.IO.Path.GetExtension(file), i));
                                 i++;
                             }
-                        } 
+                        }
                     }
 
-                    statusText = (i-1) + " Files found";
+                    statusText = (i - 1) + " Files found";
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     string outputString;
                     outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
@@ -332,12 +423,15 @@ namespace LatechInclude.ViewModel
             }
         }
 
+        /// <summary>
+        /// Generates the string for the TextEditor window
+        /// </summary>
         public void TexMakerMethod()
         {
-            MainWindow mw = new MainWindow();
-
             if (_fileList.Count > 0)
             {
+                MainWindow mw = new MainWindow();
+
                 Regex re = new Regex(regexPattern, RegexOptions.Compiled);
                 Regex reg = new Regex(regexReplacePattern);
                 string temp = "";
@@ -354,7 +448,7 @@ namespace LatechInclude.ViewModel
                     {
                         return fields[match.Groups[1].Value];
                     });
-                    
+
                     string outputString = "";
                     bool found = false;
 
@@ -377,7 +471,7 @@ namespace LatechInclude.ViewModel
                             }
                         }
                         else
-                        {                         
+                        {
                             fields.Add("Language", _currentLanguage);
                         }
 
@@ -395,7 +489,7 @@ namespace LatechInclude.ViewModel
 
                     TextEditorMethod(outputString);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     string outputString;
                     outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
@@ -434,7 +528,7 @@ namespace LatechInclude.ViewModel
 
             svw.ShowDialog();
 
-            if(svw.DialogResult == false)
+            if (svw.DialogResult == false)
             {
                 OnPropertyChanged("currentWhiteList");
             }
@@ -489,97 +583,6 @@ namespace LatechInclude.ViewModel
             }
 
             Environment.Exit(1);
-        }
-
-        /// <summary>
-        /// Initialize the WhiteList
-        /// </summary>
-        /// <param name="WhiteListLines">string[] with lines containing the extension names</param>
-        public void Init_WhiteList(string[] WhiteListLines)
-        {
-            if (_whiteList.Count == 0 && _Languages.Count == 0)
-            {
-                WhiteList wl = new WhiteList();
-                _Languages.Add("All");
-            
-                foreach (string s in WhiteListLines)
-                {
-                    if (s.StartsWith("#"))
-                    {
-                        _Languages.Add(s.Remove(0, 1));
-                        wl.Language = s.Remove(0, 1);
-                    }
-
-                    if (s.StartsWith("."))
-                    {
-                        wl.Extension = s;
-
-                        _whiteList.Add(new WhiteList
-                        {
-                            Language = wl.Language,
-                            Extension = wl.Extension
-                        });
-
-                        currentWhiteList.Add(new WhiteList
-                        {
-                            Language = wl.Language,
-                            Extension = wl.Extension
-                        });
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Clears the currentWhiteList
-        /// </summary>
-        public void clearCurrentWhiteList()
-        {
-            _currentWhiteList.Clear();
-        }
-
-        /// <summary>
-        /// Saving WhiteList
-        /// </summary>
-        public void Save()
-        {
-            List<WhiteList> tempWList = this.whiteList;
-            string outputString = "";
-            string compareLanguage = "";
-
-            foreach (WhiteList wl in tempWList)
-            {
-                if (compareLanguage != wl.Language)
-                {
-                    compareLanguage = wl.Language;
-                    outputString += "#" + wl.Language;
-                    outputString += Environment.NewLine;
-                    outputString += wl.Extension;
-
-                }
-                else
-                {
-                    outputString += wl.Extension;
-                }
-                outputString += Environment.NewLine;
-            }
-
-            try
-            {
-                System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\WhiteList.txt"), outputString);
-            }
-            catch (Exception ex)
-            {
-                string temp_outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
-
-                using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
-                {
-                    file.WriteLine(temp_outputString);
-                }
-
-                temp_outputString = null;
-            }
         }
     }
 }

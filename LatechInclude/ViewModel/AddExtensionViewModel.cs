@@ -3,7 +3,6 @@ using GalaSoft.MvvmLight.Command;
 using LatechInclude.HelperClasses;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 
@@ -29,6 +28,9 @@ namespace LatechInclude.ViewModel
 
         MainViewModel mvm = null;
 
+        /// <summary>
+        /// Instantiates a new AddExtensionViewModel
+        /// </summary>
         public AddExtensionViewModel()
         {
             AddExtensionCommand = new RelayCommand(AddExtensionMethod);
@@ -41,7 +43,7 @@ namespace LatechInclude.ViewModel
 
             foreach (string s in mvm.Languages)
             {
-                if(s != "All") _Languages.Add(s);
+                if (s != "All") _Languages.Add(s);
             }
 
             isFlyoutOpen = false;
@@ -53,6 +55,12 @@ namespace LatechInclude.ViewModel
             CloseWindowCommand = null;
 
             base.Cleanup();
+        }
+
+        public string CurrentLanguage
+        {
+            get { return _currentLanguage; }
+            set { _currentLanguage = value; }
         }
 
         public List<string> Languages
@@ -87,13 +95,16 @@ namespace LatechInclude.ViewModel
             }
         }
 
+        /// <summary>
+        /// Adds the extension to the whitelist
+        /// </summary>
         public void AddExtensionMethod()
         {
             if (_TxtBoxInput != "" && _TxtBoxInput != ".")
-            {       
+            {
                 List<WhiteList> tempList = new List<WhiteList>();
                 string temp = "." + _TxtBoxInput;
-                tempList = mvm.whiteList;      
+                tempList = mvm.whiteList;
                 Boolean notFound = true;
 
                 foreach (WhiteList wl in tempList)
@@ -126,12 +137,6 @@ namespace LatechInclude.ViewModel
                 NotifyMessage = "Textbox is empty, add something";
                 FlyoutOpen = true;
             }
-        }
-
-        public string CurrentLanguage
-        {
-            get { return _currentLanguage; }
-            set { _currentLanguage = value; }
         }
 
         private void CloseWindow(Window window)

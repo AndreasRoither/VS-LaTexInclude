@@ -1,10 +1,5 @@
 ﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LatechInclude.HelperClasses
 {
@@ -54,6 +49,13 @@ namespace LatechInclude.HelperClasses
             Registry.ClassesRoot.DeleteSubKeyTree(regPath);
         }
 
+        /// <summary>
+        /// Register a key in the reg for the folder context
+        /// </summary>
+        /// <param name="shellKeyName">name of the shellkey</param>
+        /// <param name="menuText">context menu text</param>
+        /// <param name="path">path for exe</param>
+        /// <param name="menuCommand">command with path and placeholder</param>
         public void Register_Folder(string shellKeyName, string menuText, string path, string menuCommand)
         {
             // create path to registry location
@@ -73,6 +75,10 @@ namespace LatechInclude.HelperClasses
             }
         }
 
+        /// <summary>
+        /// Unregister folder context
+        /// </summary>
+        /// <param name="shellKeyName">name of the shellkey</param>
         public void Unregister_Folder(string shellKeyName)
         {
             // path to the registry location

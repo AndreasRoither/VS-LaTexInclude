@@ -1,34 +1,33 @@
 ﻿
+using LatechInclude.HelperClasses;
+using LatechInclude.ViewModel;
+using MahApps.Metro.Controls;
 using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Data;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Security.Permissions;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Linq;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Data;
-using LatechInclude.HelperClasses;
-using LatechInclude.ViewModel;
-using MahApps.Metro.Controls;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Collections.Specialized;
 
 namespace LatechInclude
 {
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        TrulyObservableCollection<MyFile> _fileList = new TrulyObservableCollection<MyFile>();
-        public delegate Point GetPosition(IInputElement element);
-        int rowIndex = -1;
+        private TrulyObservableCollection<MyFile> _fileList = new TrulyObservableCollection<MyFile>();
+        private delegate Point GetPosition(IInputElement element);
+        private int rowIndex = -1;
 
         private AppDomain currentDomain;
         private MainViewModel _viewModel = new MainViewModel();
@@ -99,7 +98,7 @@ namespace LatechInclude
                 {
                     if (Path.HasExtension(args[1]))
                     {
-                        GenerateOutputTex(Path.GetDirectoryName(args[1])); 
+                        GenerateOutputTex(Path.GetDirectoryName(args[1]));
                     }
                     else
                     {
@@ -118,12 +117,34 @@ namespace LatechInclude
             Closing += (s, e) => ViewModelLocator.Cleanup();
 
             this.DataContext = this._viewModel;
-            
 
             MainView_DataGrid.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(productsDataGrid_PreviewMouseLeftButtonDown);
-            MainView_DataGrid.Drop += new System.Windows.DragEventHandler(MainView_DataGrid_Drop);   
+            MainView_DataGrid.Drop += new System.Windows.DragEventHandler(MainView_DataGrid_Drop);
         }
 
+        /// <summary>
+        /// When the program is closing
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnMainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Properties.Settings.Default.Save();
+
+            if (Properties.Settings.Default.Setting_General_SaveWhiteList)
+            {
+                Save();
+            }
+
+            var current = Process.GetCurrentProcess();
+
+        }
+
+        /// <summary>
+        /// MainWindow finished loading
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             comboBox.SelectedIndex = 0;
@@ -150,6 +171,10 @@ namespace LatechInclude
             outputString = null;
         }
 
+        /// <summary>
+        /// Genereates output.tex if Setting_General_ContextStartup is not set
+        /// </summary>
+        /// <param name="path"></param>
         public void GenerateOutputTex(string path)
         {
             if (_viewModel.List.Count > 0)
@@ -183,7 +208,7 @@ namespace LatechInclude
                         }
                     }
 
-                    if(!found)
+                    if (!found)
                     {
                         fields.Add("Language", "FillMe");
                     }
@@ -268,7 +293,7 @@ namespace LatechInclude
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void MainView_DataGrid_Drop(object sender, System.Windows.DragEventArgs e)
+        private void MainView_DataGrid_Drop(object sender, System.Windows.DragEventArgs e)
         {
             _fileList = _viewModel.List;
 
@@ -305,7 +330,7 @@ namespace LatechInclude
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void productsDataGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void productsDataGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             rowIndex = GetCurrentRowIndex(e.GetPosition);
             if (rowIndex < 0)
@@ -325,6 +350,12 @@ namespace LatechInclude
             }
         }
 
+        /// <summary>
+        /// Get Mouse row
+        /// </summary>
+        /// <param name="theTarget"></param>
+        /// <param name="position"></param>
+        /// <returns></returns>
         private bool GetMouseTargetRow(Visual theTarget, GetPosition position)
         {
             if (theTarget != null)
@@ -340,6 +371,11 @@ namespace LatechInclude
 
         }
 
+        /// <summary>
+        /// Gets the Datagrid row
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         private DataGridRow GetRowItem(int index)
         {
             if (MainView_DataGrid.ItemContainerGenerator.Status
@@ -349,6 +385,11 @@ namespace LatechInclude
                                                             as DataGridRow;
         }
 
+        /// <summary>
+        /// Gets current row index
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <returns></returns>
         private int GetCurrentRowIndex(GetPosition pos)
         {
             int curIndex = -1;
@@ -364,6 +405,11 @@ namespace LatechInclude
             return curIndex;
         }
 
+        /// <summary>
+        /// Column header on click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void columnHeader_Click(object sender, RoutedEventArgs e)
         {
             var columnHeader = sender as DataGridColumnHeader;
@@ -446,20 +492,10 @@ namespace LatechInclude
         }
 
         /// <summary>
-        /// When the program is closing
+        /// Removes a single item from the list
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnMainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            Properties.Settings.Default.Save();
-
-            if (Properties.Settings.Default.Setting_General_SaveWhiteList)
-            {
-                Save();
-            }
-        }
-
         private void OnRemoveItemClick_Main(object sender, RoutedEventArgs e)
         {
             if (MainView_DataGrid.SelectedItems.Count != 0)
@@ -500,6 +536,11 @@ namespace LatechInclude
             }
         }
 
+        /// <summary>
+        /// Removes all extensions from the list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnRemoveExtensions_Main(object sender, RoutedEventArgs e)
         {
             if (MainView_DataGrid.SelectedItems.Count != 0)
@@ -541,6 +582,11 @@ namespace LatechInclude
             }
         }
 
+        /// <summary>
+        /// Clears the file list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnClearClick__Main(object sender, RoutedEventArgs e)
         {
             _viewModel.List.Clear();
@@ -550,6 +596,11 @@ namespace LatechInclude
             MainView_DataGrid.ItemsSource = _viewModel.List;
         }
 
+        /// <summary>
+        /// Removes a single item from the list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnWhiteListRemoveClick_Main(object sender, RoutedEventArgs e)
         {
             if (WhiteList_Grid.SelectedItems.Count != 0)
@@ -598,6 +649,11 @@ namespace LatechInclude
             }
         }
 
+        /// <summary>
+        /// Clears the whitelist
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnWhiteListClearClick_Main(object sender, RoutedEventArgs e)
         {
             if (comboBox.SelectedIndex == 0 || comboBox.SelectedIndex == -1)
@@ -645,6 +701,6 @@ namespace LatechInclude
                 temp = null;
                 language = null;
             }
-        }  
+        }
     }
 }

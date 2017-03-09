@@ -1,21 +1,9 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using LatechInclude.ViewModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using LatechInclude.ViewModel;
 
 namespace LatechInclude.View
 {
@@ -26,6 +14,9 @@ namespace LatechInclude.View
     {
         AddExtensionViewModel aevm = null;
 
+        /// <summary>
+        /// AddExtension Constructor
+        /// </summary>
         public AddExtension()
         {
             InitializeComponent();
@@ -46,17 +37,22 @@ namespace LatechInclude.View
         /// Saves changes to the ViewModel
         /// </summary>
         private void OnTxtBox_KeyUp(object sender, KeyEventArgs e)
-        {  
+        {
             string temp = textBox.Text.ToString();
 
             temp = new string(temp.Where(c => !char.IsWhiteSpace(c)).ToArray());
-            aevm.TxtBoxInput = temp; 
+            aevm.TxtBoxInput = temp;
         }
 
+        /// <summary>
+        /// When a key is pressed down
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void textBox_KeyDown(object sender, KeyEventArgs e)
         {
             char c = GetCharFromKey(e.Key);
-            
+
             // Check for a naughty character in the KeyDown event.
             if (System.Text.RegularExpressions.Regex.IsMatch(c.ToString(), @"[^A-Za-z]"))
             {

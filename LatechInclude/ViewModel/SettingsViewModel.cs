@@ -2,11 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using LatechInclude.HelperClasses;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace LatechInclude.ViewModel
@@ -44,7 +40,7 @@ namespace LatechInclude.ViewModel
                 RaisePropertyChanged("FlyoutOpen");
             }
         }
-            
+
         /// <summary>
         /// Notify message get and setter
         /// </summary>
@@ -59,6 +55,9 @@ namespace LatechInclude.ViewModel
             }
         }
 
+        /// <summary>
+        /// Adds a registry entry for files for LaTexInclude
+        /// </summary>
         public void FileMethod()
         {
             Properties.Settings.Default.Setting_Advanced_FileRegistry = !Properties.Settings.Default.Setting_Advanced_FileRegistry;
@@ -112,6 +111,9 @@ namespace LatechInclude.ViewModel
             }
         }
 
+        /// <summary>
+        /// Adds a registry entry for folders for LaTexInclude
+        /// </summary>
         public void FolderMethod()
         {
             Properties.Settings.Default.Setting_Advanced_FolderRegistry = !Properties.Settings.Default.Setting_Advanced_FolderRegistry;
@@ -138,7 +140,7 @@ namespace LatechInclude.ViewModel
 
                 FlyoutOpen = true;
             }
-            catch(System.Security.SecurityException se)
+            catch (System.Security.SecurityException se)
             {
                 Properties.Settings.Default.Setting_Advanced_FolderRegistry = !Properties.Settings.Default.Setting_Advanced_FolderRegistry;
                 Properties.Settings.Default.Save();

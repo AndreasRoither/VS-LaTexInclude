@@ -1,18 +1,7 @@
 ﻿using LatechInclude.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace LatechInclude.View
 {
@@ -23,6 +12,9 @@ namespace LatechInclude.View
     {
         TxtEditorViewModel tevm;
 
+        /// <summary>
+        /// TextEditorView Contructor
+        /// </summary>
         public TxtEditorView()
         {
             InitializeComponent();
@@ -47,6 +39,11 @@ namespace LatechInclude.View
             tevm.SaveFileMethod();
         }
 
+        /// <summary>
+        /// Replaces strings
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnReplaceClick(object sender, RoutedEventArgs e)
         {
             if (searchTxtBox.Text.Length != 0)

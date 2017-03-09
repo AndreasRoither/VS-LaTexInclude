@@ -15,6 +15,13 @@ namespace LatechInclude.HelperClasses
             }
         }
 
+        /// <summary>
+        /// MyFile Constructor
+        /// </summary>
+        /// <param name="FileName">Name of the file</param>
+        /// <param name="Path">Path of the file</param>
+        /// <param name="Extension">Extension of the file</param>
+        /// <param name="Position">The order/position of the file</param>
         public MyFile(string FileName, string Path, string Extension, int Position)
         {
             this.FileName = FileName;
@@ -28,6 +35,6 @@ namespace LatechInclude.HelperClasses
 
         public string Extension { get; set; }
 
-        public int Position { get; set; } 
+        public int Position { get; set; }
     }
 }
