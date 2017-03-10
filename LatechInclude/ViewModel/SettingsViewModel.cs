@@ -1,11 +1,11 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using LatechInclude.HelperClasses;
+using LaTexInclude.HelperClasses;
 using System;
 using System.Reflection;
 using System.Windows.Input;
 
-namespace LatechInclude.ViewModel
+namespace LaTexInclude.ViewModel
 {
     /// <summary>
     /// This class contains properties that the SwitchView can data bind to.
@@ -17,7 +17,7 @@ namespace LatechInclude.ViewModel
     {
         private bool isFlyoutOpen;
         private string _notifyMessage = "";
-        ExplorerContextMenu ecm = new ExplorerContextMenu();
+        private ExplorerContextMenu ecm = new ExplorerContextMenu();
 
         public static ICommand FileCommand { get; private set; }
         public static ICommand FolderCommand { get; private set; }
@@ -85,7 +85,7 @@ namespace LatechInclude.ViewModel
 
                 FlyoutOpen = true;
             }
-            catch (UnauthorizedAccessException uae)
+            catch (UnauthorizedAccessException)
             {
                 Properties.Settings.Default.Setting_Advanced_FileRegistry = !Properties.Settings.Default.Setting_Advanced_FileRegistry;
                 Properties.Settings.Default.Save();
@@ -140,7 +140,7 @@ namespace LatechInclude.ViewModel
 
                 FlyoutOpen = true;
             }
-            catch (System.Security.SecurityException se)
+            catch (System.Security.SecurityException)
             {
                 Properties.Settings.Default.Setting_Advanced_FolderRegistry = !Properties.Settings.Default.Setting_Advanced_FolderRegistry;
                 Properties.Settings.Default.Save();
@@ -148,7 +148,7 @@ namespace LatechInclude.ViewModel
                 NotifyMessage = "Failed to acess the registry, restart as ADMIN";
                 FlyoutOpen = true;
             }
-            catch (UnauthorizedAccessException uae)
+            catch (UnauthorizedAccessException)
             {
                 Properties.Settings.Default.Setting_Advanced_FolderRegistry = !Properties.Settings.Default.Setting_Advanced_FolderRegistry;
                 Properties.Settings.Default.Save();

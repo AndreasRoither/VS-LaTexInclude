@@ -1,7 +1,7 @@
-﻿using System.Windows;
-using GalaSoft.MvvmLight.Threading;
+﻿using GalaSoft.MvvmLight.Threading;
+using System.Windows;
 
-namespace LatechInclude
+namespace LaTexInclude
 {
     /// <summary>
     /// Interaction logic for App.xaml

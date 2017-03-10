@@ -1,17 +1,16 @@
 ﻿using System;
 using System.IO;
 
-namespace LatechInclude.HelperClasses
+namespace LaTexInclude.HelperClasses
 {
-    class TexMaker
+    internal class TexMaker
     {
-
         private String content = null;
         private Boolean finalized = false;
 
-        string TexCodeTemplate = null;
-        string TexImageTemplate = null;
-        string TexPDFTemplate = null;
+        private string TexCodeTemplate = null;
+        private string TexImageTemplate = null;
+        private string TexPDFTemplate = null;
 
         public TexMaker()
         {

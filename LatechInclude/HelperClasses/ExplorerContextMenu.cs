@@ -1,11 +1,10 @@
 ﻿using Microsoft.Win32;
 using System.Diagnostics;
 
-namespace LatechInclude.HelperClasses
+namespace LaTexInclude.HelperClasses
 {
-    class ExplorerContextMenu
+    internal class ExplorerContextMenu
     {
-
         /// <summary>
         /// Registers a key in the registry to add a context menu item in the explorer
         /// </summary>

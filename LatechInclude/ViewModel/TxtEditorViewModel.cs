@@ -4,7 +4,7 @@ using System;
 using System.Reflection;
 using System.Windows.Input;
 
-namespace LatechInclude.ViewModel
+namespace LaTexInclude.ViewModel
 {
     /// <summary>
     /// This class contains properties that the SwitchView can data bind to.

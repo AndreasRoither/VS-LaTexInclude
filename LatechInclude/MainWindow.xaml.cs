@@ -1,6 +1,5 @@
-﻿
-using LatechInclude.HelperClasses;
-using LatechInclude.ViewModel;
+﻿using LaTexInclude.HelperClasses;
+using LaTexInclude.ViewModel;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace LatechInclude
+namespace LaTexInclude
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -26,7 +25,9 @@ namespace LatechInclude
     public partial class MainWindow : MetroWindow
     {
         private TrulyObservableCollection<MyFile> _fileList = new TrulyObservableCollection<MyFile>();
+
         private delegate Point GetPosition(IInputElement element);
+
         private int rowIndex = -1;
 
         private AppDomain currentDomain;
@@ -52,6 +53,7 @@ namespace LatechInclude
                         var current = Process.GetCurrentProcess();
                         Process.GetProcessesByName(current.ProcessName).Where(t => t.Id != current.Id).ToList().ForEach(t => t.Kill());
                         break;
+
                     case MessageBoxResult.No:
                         System.Diagnostics.Process.GetCurrentProcess().Kill();
                         break;
@@ -122,6 +124,10 @@ namespace LatechInclude
             MainView_DataGrid.Drop += new System.Windows.DragEventHandler(MainView_DataGrid_Drop);
         }
 
+        public MainWindow(bool b)
+        {
+        }
+
         /// <summary>
         /// When the program is closing
         /// </summary>
@@ -136,8 +142,7 @@ namespace LatechInclude
                 Save();
             }
 
-            var current = Process.GetCurrentProcess();
-
+            //Environment.Exit(0);
         }
 
         /// <summary>
@@ -155,7 +160,7 @@ namespace LatechInclude
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        static void MyHandler(object sender, UnhandledExceptionEventArgs args)
+        private static void MyHandler(object sender, UnhandledExceptionEventArgs args)
         {
             Exception e = (Exception)args.ExceptionObject;
 
@@ -261,7 +266,6 @@ namespace LatechInclude
                     outputString += "#" + wl.Language;
                     outputString += Environment.NewLine;
                     outputString += wl.Extension;
-
                 }
                 else
                 {
@@ -368,7 +372,6 @@ namespace LatechInclude
             {
                 return false;
             }
-
         }
 
         /// <summary>
@@ -436,6 +439,7 @@ namespace LatechInclude
                         MainView_DataGrid.ItemsSource = _viewModel.List;
 
                         break;
+
                     case "Extension":
 
                         _fileList = _viewModel.List;

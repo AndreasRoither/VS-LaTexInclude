@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LatechInclude.HelperClasses
+﻿namespace LaTexInclude.HelperClasses
 {
-    class TexTemplate
+    internal class TexTemplate
     {
-
         public TexTemplate(string Type, string Path)
         {
             this.Type = Type;
@@ -19,5 +12,4 @@ namespace LatechInclude.HelperClasses
 
         public string Type { get; set; }
     }
-
 }

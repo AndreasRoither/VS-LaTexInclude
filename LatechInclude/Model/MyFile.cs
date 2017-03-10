@@ -1,7 +1,6 @@
-﻿
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
-namespace LatechInclude.HelperClasses
+namespace LaTexInclude.HelperClasses
 {
     public class MyFile : INotifyPropertyChanged
     {
@@ -29,6 +28,7 @@ namespace LatechInclude.HelperClasses
             this.Extension = Extension;
             this.Position = Position;
         }
+
         public string FileName { get; set; }
 
         public string Path { get; set; }

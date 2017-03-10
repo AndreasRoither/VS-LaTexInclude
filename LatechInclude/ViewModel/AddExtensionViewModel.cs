@@ -1,12 +1,12 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using LatechInclude.HelperClasses;
+using LaTexInclude.HelperClasses;
 using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 
-namespace LatechInclude.ViewModel
+namespace LaTexInclude.ViewModel
 {
     /// <summary>
     /// This class contains properties that the SwitchView can bind to
@@ -14,7 +14,7 @@ namespace LatechInclude.ViewModel
     /// Inherits from ViewModelBase
     /// </para>
     /// </summary>
-    class AddExtensionViewModel : ViewModelBase
+    internal class AddExtensionViewModel : ViewModelBase
     {
         public ICommand AddExtensionCommand { get; private set; }
         public RelayCommand<Window> CloseWindowCommand { get; private set; }
@@ -26,7 +26,7 @@ namespace LatechInclude.ViewModel
         private static string _currentLanguage;
         private static string _TxtBoxInput;
 
-        MainViewModel mvm = null;
+        private MainViewModel mvm = null;
 
         /// <summary>
         /// Instantiates a new AddExtensionViewModel

@@ -1,18 +1,18 @@
-﻿<Controls:MetroWindow x:Class="LatechInclude.MainWindow"
+﻿<Controls:MetroWindow x:Class="LaTexInclude.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:src="clr-namespace:LatechInclude"
+        xmlns:src="clr-namespace:LaTexInclude"
         xmlns:ignore="http://www.galasoft.ch/ignore"
         mc:Ignorable="d ignore"
         Height="447.747"
         Width="688.278"
-        Title="Latech Include"
+        Title="LaTexInclude"
         BorderBrush="#FF41B1E1"
         BorderThickness="1"
-        DataContext="{Binding Main, Source={StaticResource Locator}}" Closing="OnMainWindow_Closing" Loaded="MainWindow_Loaded">
+        DataContext="{Binding Main, Source={StaticResource Locator}}" Closing="OnMainWindow_Closing" Loaded="MainWindow_Loaded" WindowStartupLocation="CenterScreen">
 
         <Window.Resources>
             <ResourceDictionary>
@@ -37,17 +37,17 @@
             </Menu>
             <StackPanel Height="31" VerticalAlignment="Bottom">
                 <StatusBar Height="31">
-                    <TextBlock Margin="10,0,0,0" x:Name="statusBar_TextBlock" Text="{Binding Path=statusText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextWrapping="Wrap"/>
+                    <TextBlock Margin="10,0,0,0" x:Name="statusBar_TextBlock" Text="{Binding Path=statusText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextWrapping="Wrap" />
                 </StatusBar>
             </StackPanel>
         </DockPanel>
 
-        <Button x:Name="PathButton" Command="{Binding PathFolderDialogCommand}" Content="Path" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.82,-0.025" Height="25"/>
-        <Button x:Name="makeTex" Command="{Binding TexMakerCommand}" Content="Tex" HorizontalAlignment="Left" Margin="90,38,0,0" VerticalAlignment="Top" Width="75" Height="25"/>
-        <ComboBox x:Name="comboBox" ItemsSource="{Binding Languages}" Height="25" VerticalAlignment="Top" Margin="0,38,10,0" SelectionChanged="OnLanguageBox_Changed" HorizontalAlignment="Right" Width="149"/>
-        <TextBox x:Name="textBox" Text="{Binding Path=fPath, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="170,38,164,0" Height="26" VerticalAlignment="Top" AllowDrop="False" MaxLines="1"/>
+        <Button x:Name="PathButton" Command="{Binding PathFolderDialogCommand}" Content="Path" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.82,-0.025" Height="25" />
+        <Button x:Name="makeTex" Command="{Binding TexMakerCommand}" Content="Tex" HorizontalAlignment="Left" Margin="90,38,0,0" VerticalAlignment="Top" Width="75" Height="25" />
+        <ComboBox x:Name="comboBox" ItemsSource="{Binding Languages}" Height="25" VerticalAlignment="Top" Margin="0,38,10,0" SelectionChanged="OnLanguageBox_Changed" HorizontalAlignment="Right" Width="149" />
+        <TextBox x:Name="textBox" Text="{Binding Path=fPath, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="170,38,164,0" Height="26" VerticalAlignment="Top" AllowDrop="False" MaxLines="1" />
 
-        <Button x:Name="PathButton_Copy" Command="{Binding AddExtensionCommand}" Content="Add Extension" Margin="0,0,10,39" RenderTransformOrigin="-0.82,-0.025" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="149"/>
+        <Button x:Name="PathButton_Copy" Command="{Binding AddExtensionCommand}" Content="Add Extension" Margin="0,0,10,39" RenderTransformOrigin="-0.82,-0.025" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="149" />
 
         <DataGrid Name="MainView_DataGrid" ItemsSource="{Binding List, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0"
                   AutoGenerateColumns="False" Margin="10,69,163,39" BorderThickness="1" BorderBrush="#CC119EDA" AllowDrop="True" IsReadOnly="True">
@@ -68,7 +68,7 @@
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Pos" Binding="{Binding Position}" />
-                <DataGridTextColumn Header="Name" Binding="{Binding FileName}" MinWidth="250"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding FileName}" MinWidth="250" />
                 <DataGridTextColumn Header="Extension" Binding="{Binding Extension}" />
             </DataGrid.Columns>
         </DataGrid>
@@ -89,7 +89,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <Controls:Flyout Position="Bottom" Header="" Width="Auto" IsOpen="{Binding FlyoutOpen }" AutoCloseInterval="5000" Background="Orange" CloseButtonVisibility="Hidden" IsAutoCloseEnabled="True" Height="30">
-            <Label x:Name="label" Content="{Binding NotifyMessage}" HorizontalAlignment="Left" Margin="-50,0,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="label" Content="{Binding NotifyMessage}" HorizontalAlignment="Left" Margin="-50,0,0,0" VerticalAlignment="Top" />
         </Controls:Flyout>
     </Grid>
 </Controls:MetroWindow>

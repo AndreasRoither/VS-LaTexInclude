@@ -1,11 +1,11 @@
-﻿
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
-namespace LatechInclude.HelperClasses
+namespace LaTexInclude.HelperClasses
 {
     public class Languages : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
         private string _Language;
 
         private void NotifyPropertyChanged(string Obj)

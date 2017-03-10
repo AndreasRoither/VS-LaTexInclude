@@ -1,8 +1,7 @@
-﻿
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
-using LatechInclude.HelperClasses;
+using LaTexInclude.HelperClasses;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -14,7 +13,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 
-namespace LatechInclude.ViewModel
+namespace LaTexInclude.ViewModel
 {
     /// <summary>
     /// This class contains properties that the main View can data bind to.
@@ -32,7 +31,7 @@ namespace LatechInclude.ViewModel
         public ICommand SettingsCommand { get; private set; }
         public ICommand ExitCommand { get; private set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        new public event PropertyChangedEventHandler PropertyChanged;
 
         public static string _currentLanguage = "";
         private static TrulyObservableCollection<MyFile> _fileList = new TrulyObservableCollection<MyFile>();
@@ -82,7 +81,6 @@ namespace LatechInclude.ViewModel
             dlg.ShowPlacesList = true;
 
             LoadFiles();
-
         }
 
         public override void Cleanup()
@@ -203,7 +201,6 @@ namespace LatechInclude.ViewModel
                     outputString += "#" + wl.Language;
                     outputString += Environment.NewLine;
                     outputString += wl.Extension;
-
                 }
                 else
                 {
@@ -430,7 +427,7 @@ namespace LatechInclude.ViewModel
         {
             if (_fileList.Count > 0)
             {
-                MainWindow mw = new MainWindow();
+                MainWindow mw = new MainWindow(true);
 
                 Regex re = new Regex(regexPattern, RegexOptions.Compiled);
                 Regex reg = new Regex(regexReplacePattern);
@@ -474,7 +471,6 @@ namespace LatechInclude.ViewModel
                         {
                             fields.Add("Language", _currentLanguage);
                         }
-
                         temp = file.Path;
                         temp = reg.Replace(temp, "/");
                         fields.Add("Path", temp);
@@ -503,6 +499,7 @@ namespace LatechInclude.ViewModel
                     outputString = null;
                 }
 
+                mw.Close();
                 mw = null;
             }
             else
@@ -517,7 +514,6 @@ namespace LatechInclude.ViewModel
         /// </summary>
         public void AddExtensionMethod()
         {
-
             SwitchViewWindow svw = new SwitchViewWindow();
             AddExtensionViewModel aevm = new AddExtensionViewModel();
             svw.DataContext = aevm;

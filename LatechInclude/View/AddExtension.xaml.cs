@@ -1,18 +1,18 @@
-﻿using LatechInclude.ViewModel;
+﻿using LaTexInclude.ViewModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace LatechInclude.View
+namespace LaTexInclude.View
 {
     /// <summary>
     /// Interaktionslogik für AddExtension.xaml
     /// </summary>
     public partial class AddExtension : UserControl
     {
-        AddExtensionViewModel aevm = null;
+        private AddExtensionViewModel aevm = null;
 
         /// <summary>
         /// AddExtension Constructor
@@ -101,8 +101,10 @@ namespace LatechInclude.View
             {
                 case -1:
                     break;
+
                 case 0:
                     break;
+
                 case 1:
                     {
                         ch = stringBuilder[0];

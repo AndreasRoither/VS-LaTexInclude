@@ -1,8 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel;
 
-namespace LatechInclude.HelperClasses
+namespace LaTexInclude.HelperClasses
 {
     public class WhiteList : INotifyPropertyChanged, IComparable<WhiteList>
     {
@@ -49,6 +48,5 @@ namespace LatechInclude.HelperClasses
                 return this.Language.CompareTo(that.Language);
             }
         }
-
     }
 }

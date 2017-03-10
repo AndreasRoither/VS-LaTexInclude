@@ -1,11 +1,11 @@
-﻿
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
-namespace LatechInclude.HelperClasses
+namespace LaTexInclude.HelperClasses
 {
     public class StringNotify : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
         private string _text;
 
         private void NotifyPropertyChanged(string Obj)
@@ -25,7 +25,8 @@ namespace LatechInclude.HelperClasses
         {
         }
 
-        public string text {
+        public string text
+        {
             get { return _text; }
             set
             {
@@ -38,4 +39,3 @@ namespace LatechInclude.HelperClasses
         }
     }
 }
-

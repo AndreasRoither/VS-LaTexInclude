@@ -1,16 +1,16 @@
-﻿using LatechInclude.ViewModel;
+﻿using LaTexInclude.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 
-namespace LatechInclude.View
+namespace LaTexInclude.View
 {
     /// <summary>
     /// Interaction logic for TxtEditorView.xaml
     /// </summary>
     public partial class TxtEditorView : UserControl
     {
-        TxtEditorViewModel tevm;
+        private TxtEditorViewModel tevm;
 
         /// <summary>
         /// TextEditorView Contructor

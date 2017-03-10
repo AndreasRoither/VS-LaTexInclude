@@ -1,7 +1,7 @@
-﻿using LatechInclude.ViewModel;
+﻿using LaTexInclude.ViewModel;
 using System.Windows;
 
-namespace LatechInclude
+namespace LaTexInclude
 {
     /// <summary>
     /// Interaction logic for SwitchViewWindow.xaml

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LatechInclude.Model
+namespace LaTexInclude.Model
 {
     public class DataService : IDataService
     {

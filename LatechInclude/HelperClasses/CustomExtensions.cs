@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LatechInclude.HelperClasses
+namespace LaTexInclude.HelperClasses
 {
     /// <summary>
     /// CustomExtensions class

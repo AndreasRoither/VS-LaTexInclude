@@ -1,7 +1,7 @@
-﻿using System;
-using LatechInclude.Model;
+﻿using LaTexInclude.Model;
+using System;
 
-namespace LatechInclude.Design
+namespace LaTexInclude.Design
 {
     public class DesignDataService : IDataService
     {

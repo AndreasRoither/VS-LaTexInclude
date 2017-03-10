@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
-namespace LatechInclude.HelperClasses
+namespace LaTexInclude.HelperClasses
 {
     public sealed class TrulyObservableCollection<T> : ObservableCollection<T>
     where T : INotifyPropertyChanged
@@ -53,7 +53,7 @@ namespace LatechInclude.HelperClasses
         }
 
         /// <summary>
-        /// NotifyCollectionChangedEvent 
+        /// NotifyCollectionChangedEvent
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

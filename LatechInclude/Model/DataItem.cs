@@ -1,4 +1,4 @@
-﻿namespace LatechInclude.Model
+﻿namespace LaTexInclude.Model
 {
     public class DataItem
     {

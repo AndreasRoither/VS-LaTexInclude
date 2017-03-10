@@ -1,22 +1,22 @@
-﻿<Window x:Class="LatechInclude.SwitchViewWindow"
+﻿<Window x:Class="LaTexInclude.SwitchViewWindow"
         x:Name="SwitchWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ViewModel="clr-namespace:LatechInclude.ViewModel"
-        xmlns:View="clr-namespace:LatechInclude.View"
-        xmlns:local="clr-namespace:LatechInclude"
+        xmlns:ViewModel="clr-namespace:LaTexInclude.ViewModel"
+        xmlns:View="clr-namespace:LaTexInclude.View"
+        xmlns:local="clr-namespace:LaTexInclude"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         Title="SwitchViewWindow" Height="370" Width="585" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type ViewModel:AddExtensionViewModel}">
-            <View:AddExtension/>
+            <View:AddExtension />
         </DataTemplate>
         <DataTemplate DataType="{x:Type ViewModel:SettingsViewModel}">
-            <View:SettingsView/>
+            <View:SettingsView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type ViewModel:TxtEditorViewModel}">
             <View:TxtEditorView />
@@ -26,7 +26,7 @@
     <Grid>
         <ContentControl Content="{Binding}" />
         <Controls:Flyout Name="NotifyFlyout" Position="Bottom" Header="" Width="Auto" IsOpen="{Binding FlyoutOpen }" AutoCloseInterval="5000" Background="Orange" CloseButtonVisibility="Hidden" IsAutoCloseEnabled="True" Height="30">
-            <Label x:Name="label" Content="{Binding NotifyMessage}" HorizontalAlignment="Left" Margin="-50,0,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="label" Content="{Binding NotifyMessage}" HorizontalAlignment="Left" Margin="-50,0,0,0" VerticalAlignment="Top" />
         </Controls:Flyout>
     </Grid>
 </Window>

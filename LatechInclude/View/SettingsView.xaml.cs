@@ -1,16 +1,15 @@
-﻿
-using LatechInclude.HelperClasses;
+﻿using LaTexInclude.HelperClasses;
 using System;
 using System.Windows.Controls;
 
-namespace LatechInclude.View
+namespace LaTexInclude.View
 {
     /// <summary>
     /// Interaktionslogik für SettingsView.xaml
     /// </summary>
     public partial class SettingsView : UserControl
     {
-        ExplorerContextMenu ecm = new ExplorerContextMenu();
+        private ExplorerContextMenu ecm = new ExplorerContextMenu();
 
         /// <summary>
         /// SettingsView Contructor
