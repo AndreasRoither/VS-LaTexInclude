@@ -51,7 +51,7 @@ namespace LaTexInclude.View
         /// <param name="e"></param>
         private void textBox_KeyDown(object sender, KeyEventArgs e)
         {
-            char c = GetCharFromKey(e.Key);
+            char c = NativeMethods.GetCharFromKey(e.Key);
 
             // Check for a naughty character in the KeyDown event.
             if (System.Text.RegularExpressions.Regex.IsMatch(c.ToString(), @"[^A-Za-z]"))
@@ -60,7 +60,10 @@ namespace LaTexInclude.View
                 e.Handled = true;
             }
         }
+    }
 
+    static internal class NativeMethods
+    {
         public enum MapType : uint
         {
             MAPVK_VK_TO_VSC = 0x0,

@@ -10,9 +10,10 @@
         <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="300" VerticalAlignment="Top" Width="410">
             <TabItem Header="General">
                 <Grid>
-                    <Custom:ToggleSwitch Name="SaveWhiteList_ToggleB" Header="Save WhiteList" Margin="10,20,239,170" IsChecked="False" IsCheckedChanged="IsCheckedChanged_SaveWhiteList" />
-                    <Custom:ToggleSwitch Name="StatusBar_ToggleB" Header="Status Bar" Margin="170,20,79,170" IsChecked="False" IsCheckedChanged="IsCheckedChanged_StatusBar" />
-                    <Custom:ToggleSwitch Name="ContextStart_ToggleB"  Header="Start on context click" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top" Width="155" IsCheckedChanged="IsCheckedChanged_ContextStart" />
+                    <Custom:ToggleSwitch Name="SaveWhiteList_Toggle" Header="Save whitelist" Margin="10,20,239,170" IsChecked="False" IsCheckedChanged="IsCheckedChanged_SaveWhiteList" />
+                    <Custom:ToggleSwitch Name="StatusBar_Toggle" Header="Status bar" Margin="239,20,10,170" IsChecked="False" IsCheckedChanged="IsCheckedChanged_StatusBar" />
+                    <Custom:ToggleSwitch Name="ContextStart_Toggle"  Header="Start on context click" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top" Width="155" IsCheckedChanged="IsCheckedChanged_ContextStart" />
+                    <Custom:ToggleSwitch Name="RelativePath_Toggle" Header="Use relative path" Height="61" Margin="239,90,10,0" VerticalAlignment="Top" />
                 </Grid>
             </TabItem>
             <TabItem Header="Advanced" HorizontalAlignment="Left" Height="39" VerticalAlignment="Top" Width="127" Margin="0,0,-22,0">

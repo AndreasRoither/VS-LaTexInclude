@@ -83,12 +83,27 @@ namespace LaTexInclude.ViewModel
             LoadFiles();
         }
 
+        ~MainViewModel()
+        {
+        }
+
         public override void Cleanup()
         {
             PathFolderDialogCommand = null;
             TexMakerCommand = null;
+            AddExtensionCommand = null;
             SettingsCommand = null;
-            dlg.Dispose();
+            ExitCommand = null;
+            _fileList = null;
+            _whiteList = null;
+            _currentWhiteList = null;
+            _Languages = null;
+
+            if (dlg != null)
+            {
+                dlg.Dispose();
+                dlg = null;
+            }
 
             base.Cleanup();
         }

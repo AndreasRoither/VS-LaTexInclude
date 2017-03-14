@@ -18,9 +18,9 @@ namespace LaTexInclude.View
         {
             InitializeComponent();
 
-            SaveWhiteList_ToggleB.IsChecked = Properties.Settings.Default.Setting_General_SaveWhiteList;
-            StatusBar_ToggleB.IsChecked = Properties.Settings.Default.Setting_General_StatusBar;
-            ContextStart_ToggleB.IsChecked = Properties.Settings.Default.Setting_General_ContextStartup;
+            SaveWhiteList_Toggle.IsChecked = Properties.Settings.Default.Setting_General_SaveWhiteList;
+            StatusBar_Toggle.IsChecked = Properties.Settings.Default.Setting_General_StatusBar;
+            ContextStart_Toggle.IsChecked = Properties.Settings.Default.Setting_General_ContextStartup;
         }
 
         /// <summary>

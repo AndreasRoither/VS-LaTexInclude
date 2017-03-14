@@ -53,6 +53,7 @@ namespace LaTexInclude.ViewModel
         {
             AddExtensionCommand = null;
             CloseWindowCommand = null;
+            mvm = null;
 
             base.Cleanup();
         }
@@ -145,6 +146,6 @@ namespace LaTexInclude.ViewModel
             {
                 window.Close();
             }
-        }
+        } 
     }
 }
