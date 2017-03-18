@@ -36,7 +36,7 @@ namespace LaTexInclude
 
         private AppDomain currentDomain;
         private MainViewModel _viewModel = new MainViewModel();
-        private int version = 110;
+        private int version = 111;
         private GetResponse responseObj = null;
 
         /// <summary>

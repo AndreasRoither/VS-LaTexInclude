@@ -24,7 +24,8 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Setting_General_CustomPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">
+                </Value>
     </Setting>
   </Settings>
 </SettingsFile>

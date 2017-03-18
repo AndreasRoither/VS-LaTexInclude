@@ -414,7 +414,7 @@ namespace LaTexInclude.ViewModel
         /// </summary>
         public void PathFolderDialogMethod()
         {
-            if (Properties.Settings.Default.Setting_General_UseCustomPath && Properties.Settings.Default.Setting_General_CustomPath != String.Empty)
+            if (Properties.Settings.Default.Setting_General_UseCustomPath && Properties.Settings.Default.Setting_General_CustomPath != String.Empty && Properties.Settings.Default.Setting_General_CustomPath.Length >= 2)
             {
                 dlg.InitialDirectory = Properties.Settings.Default.Setting_General_CustomPath;
             }
@@ -577,6 +577,7 @@ namespace LaTexInclude.ViewModel
         public void SettingsMethod()
         {
             //SettingsViewModel svm = new SettingsViewModel();
+            bool test = Properties.Settings.Default.Setting_General_UseCustomPath;
 
             SwitchViewWindow svw = new SwitchViewWindow()
             {
