@@ -66,9 +66,7 @@ namespace LaTexInclude.ViewModel
             regexPattern = @"\$(.*?)\$";
             regexReplacePattern = @"[\\]";
 
-            dlg.Title = "Folder Selection";
             dlg.IsFolderPicker = true;
-            dlg.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
 
             dlg.AddToMostRecentlyUsedList = false;
             dlg.AllowNonFileSystemItems = false;
@@ -85,6 +83,11 @@ namespace LaTexInclude.ViewModel
 
         ~MainViewModel()
         {
+            if (dlg != null)
+            {
+                dlg.Dispose();
+                dlg = null;
+            }
         }
 
         public override void Cleanup()
@@ -99,12 +102,6 @@ namespace LaTexInclude.ViewModel
             _currentWhiteList = null;
             _Languages = null;
 
-            if (dlg != null)
-            {
-                dlg.Dispose();
-                dlg = null;
-            }
-
             base.Cleanup();
         }
 
@@ -117,7 +114,10 @@ namespace LaTexInclude.ViewModel
             }
         }
 
-        public string currentLanguage
+        /// <summary>
+        /// Gets or sets CurrentLanguage
+        /// </summary>
+        public string CurrentLanguage
         {
             get { return _currentLanguage; }
             set { _currentLanguage = value; }
@@ -129,27 +129,36 @@ namespace LaTexInclude.ViewModel
             set { _fileList = value; }
         }
 
-        public List<WhiteList> whiteList
+        /// <summary>
+        /// Gets or sets WhiteList
+        /// </summary>
+        public List<WhiteList> WhiteList
         {
             get { return _whiteList; }
             set
             {
                 _whiteList = value;
-                OnPropertyChanged("whiteList");
+                OnPropertyChanged("WhiteList");
             }
         }
 
-        public List<WhiteList> currentWhiteList
+        /// <summary>
+        /// Gets or sets CurrentWhiteList
+        /// </summary>
+        public List<WhiteList> CurrentWhiteList
         {
             get { return _currentWhiteList; }
             set
             {
                 _currentWhiteList = value;
-                OnPropertyChanged("currentWhiteList");
+                OnPropertyChanged("CurrentWhiteList");
             }
         }
 
-        public string fPath
+        /// <summary>
+        /// Gets or sets FolderPath
+        /// </summary>
+        public string FolderPath
         {
             get { return pathString.text; }
             set
@@ -159,13 +168,19 @@ namespace LaTexInclude.ViewModel
             }
         }
 
+        /// <summary>
+        /// Gets or sets Languages
+        /// </summary>
         public List<string> Languages
         {
             get { return _Languages; }
             set { _Languages = value; }
         }
 
-        public string statusText
+        /// <summary>
+        /// Gets or sets StatusText
+        /// </summary>
+        public string StatusText
         {
             get { return _statusText; }
             set
@@ -178,6 +193,9 @@ namespace LaTexInclude.ViewModel
             }
         }
 
+        /// <summary>
+        /// Gets or sets FlyoutOpen
+        /// </summary>
         public bool FlyoutOpen
         {
             get { return isFlyoutOpen; }
@@ -188,6 +206,9 @@ namespace LaTexInclude.ViewModel
             }
         }
 
+        /// <summary>
+        /// Gets or sets FlyoutMessage
+        /// </summary>
         public string NotifyMessage
         {
             get { return _notifyMessage; }
@@ -204,7 +225,7 @@ namespace LaTexInclude.ViewModel
         /// </summary>
         public void Save()
         {
-            List<WhiteList> tempWList = this.whiteList;
+            List<WhiteList> tempWList = this.WhiteList;
             string outputString = "";
             string compareLanguage = "";
 
@@ -370,7 +391,7 @@ namespace LaTexInclude.ViewModel
                             Extension = wl.Extension
                         });
 
-                        currentWhiteList.Add(new WhiteList
+                        CurrentWhiteList.Add(new WhiteList
                         {
                             Language = wl.Language,
                             Extension = wl.Extension
@@ -383,7 +404,7 @@ namespace LaTexInclude.ViewModel
         /// <summary>
         /// Clears the currentWhiteList
         /// </summary>
-        public void clearCurrentWhiteList()
+        public void ClearCurrentWhiteList()
         {
             _currentWhiteList.Clear();
         }
@@ -393,44 +414,44 @@ namespace LaTexInclude.ViewModel
         /// </summary>
         public void PathFolderDialogMethod()
         {
-            if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
+            if (Properties.Settings.Default.Setting_General_UseCustomPath && Properties.Settings.Default.Setting_General_CustomPath != String.Empty)
             {
-                var folder = dlg.FileName;
-                fPath = dlg.FileName;
+                dlg.InitialDirectory = Properties.Settings.Default.Setting_General_CustomPath;
+            }
+            else
+            {
+                dlg.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+            }
 
-                //Throws exception if no permissions
-                try
+            if (Properties.Settings.Default.Setting_General_UseRelativePath)
+            {
+                dlg.Title = "Select working directory";
+                string workDirectory;
+                string fileDirectory;
+
+                if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    string[] files = Directory.GetFiles(folder, "*", SearchOption.AllDirectories);
-                    _fileList.Clear();
+                    workDirectory = dlg.FileName;
 
-                    int i = 1;
-                    foreach (string file in files)
+                    dlg.Title = "Select file directory";
+
+                    if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
                     {
-                        foreach (WhiteList wl in _currentWhiteList)
-                        {
-                            if (wl.Extension == Path.GetExtension(file))
-                            {
-                                _fileList.Add(new MyFile(System.IO.Path.GetFileNameWithoutExtension(file), file, System.IO.Path.GetExtension(file), i));
-                                i++;
-                            }
-                        }
+                        fileDirectory = dlg.FileName;
+                        SearchDirectories(fileDirectory, workDirectory);
                     }
-
-                    statusText = (i - 1) + " Files found";
                 }
-                catch (Exception ex)
+            }
+            else
+            {
+                dlg.Title = "Folder Selection";
+
+                if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    string outputString;
-                    outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
+                    var folder = dlg.FileName;
+                    FolderPath = dlg.FileName;
 
-                    using (System.IO.StreamWriter file =
-                    new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
-                    {
-                        file.WriteLine(outputString);
-                    }
-
-                    outputString = null;
+                    SearchDirectories(folder);
                 }
             }
         }
@@ -468,7 +489,7 @@ namespace LaTexInclude.ViewModel
                     {
                         if (_currentLanguage == "" | _currentLanguage == "All")
                         {
-                            foreach (WhiteList wl in currentWhiteList)
+                            foreach (WhiteList wl in CurrentWhiteList)
                             {
                                 if (file.Extension == wl.Extension)
                                 {
@@ -529,20 +550,23 @@ namespace LaTexInclude.ViewModel
         /// </summary>
         public void AddExtensionMethod()
         {
-            SwitchViewWindow svw = new SwitchViewWindow();
             AddExtensionViewModel aevm = new AddExtensionViewModel();
-            svw.DataContext = aevm;
-            svw.Title = "Add Extension";
-            svw.Owner = Application.Current.MainWindow;
-            svw.Height = 220;
-            svw.Width = 320;
+            SwitchViewWindow svw = new SwitchViewWindow()
+            {
+                DataContext = aevm,
+                Title = "Add Extension",
+                Owner = Application.Current.MainWindow,
+                Height = 220,
+                Width = 320
+            };
 
             svw.ShowDialog();
 
             if (svw.DialogResult == false)
             {
-                OnPropertyChanged("currentWhiteList");
+                CurrentWhiteList = CurrentWhiteList;
             }
+
             svw = null;
             aevm = null;
         }
@@ -552,13 +576,16 @@ namespace LaTexInclude.ViewModel
         /// </summary>
         public void SettingsMethod()
         {
-            SwitchViewWindow svw = new SwitchViewWindow();
             //SettingsViewModel svm = new SettingsViewModel();
-            svw.DataContext = svm_temp;
-            svw.Title = "Settings";
-            svw.Owner = Application.Current.MainWindow;
-            svw.Height = 339;
-            svw.Width = 426;
+
+            SwitchViewWindow svw = new SwitchViewWindow()
+            {
+                DataContext = svm_temp,
+                Title = "Settings",
+                Owner = Application.Current.MainWindow,
+                Height = 360,
+                Width = 426
+            };
 
             svw.ShowDialog();
             svw = null;
@@ -570,13 +597,18 @@ namespace LaTexInclude.ViewModel
         /// <param name="outputString"></param>
         public void TextEditorMethod(string outputString)
         {
-            SwitchViewWindow svw = new SwitchViewWindow();
-            TxtEditorViewModel tevm = new TxtEditorViewModel();
-            tevm.outputString = outputString;
-            svw.DataContext = tevm;
-            svw.Title = "TextEditor";
-            svw.Owner = Application.Current.MainWindow;
-            svw.ResizeMode = ResizeMode.CanResize;
+            TxtEditorViewModel tevm = new TxtEditorViewModel()
+            {
+                outputString = outputString
+            };
+
+            SwitchViewWindow svw = new SwitchViewWindow()
+            {
+                DataContext = tevm,
+                Title = "TextEditor",
+                Owner = Application.Current.MainWindow,
+                ResizeMode = ResizeMode.CanResize
+            };
 
             svw.ShowDialog();
             svw = null;
@@ -594,6 +626,88 @@ namespace LaTexInclude.ViewModel
             }
 
             Environment.Exit(1);
+        }
+
+        /// <summary>
+        /// Searches the directory and adds files to the File list
+        /// </summary>
+        /// <param name="folder"></param>
+        public void SearchDirectories(string folder, string workdir = "")
+        {
+            //Throws exception if no permissions
+            try
+            {
+                string[] files = Directory.GetFiles(folder, "*", SearchOption.AllDirectories);
+                _fileList.Clear();
+
+                int i = 1;
+                foreach (string file in files)
+                {
+                    foreach (WhiteList wl in _currentWhiteList)
+                    {
+                        if (wl.Extension == Path.GetExtension(file))
+                        {
+                            if (Properties.Settings.Default.Setting_General_UseRelativePath)
+                            {
+                                string temp = MakeRelativePath(workdir + "\\", System.IO.Path.GetDirectoryName(file) + "\\");
+                                temp += System.IO.Path.GetFileName(file);
+                                _fileList.Add(new MyFile(System.IO.Path.GetFileNameWithoutExtension(file), temp, System.IO.Path.GetExtension(file), i));
+                                i++;
+                            }
+                            else
+                            {
+                                _fileList.Add(new MyFile(System.IO.Path.GetFileNameWithoutExtension(file), file, System.IO.Path.GetExtension(file), i));
+                                i++;
+                            }
+                        }
+                    }
+                }
+
+                StatusText = (i - 1) + " Files found";
+            }
+            catch (Exception ex)
+            {
+                string outputString;
+                outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
+
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
+                {
+                    file.WriteLine(outputString);
+                }
+
+                outputString = null;
+            }
+        }
+
+        /// <summary>
+        /// Creates a relative path from one file or folder to another.
+        /// </summary>
+        /// <param name="fromPath">Contains the directory that defines the start of the relative path.</param>
+        /// <param name="toPath">Contains the path that defines the endpoint of the relative path.</param>
+        /// <returns>The relative path from the start directory to the end path or <c>toPath</c> if the paths are not related.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="UriFormatException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static String MakeRelativePath(String fromPath, String toPath)
+        {
+            if (String.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
+            if (String.IsNullOrEmpty(toPath)) throw new ArgumentNullException("toPath");
+
+            Uri fromUri = new Uri(fromPath);
+            Uri toUri = new Uri(toPath);
+
+            if (fromUri.Scheme != toUri.Scheme) { return toPath; } // path can't be made relative.
+
+            Uri relativeUri = fromUri.MakeRelativeUri(toUri);
+            String relativePath = Uri.UnescapeDataString(relativeUri.ToString());
+
+            if (toUri.Scheme.Equals("file", StringComparison.InvariantCultureIgnoreCase))
+            {
+                relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            }
+
+            return relativePath;
         }
     }
 }

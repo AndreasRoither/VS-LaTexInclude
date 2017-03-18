@@ -105,7 +105,7 @@ namespace LaTexInclude.ViewModel
             {
                 List<WhiteList> tempList = new List<WhiteList>();
                 string temp = "." + _TxtBoxInput;
-                tempList = mvm.whiteList;
+                tempList = mvm.WhiteList;
                 Boolean notFound = true;
 
                 foreach (WhiteList wl in tempList)
@@ -122,7 +122,7 @@ namespace LaTexInclude.ViewModel
                     });
 
                     tempList.Sort();
-                    mvm.whiteList = tempList;
+                    mvm.WhiteList = tempList;
 
                     NotifyMessage = "Extension added";
                     FlyoutOpen = true;
@@ -146,6 +146,6 @@ namespace LaTexInclude.ViewModel
             {
                 window.Close();
             }
-        } 
+        }
     }
 }

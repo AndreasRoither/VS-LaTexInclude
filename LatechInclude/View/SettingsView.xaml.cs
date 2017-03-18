@@ -1,5 +1,4 @@
-﻿using LaTexInclude.HelperClasses;
-using System;
+﻿using System;
 using System.Windows.Controls;
 
 namespace LaTexInclude.View
@@ -9,8 +8,6 @@ namespace LaTexInclude.View
     /// </summary>
     public partial class SettingsView : UserControl
     {
-        private ExplorerContextMenu ecm = new ExplorerContextMenu();
-
         /// <summary>
         /// SettingsView Contructor
         /// </summary>
@@ -21,6 +18,10 @@ namespace LaTexInclude.View
             SaveWhiteList_Toggle.IsChecked = Properties.Settings.Default.Setting_General_SaveWhiteList;
             StatusBar_Toggle.IsChecked = Properties.Settings.Default.Setting_General_StatusBar;
             ContextStart_Toggle.IsChecked = Properties.Settings.Default.Setting_General_ContextStartup;
+            RelativePath_Toggle.IsChecked = Properties.Settings.Default.Setting_General_UseRelativePath;
+            CustomPath_Toggle.IsChecked = Properties.Settings.Default.Setting_General_UseCustomPath;
+            customPath.IsEnabled = Properties.Settings.Default.Setting_General_UseCustomPath;
+            customPath.Text = Properties.Settings.Default.Setting_General_CustomPath;
         }
 
         /// <summary>
@@ -51,6 +52,32 @@ namespace LaTexInclude.View
         private void IsCheckedChanged_ContextStart(object sender, EventArgs e)
         {
             Properties.Settings.Default.Setting_General_ContextStartup = !Properties.Settings.Default.Setting_General_ContextStartup;
+        }
+
+        /// <summary>
+        /// RelativePath Setting changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void IsCheckedChanged_RelativePath(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Setting_General_UseRelativePath = !Properties.Settings.Default.Setting_General_UseRelativePath;
+        }
+
+        /// <summary>
+        /// CustomPath Setting changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void IsCheckedChanged_CustomPath(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Setting_General_UseCustomPath = !Properties.Settings.Default.Setting_General_UseCustomPath;
+            customPath.IsEnabled = Properties.Settings.Default.Setting_General_UseCustomPath;
+        }
+
+        private void TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Properties.Settings.Default.Setting_General_CustomPath = customPath.Text;
         }
     }
 }

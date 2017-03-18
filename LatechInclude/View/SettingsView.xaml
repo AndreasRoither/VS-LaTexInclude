@@ -5,15 +5,50 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:LaTexInclude.View"
              xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="LaTexInclude.View.SettingsView"
-             mc:Ignorable="d" Height="300" Width="410">
+             mc:Ignorable="d" Height="330" Width="410">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style x:Key="placeHolder" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Grid>
+                                <TextBox Text="{Binding Text, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                    x:Name="textSource"
+                                    Background="Transparent"
+                                    Panel.ZIndex="2" />
+                                <TextBox Text="{TemplateBinding Tag}" Background="{TemplateBinding Background}" Panel.ZIndex="1" FontSize="16">
+                                    <TextBox.Style>
+                                        <Style TargetType="{x:Type TextBox}">
+                                            <Setter Property="Foreground" Value="Transparent" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text, Source={x:Reference textSource}}" Value="">
+                                                    <Setter Property="Foreground" Value="LightGray" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
-        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="300" VerticalAlignment="Top" Width="410">
+        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="330" VerticalAlignment="Top" Width="410">
             <TabItem Header="General">
                 <Grid>
-                    <Custom:ToggleSwitch Name="SaveWhiteList_Toggle" Header="Save whitelist" Margin="10,20,239,170" IsChecked="False" IsCheckedChanged="IsCheckedChanged_SaveWhiteList" />
-                    <Custom:ToggleSwitch Name="StatusBar_Toggle" Header="Status bar" Margin="239,20,10,170" IsChecked="False" IsCheckedChanged="IsCheckedChanged_StatusBar" />
-                    <Custom:ToggleSwitch Name="ContextStart_Toggle"  Header="Start on context click" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top" Width="155" IsCheckedChanged="IsCheckedChanged_ContextStart" />
-                    <Custom:ToggleSwitch Name="RelativePath_Toggle" Header="Use relative path" Height="61" Margin="239,90,10,0" VerticalAlignment="Top" />
+                    <Custom:ToggleSwitch Name="SaveWhiteList_Toggle" Header="Save whitelist" Margin="10,10,234,180" IsChecked="False" IsCheckedChanged="IsCheckedChanged_SaveWhiteList" />
+                    <Custom:ToggleSwitch Name="StatusBar_Toggle" Header="Status bar" Margin="234,10,10,180" IsChecked="False" IsCheckedChanged="IsCheckedChanged_StatusBar" />
+                    <Custom:ToggleSwitch Name="ContextStart_Toggle"  Header="Start on context click" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" Width="160" IsCheckedChanged="IsCheckedChanged_ContextStart" />
+                    <Custom:ToggleSwitch Name="RelativePath_Toggle" Header="Use relative path" Height="61" Margin="234,80,10,0" VerticalAlignment="Top" IsCheckedChanged="IsCheckedChanged_RelativePath" />
+                    <Custom:ToggleSwitch x:Name="CustomPath_Toggle"  Header="Use custom start path" HorizontalAlignment="Left" Margin="10,163,0,0" VerticalAlignment="Top" Width="160" IsCheckedChanged="IsCheckedChanged_CustomPath" />
+                    <TextBox x:Name="customPath" Style="{StaticResource placeHolder}" Tag="C:\User\Test" Height="23" Margin="10,229,10,0" TextWrapping="Wrap" Text="{Binding CustomPath}" VerticalAlignment="Top" IsEnabled="False" TextChanged="TextChanged" AllowDrop="False" IsReadOnly="True" />
+                    <Button x:Name="button1" Content="Path" Command="{Binding PathDialogCommand}" Margin="234,192,10,0" VerticalAlignment="Top" />
                 </Grid>
             </TabItem>
             <TabItem Header="Advanced" HorizontalAlignment="Left" Height="39" VerticalAlignment="Top" Width="127" Margin="0,0,-22,0">
@@ -27,6 +62,7 @@
                     <Button x:Name="button_Copy" Content="Register/Unregister" HorizontalAlignment="Left" Command="{Binding FolderCommand}" Margin="168,113,0,0" VerticalAlignment="Top" Width="123" />
                 </Grid>
             </TabItem>
+            <Button x:Name="button2" Content="Button" Height="100" Width="75" />
         </TabControl>
     </Grid>
 </UserControl>

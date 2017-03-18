@@ -9,7 +9,7 @@
         xmlns:local="clr-namespace:LaTexInclude"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="SwitchViewWindow" Height="370" Width="585" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+        Title="SwitchViewWindow" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Width="400" Height="380">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type ViewModel:AddExtensionViewModel}">
@@ -20,6 +20,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type ViewModel:TxtEditorViewModel}">
             <View:TxtEditorView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModel:UpdateViewModel}">
+            <View:UpdateView />
         </DataTemplate>
     </Window.Resources>
 

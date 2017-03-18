@@ -10,9 +10,9 @@ namespace LaTexInclude.HelperClasses
         private String _content = null;
         private Boolean _missingFiles = false;
         private Boolean finalized = false;
-        private string TexCodeTemplate = null;
-        private string TexImageTemplate = null;
-        private string TexPDFTemplate = null;
+        private string[] TexCodeTemplate = null;
+        private string[] TexImageTemplate = null;
+        private string[] TexPDFTemplate = null;
 
         private List<string> _lines = null;
 

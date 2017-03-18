@@ -82,5 +82,41 @@ namespace LaTexInclude.Properties {
                 this["Setting_General_ContextStartup"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Setting_General_UseRelativePath {
+            get {
+                return ((bool)(this["Setting_General_UseRelativePath"]));
+            }
+            set {
+                this["Setting_General_UseRelativePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Setting_General_UseCustomPath {
+            get {
+                return ((bool)(this["Setting_General_UseCustomPath"]));
+            }
+            set {
+                this["Setting_General_UseCustomPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Setting_General_CustomPath {
+            get {
+                return ((string)(this["Setting_General_CustomPath"]));
+            }
+            set {
+                this["Setting_General_CustomPath"] = value;
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using LaTexInclude.HelperClasses;
+using LaTexInclude.Model;
 using LaTexInclude.ViewModel;
 using MahApps.Metro.Controls;
 using System;
@@ -8,9 +9,12 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Security.Permissions;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -32,6 +36,8 @@ namespace LaTexInclude
 
         private AppDomain currentDomain;
         private MainViewModel _viewModel = new MainViewModel();
+        private int version = 110;
+        private GetResponse responseObj = null;
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
@@ -40,7 +46,7 @@ namespace LaTexInclude
         public MainWindow()
         {
             //Check for multiple instances, kill old instance or kill the starting process
-            if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() >= 2)
+            if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 2)
             {
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
@@ -82,7 +88,7 @@ namespace LaTexInclude
 
                         foreach (string file in files)
                         {
-                            foreach (WhiteList wl in _viewModel.currentWhiteList)
+                            foreach (WhiteList wl in _viewModel.CurrentWhiteList)
                             {
                                 if (wl.Extension == Path.GetExtension(file))
                                 {
@@ -94,7 +100,7 @@ namespace LaTexInclude
                     }
                 }
 
-                _viewModel.statusText = (i - 1) + " Files found";
+                _viewModel.StatusText = (i - 1) + " Files found";
 
                 if (!Properties.Settings.Default.Setting_General_ContextStartup)
                 {
@@ -122,6 +128,54 @@ namespace LaTexInclude
 
             MainView_DataGrid.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(productsDataGrid_PreviewMouseLeftButtonDown);
             MainView_DataGrid.Drop += new System.Windows.DragEventHandler(MainView_DataGrid_Drop);
+
+            try
+            {
+                string url = "https://api.github.com/repos/AndiRoither/VS-LaTexInclude/releases/latest";
+                //GET /repos/:owner/:repo/releases/latest
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.UserAgent = "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/6.0;)";
+                request.KeepAlive = false;
+                request.Method = "GET";
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    var encoding = ASCIIEncoding.ASCII;
+                    using (var reader = new System.IO.StreamReader(response.GetResponseStream(), encoding))
+                    {
+                        var responseText = reader.ReadToEnd();
+                        JavaScriptSerializer js = new JavaScriptSerializer();
+                        responseObj = (GetResponse)js.Deserialize(responseText, typeof(GetResponse));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            if (responseObj != null)
+            {
+                string tag_name = String.Copy(responseObj.Tag_name);
+                tag_name = tag_name.Remove(0, 1);
+                tag_name = tag_name.Replace(".", string.Empty);
+
+                int val = Int32.Parse(tag_name);
+                if (val > version)
+                {
+                    UpdateViewModel uvm = new UpdateViewModel(this.responseObj);
+                    SwitchViewWindow svw = new SwitchViewWindow()
+                    {
+                        DataContext = uvm,
+                        Title = "New update for LaTexInclude"
+                    };
+
+                    IconHelper.RemoveIcon(svw);
+
+                    svw.ShowDialog();
+
+                    System.Diagnostics.Process.GetCurrentProcess().Kill();
+                }
+            }
         }
 
         public MainWindow(bool b)
@@ -204,7 +258,7 @@ namespace LaTexInclude
 
                 foreach (MyFile file in _viewModel.List)
                 {
-                    foreach (WhiteList wl in _viewModel.currentWhiteList)
+                    foreach (WhiteList wl in _viewModel.CurrentWhiteList)
                     {
                         if (file.Extension == wl.Extension)
                         {
@@ -254,7 +308,7 @@ namespace LaTexInclude
         /// </summary>
         public void Save()
         {
-            List<WhiteList> tempWList = _viewModel.whiteList;
+            List<WhiteList> tempWList = _viewModel.WhiteList;
             string outputString = "";
             string compareLanguage = "";
 
@@ -467,20 +521,20 @@ namespace LaTexInclude
         /// <param name="e"></param>
         private void OnLanguageBox_Changed(object sender, SelectionChangedEventArgs e)
         {
-            _viewModel.currentLanguage = (sender as ComboBox).SelectedItem as string;
+            _viewModel.CurrentLanguage = (sender as ComboBox).SelectedItem as string;
             WhiteList_Grid.ItemsSource = null;
 
-            if (_viewModel.currentLanguage == "All")
+            if (_viewModel.CurrentLanguage == "All")
             {
-                _viewModel.currentWhiteList = _viewModel.whiteList;
+                _viewModel.CurrentWhiteList = _viewModel.WhiteList;
             }
             else
             {
                 List<WhiteList> tempList = new List<WhiteList>();
 
-                foreach (WhiteList wl in _viewModel.whiteList)
+                foreach (WhiteList wl in _viewModel.WhiteList)
                 {
-                    if (wl.Language == _viewModel.currentLanguage)
+                    if (wl.Language == _viewModel.CurrentLanguage)
                     {
                         tempList.Add(new WhiteList
                         {
@@ -490,9 +544,9 @@ namespace LaTexInclude
                     }
                 }
 
-                _viewModel.currentWhiteList = tempList;
+                _viewModel.CurrentWhiteList = tempList;
             }
-            WhiteList_Grid.ItemsSource = _viewModel.currentWhiteList;
+            WhiteList_Grid.ItemsSource = _viewModel.CurrentWhiteList;
         }
 
         /// <summary>
@@ -615,7 +669,7 @@ namespace LaTexInclude
 
                 _viewModel.NotifyMessage = "Removed " + row.Extension + " from " + row.Language;
 
-                foreach (WhiteList w in _viewModel.whiteList)
+                foreach (WhiteList w in _viewModel.WhiteList)
                 {
                     if (w.Extension == row.Extension && w.Language == row.Language)
                     {
@@ -636,12 +690,12 @@ namespace LaTexInclude
                     comboBox.SelectedIndex = 0;
                 }
 
-                _viewModel.whiteList.Remove(temp); ;
-                _viewModel.currentWhiteList.Remove(row);
+                _viewModel.WhiteList.Remove(temp); ;
+                _viewModel.CurrentWhiteList.Remove(row);
 
                 _viewModel.FlyoutOpen = true;
                 WhiteList_Grid.ItemsSource = null;
-                WhiteList_Grid.ItemsSource = _viewModel.currentWhiteList;
+                WhiteList_Grid.ItemsSource = _viewModel.CurrentWhiteList;
 
                 row = null;
                 temp = null;
@@ -662,8 +716,8 @@ namespace LaTexInclude
         {
             if (comboBox.SelectedIndex == 0 || comboBox.SelectedIndex == -1)
             {
-                _viewModel.whiteList.Clear();
-                _viewModel.clearCurrentWhiteList();
+                _viewModel.WhiteList.Clear();
+                _viewModel.ClearCurrentWhiteList();
                 _viewModel.Languages.Clear();
 
                 _viewModel.Languages.Add("All");
@@ -673,14 +727,14 @@ namespace LaTexInclude
                 _viewModel.NotifyMessage = "Cleared";
                 _viewModel.FlyoutOpen = true;
                 WhiteList_Grid.ItemsSource = null;
-                WhiteList_Grid.ItemsSource = _viewModel.whiteList;
+                WhiteList_Grid.ItemsSource = _viewModel.WhiteList;
             }
             else
             {
                 List<WhiteList> temp = new List<WhiteList>();
                 string language = comboBox.SelectedItem.ToString();
 
-                foreach (WhiteList w in _viewModel.whiteList)
+                foreach (WhiteList w in _viewModel.WhiteList)
                 {
                     if (w.Language == language)
                     {
@@ -690,16 +744,16 @@ namespace LaTexInclude
 
                 foreach (WhiteList w in temp)
                 {
-                    _viewModel.whiteList.Remove(w);
+                    _viewModel.WhiteList.Remove(w);
                 }
 
-                _viewModel.currentWhiteList = _viewModel.whiteList;
+                _viewModel.CurrentWhiteList = _viewModel.WhiteList;
                 _viewModel.Languages.Remove(language);
 
                 comboBox.ItemsSource = null;
                 comboBox.ItemsSource = _viewModel.Languages;
                 WhiteList_Grid.ItemsSource = null;
-                WhiteList_Grid.ItemsSource = _viewModel.currentWhiteList;
+                WhiteList_Grid.ItemsSource = _viewModel.CurrentWhiteList;
                 comboBox.SelectedIndex = 0;
 
                 temp = null;

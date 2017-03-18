@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using LaTexInclude.HelperClasses;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Reflection;
 using System.Windows.Input;
@@ -16,16 +17,25 @@ namespace LaTexInclude.ViewModel
     public class SettingsViewModel : ViewModelBase
     {
         private bool isFlyoutOpen;
-        private string _notifyMessage = "";
+        private string notifyMessage = string.Empty;
+        private static string customPath;
+
         private ExplorerContextMenu ecm = new ExplorerContextMenu();
 
         public static ICommand FileCommand { get; private set; }
         public static ICommand FolderCommand { get; private set; }
+        public static ICommand PathDialogCommand { get; private set; }
 
+        /// <summary>
+        /// SettingsViewModel constructor
+        /// </summary>
         public SettingsViewModel()
         {
             FileCommand = new RelayCommand(FileMethod);
             FolderCommand = new RelayCommand(FolderMethod);
+            PathDialogCommand = new RelayCommand(PathDialog);
+
+            customPath = Properties.Settings.Default.Setting_General_CustomPath;
         }
 
         /// <summary>
@@ -46,12 +56,26 @@ namespace LaTexInclude.ViewModel
         /// </summary>
         public string NotifyMessage
         {
-            get { return _notifyMessage; }
+            get { return notifyMessage; }
             set
             {
-                if (_notifyMessage == value) return;
-                _notifyMessage = value;
+                if (notifyMessage == value) return;
+                notifyMessage = value;
                 RaisePropertyChanged("NotifyMessage");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets CustomPath
+        /// </summary>
+        public string CustomPath
+        {
+            get { return customPath; }
+            set
+            {
+                if (customPath == value) return;
+                customPath = value;
+                RaisePropertyChanged("CustomPath");
             }
         }
 
@@ -171,6 +195,37 @@ namespace LaTexInclude.ViewModel
                 }
 
                 outputString = null;
+            }
+        }
+
+        /// <summary>
+        /// Opens a path folder dialog
+        /// </summary>
+        public void PathDialog()
+        {
+            using (CommonOpenFileDialog dlg = new CommonOpenFileDialog())
+            {
+                dlg.Title = "Folder Selection";
+                dlg.IsFolderPicker = true;
+                dlg.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+
+                dlg.AddToMostRecentlyUsedList = false;
+                dlg.AllowNonFileSystemItems = false;
+                dlg.DefaultDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+                dlg.EnsureFileExists = true;
+                dlg.EnsurePathExists = true;
+                dlg.EnsureReadOnly = false;
+                dlg.EnsureValidNames = true;
+                dlg.Multiselect = false;
+                dlg.ShowPlacesList = true;
+
+                if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
+                {
+                    CustomPath = dlg.FileName;
+                    Properties.Settings.Default.Setting_General_CustomPath = CustomPath;
+                    NotifyMessage = "Path saved";
+                    FlyoutOpen = true;
+                }
             }
         }
     }
