@@ -142,19 +142,6 @@ namespace LaTexInclude
                 }
             }
 
-            InitializeComponent();
-
-            //Add Global Exception Handling
-            currentDomain = AppDomain.CurrentDomain;
-            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(MyHandler);
-
-            Closing += (s, e) => ViewModelLocator.Cleanup();
-
-            this.DataContext = this._viewModel;
-
-            MainView_DataGrid.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(productsDataGrid_PreviewMouseLeftButtonDown);
-            MainView_DataGrid.Drop += new System.Windows.DragEventHandler(MainView_DataGrid_Drop);
-
             try
             {
                 //GET /repos/:owner/:repo/releases/latest
@@ -208,10 +195,25 @@ namespace LaTexInclude
                     IconHelper.RemoveIcon(svw);
 
                     svw.ShowDialog();
+                    svw = null;
+                    uvm = null;
 
                     System.Diagnostics.Process.GetCurrentProcess().Kill();
                 }
             }
+
+            InitializeComponent();
+
+            //Add Global Exception Handling
+            currentDomain = AppDomain.CurrentDomain;
+            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(MyHandler);
+
+            Closing += (s, e) => ViewModelLocator.Cleanup();
+
+            this.DataContext = this._viewModel;
+
+            MainView_DataGrid.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(productsDataGrid_PreviewMouseLeftButtonDown);
+            MainView_DataGrid.Drop += new System.Windows.DragEventHandler(MainView_DataGrid_Drop);
         }
 
         /// <summary>
