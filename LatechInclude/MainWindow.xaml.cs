@@ -28,15 +28,41 @@ namespace LaTexInclude
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        /// <summary>
+        /// contains the found files
+        /// </summary>
         private TrulyObservableCollection<MyFile> _fileList = new TrulyObservableCollection<MyFile>();
 
+        /// <summary>
+        /// Get the position of the element in the grid
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
         private delegate Point GetPosition(IInputElement element);
 
+        /// <summary>
+        /// row index standard value
+        /// </summary>
         private int rowIndex = -1;
 
+        /// <summary>
+        /// current domain
+        /// </summary>
         private AppDomain currentDomain;
+
+        /// <summary>
+        /// MainViewModel
+        /// </summary>
         private MainViewModel _viewModel = new MainViewModel();
+
+        /// <summary>
+        /// Version number
+        /// </summary>
         private int version = 111;
+
+        /// <summary>
+        /// The parsed HTTPWebRequest from github
+        /// </summary>
         private GetResponse responseObj = null;
 
         /// <summary>
@@ -131,8 +157,8 @@ namespace LaTexInclude
 
             try
             {
-                string url = "https://api.github.com/repos/AndiRoither/VS-LaTexInclude/releases/latest";
                 //GET /repos/:owner/:repo/releases/latest
+                string url = "https://api.github.com/repos/AndiRoither/VS-LaTexInclude/releases/latest";
 
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.UserAgent = "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/6.0;)";
@@ -149,11 +175,21 @@ namespace LaTexInclude
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
+                string outputString;
+                outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + e.Message + Environment.NewLine + Environment.NewLine + e.ToString() + Environment.NewLine;
+
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
+                {
+                    file.WriteLine(outputString);
+                }
+
+                outputString = null;
             }
 
-            if (responseObj != null)
+            if (responseObj != null && responseObj.Prerelease != true && responseObj.Draft != true)
             {
                 string tag_name = String.Copy(responseObj.Tag_name);
                 tag_name = tag_name.Remove(0, 1);
@@ -178,6 +214,10 @@ namespace LaTexInclude
             }
         }
 
+        /// <summary>
+        /// second constructor to avoid unnecessary memory
+        /// </summary>
+        /// <param name="b"></param>
         public MainWindow(bool b)
         {
         }

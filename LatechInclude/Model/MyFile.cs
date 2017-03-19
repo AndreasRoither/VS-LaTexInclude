@@ -29,12 +29,24 @@ namespace LaTexInclude.HelperClasses
             this.Position = Position;
         }
 
+        /// <summary>
+        /// Gets or sets the filename
+        /// </summary>
         public string FileName { get; set; }
 
+        /// <summary>
+        /// Gets or sets the path of the file
+        /// </summary>
         public string Path { get; set; }
 
+        /// <summary>
+        /// Gets or sets the extension of the file
+        /// </summary>
         public string Extension { get; set; }
 
+        /// <summary>
+        /// Gets or sets the position of the file in the list
+        /// </summary>
         public int Position { get; set; }
     }
 }

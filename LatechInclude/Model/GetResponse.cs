@@ -2,109 +2,143 @@
 
 namespace LaTexInclude.Model
 {
+    /// <summary>
+    /// The class for the HTTPWebRequest response
+    /// </summary>
     public class GetResponse
     {
         public static string downloadUrl;
+        private string url;
+        private string id;
+        private string tag;
+        private string createdat;
+        private string publishedat;
+        private bool prerelease;
+        private string name;
+        private string body;
+        private bool draft;
+        private string html_url;
+        private List<asssetsarray> assets;
 
+        /// <summary>
+        /// Gets or sets latest Release exe download url
+        /// </summary>
         public string DownloadUrl
         {
             get { return downloadUrl; }
             set { downloadUrl = value; }
         }
 
-        private string url;
-
+        /// <summary>
+        /// Gets or sets release url without tags
+        /// </summary>
         public string Url
         {
-            get { return url; }
+            get { return this.url; }
             set { url = value; }
         }
 
-        private string id;
-
+        /// <summary>
+        /// Gets or sets github id
+        /// </summary>
         public string ID
         {
-            get { return id; }
+            get { return this.id; }
             set { id = value; }
         }
 
-        private string tag;
-
+        /// <summary>
+        /// Gets or sets tag name of the release
+        /// </summary>
         public string Tag_name
         {
-            get { return tag; }
+            get { return this.tag; }
             set { tag = value; }
         }
 
-        private string createdat;
-
+        /// <summary>
+        /// Gets or sets created date
+        /// </summary>
         public string Created_at
         {
-            get { return createdat; }
+            get { return this.createdat; }
             set { createdat = value; }
         }
 
-        private string publishedat;
-
+        /// <summary>
+        /// Gets or sets published date
+        /// </summary>
         public string Published_at
         {
-            get { return publishedat; }
+            get { return this.publishedat; }
             set { publishedat = value; }
         }
 
-        private string prerelease;
-
-        public string Prerelease
+        /// <summary>
+        /// Gets or sets prerelase
+        /// </summary>
+        public bool Prerelease
         {
-            get { return prerelease; }
+            get { return this.prerelease; }
             set { prerelease = value; }
         }
 
-        private string name;
-
+        /// <summary>
+        /// Gets or sets the name of the relese
+        /// </summary>
         public string Name
         {
-            get { return name; }
+            get { return this.name; }
             set { name = value; }
         }
 
-        private string body;
-
+        /// <summary>
+        /// Gets or sets the description of the release
+        /// </summary>
         public string Body
         {
-            get { return body; }
+            get { return this.body; }
             set { body = value; }
         }
 
-        private string draft;
-
-        public string Draft
+        /// <summary>
+        /// Gets or sets draft
+        /// </summary>
+        public bool Draft
         {
-            get { return draft; }
+            get { return this.draft; }
             set { draft = value; }
         }
 
-        private string html_url;
-
+        /// <summary>
+        /// Gets or sets release url with tag
+        /// </summary>
         public string Html_url
         {
-            get { return html_url; }
+            get { return this.html_url; }
             set { html_url = value; }
         }
 
-        private List<asssetsarray> assets;
-
+        /// <summary>
+        /// Gets or sets assets
+        /// </summary>
         public List<asssetsarray> Assets
         {
-            get { return assets; }
+            get { return this.assets; }
             set { assets = value; }
         }
     }
 
+    /// <summary>
+    /// Helper class for Assets
+    /// </summary>
     public class asssetsarray
     {
         private string browser_download_url;
 
+        /// <summary>
+        /// Gets or sets the browser download url of an asset
+        /// </summary>
         public string Browser_download_url
         {
             get { return GetResponse.downloadUrl; }
