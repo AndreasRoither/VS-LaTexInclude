@@ -1,12 +1,12 @@
 ﻿using LaTexInclude.ViewModel;
-using System.Windows;
+using MahApps.Metro.Controls;
 
 namespace LaTexInclude
 {
     /// <summary>
     /// Interaction logic for SwitchViewWindow.xaml
     /// </summary>
-    public partial class SwitchViewWindow : Window
+    public partial class SwitchViewWindow : MetroWindow
     {
         public SwitchViewWindow()
         {

@@ -192,8 +192,6 @@ namespace LaTexInclude
                         Title = "New update for LaTexInclude"
                     };
 
-                    IconHelper.RemoveIcon(svw);
-
                     svw.ShowDialog();
                     svw = null;
                     uvm = null;

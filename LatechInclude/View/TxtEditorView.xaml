@@ -50,7 +50,6 @@
                 <Button x:Name="replaceButton" Content="Replace!" Height="26" VerticalAlignment="Top" Width="74" Margin="10,0,0,0" Click="OnReplaceClick" />
             </ToolBar>
             <RichTextBox x:Name="richTextBox" AcceptsTab="True" Loaded="RichTextBox_Loaded" VerticalScrollBarVisibility="Visible" AutoWordSelection="False" />
-            <TextBlock x:Name="textBlock" Height="238" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" />
         </DockPanel>
     </Grid>
 </UserControl>

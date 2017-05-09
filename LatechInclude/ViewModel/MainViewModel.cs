@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using LaTexInclude.HelperClasses;
+using LaTexInclude.View;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace LaTexInclude.ViewModel
         public ICommand AddExtensionCommand { get; private set; }
         public ICommand SettingsCommand { get; private set; }
         public ICommand ExitCommand { get; private set; }
+        public ICommand TestCommand { get; private set; }
 
         new public event PropertyChangedEventHandler PropertyChanged;
 
@@ -57,6 +59,7 @@ namespace LaTexInclude.ViewModel
             AddExtensionCommand = new RelayCommand(AddExtensionMethod);
             SettingsCommand = new RelayCommand(SettingsMethod);
             ExitCommand = new RelayCommand(ExitMethod);
+            TestCommand = new RelayCommand(Test);
 
             _statusText = "";
             pathString = new StringNotify("");
@@ -88,6 +91,12 @@ namespace LaTexInclude.ViewModel
                 dlg.Dispose();
                 dlg = null;
             }
+        }
+
+        public void Test()
+        {
+            TestWindow tw = new TestWindow();
+            tw.Show();
         }
 
         public override void Cleanup()
@@ -551,6 +560,7 @@ namespace LaTexInclude.ViewModel
         public void AddExtensionMethod()
         {
             AddExtensionViewModel aevm = new AddExtensionViewModel();
+
             SwitchViewWindow svw = new SwitchViewWindow()
             {
                 DataContext = aevm,
@@ -610,6 +620,9 @@ namespace LaTexInclude.ViewModel
                 Owner = Application.Current.MainWindow,
                 ResizeMode = ResizeMode.CanResize
             };
+
+            svw.Height = 280;
+            svw.Width = 700;
 
             svw.ShowDialog();
             svw = null;
