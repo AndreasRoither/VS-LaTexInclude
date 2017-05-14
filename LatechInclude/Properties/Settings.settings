@@ -23,9 +23,15 @@
     <Setting Name="Setting_General_UseCustomPath" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="Setting_General_CopyToClipboard" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
     <Setting Name="Setting_General_CustomPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">
                 </Value>
+    </Setting>
+    <Setting Name="version" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">120</Value>
     </Setting>
   </Settings>
 </SettingsFile>

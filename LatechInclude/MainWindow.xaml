@@ -1,92 +1,142 @@
-﻿<Controls:MetroWindow x:Class="LaTexInclude.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:src="clr-namespace:LaTexInclude"
-        xmlns:ignore="http://www.galasoft.ch/ignore"
-        mc:Ignorable="d ignore"
-        Height="444.901"
-        Width="688.278"
-        Title="LaTexInclude"
-        BorderBrush="#FF41B1E1"
-        BorderThickness="1"
-        DataContext="{Binding Main, Source={StaticResource Locator}}" Closing="OnMainWindow_Closing" Loaded="MainWindow_Loaded" WindowStartupLocation="CenterScreen">
-
+﻿<controls:MetroWindow x:Class="LaTexInclude.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                      xmlns:local="clr-namespace:LaTexInclude.View"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:views="clr-namespace:LaTexInclude.View"
+                      xmlns:helper="clr-namespace:LaTexInclude.HelperClasses"
+                      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                      Title="MainWindow"
+                      Height="445"
+                      Width="689"
+                      BorderBrush="#FF41B1E1"
+                      WindowStartupLocation="CenterScreen"
+                      WindowTransitionsEnabled="False"
+                      mc:Ignorable="d" Closing="OnMainWindow_Closing">
 
     <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Skins/MainSkin.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <sys:Int32 x:Key="selectedItem">1</sys:Int32>
     </Window.Resources>
 
-    <Controls:MetroWindow.RightWindowCommands>
-        <Controls:WindowCommands>
-            <Button Content="settings" Command="{Binding SettingsCommand}"/>
-            <Button Content="test" Command="{Binding TestCommand}"/>
-        </Controls:WindowCommands>
-    </Controls:MetroWindow.RightWindowCommands>
+    <Grid>
+        <Grid.Resources>
+            <helper:SelectedItemToContentConverter x:Key="SelectedItemToContentConverter" />
 
-    <Grid x:Name="LayoutRoot">
-        <DockPanel>
-            <StackPanel Height="31" VerticalAlignment="Bottom">
-                <StatusBar Height="31">
-                    <TextBlock Margin="10,0,0,0" x:Name="statusBar_TextBlock" Text="{Binding Path=statusText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextWrapping="Wrap" />
-                </StatusBar>
-            </StackPanel>
-        </DockPanel>
+            <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type helper:CustomHamburgerMenuIconItem}">
+                <Grid x:Name="RootGrid"
+                      Height="48"
+                      Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="48" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ContentControl Grid.Column="0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Content="{Binding Icon}"
+                                    Focusable="False"
+                                    Foreground="White" />
+                    <TextBlock Grid.Column="1"
+                               VerticalAlignment="Center"
+                               FontSize="16"
+                               Foreground="White"
+                               Text="{Binding Label}" />
+                </Grid>
+                <DataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:HamburgerMenu}}, Path=IsPaneOpen}" Value="False">
+                        <Setter TargetName="RootGrid" Property="ToolTip" Value="{Binding ToolTip, Mode=OneWay}" />
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+        </Grid.Resources>
 
-        <Button x:Name="PathButton" Command="{Binding PathFolderDialogCommand}" Content="Path" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.82,-0.025" Height="25" />
-        <Button x:Name="makeTex" Command="{Binding TexMakerCommand}" Content="Tex" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="75" Height="25" />
-        <ComboBox x:Name="comboBox" ItemsSource="{Binding Languages}" Height="25" VerticalAlignment="Top" Margin="0,10,10,0" SelectionChanged="OnLanguageBox_Changed" HorizontalAlignment="Right" Width="149" />
-        <TextBox x:Name="textBox" Text="{Binding Path=fPath, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="170,10,164,0" Height="26" VerticalAlignment="Top" AllowDrop="False" MaxLines="1" />
+        <controls:HamburgerMenu x:Name="HamburgerMenuControl"
+                                DisplayMode="CompactInline"
+                                Foreground="White"
+                                IsPaneOpen="False"
+                                SelectedIndex="{Binding SelectedIndex, Mode=TwoWay, TargetNullValue=''}"
+                                ItemTemplate="{StaticResource MenuItemTemplate}"
+                                OptionsItemTemplate="{StaticResource MenuItemTemplate}"
+                                PaneBackground="#41B1E1" OpenPaneLength="125">
 
-        <Button x:Name="PathButton_Copy" Command="{Binding AddExtensionCommand}" Content="Add Extension" Margin="0,341,10,46" RenderTransformOrigin="-0.82,-0.025" HorizontalAlignment="Right" Width="149" />
+            <controls:HamburgerMenu.Content>
+                <MultiBinding Converter="{StaticResource SelectedItemToContentConverter}">
+                    <Binding Mode="OneWay"
+                             Path="SelectedItem"
+                             RelativeSource="{RelativeSource Self}" />
+                    <Binding Mode="OneWay"
+                             Path="SelectedOptionsItem"
+                             RelativeSource="{RelativeSource Self}" />
+                </MultiBinding>
+            </controls:HamburgerMenu.Content>
 
-        <DataGrid Name="MainView_DataGrid" ItemsSource="{Binding List, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0"
-                  AutoGenerateColumns="False" Margin="10,41,163,46" BorderThickness="1" BorderBrush="#CC119EDA" AllowDrop="True" IsReadOnly="True">
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Remove Item" Click="OnRemoveItemClick_Main">
-                    </MenuItem>
-                    <MenuItem Header="Remove extensions" Click="OnRemoveExtensions_Main">
-                    </MenuItem>
-                    <MenuItem Header="Clear" Click="OnClearClick__Main">
-                    </MenuItem>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-            <DataGrid.ColumnHeaderStyle>
-                <Style TargetType="DataGridColumnHeader">
-                    <EventSetter Event="Click" Handler="columnHeader_Click" />
-                </Style>
-            </DataGrid.ColumnHeaderStyle>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Pos" Binding="{Binding Position}" />
-                <DataGridTextColumn Header="Name" Binding="{Binding FileName}" MinWidth="250" />
-                <DataGridTextColumn Header="Extension" Binding="{Binding Extension}" />
-            </DataGrid.Columns>
-        </DataGrid>
+            <!--  Items  -->
+            <controls:HamburgerMenu.ItemsSource>
+                <controls:HamburgerMenuItemCollection>
+                    <helper:CustomHamburgerMenuIconItem Icon="{iconPacks:PackIconMaterial Kind=Home}"
+                                                       Label="Home"
+                                                       ToolTip="Show the Home view">
+                        <helper:CustomHamburgerMenuIconItem.Tag>
+                            <views:HomeView />
+                        </helper:CustomHamburgerMenuIconItem.Tag>
+                    </helper:CustomHamburgerMenuIconItem>
 
-        <DataGrid x:Name="WhiteList_Grid" ItemsSource="{Binding CurrentWhiteList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Row="0"
-            AutoGenerateColumns="False" Margin="0,41,10,0" BorderThickness="1" BorderBrush="#CC119EDA" AllowDrop="False" IsReadOnly="True" HorizontalAlignment="Right" Width="148" Height="295" VerticalAlignment="Top">
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Remove item" Click="OnWhiteListRemoveClick_Main">
-                    </MenuItem>
-                    <MenuItem Header="Clear" Click="OnWhiteListClearClick_Main">
-                    </MenuItem>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
+                    <helper:CustomHamburgerMenuIconItem Icon="{iconPacks:PackIconMaterial Kind=FormatText}"
+                                                       Label="TextEdit"
+                                                       ToolTip="Show the Texteditor view">
+                        <helper:CustomHamburgerMenuIconItem.Tag>
+                            <views:TxtEditorView />
+                        </helper:CustomHamburgerMenuIconItem.Tag>
+                    </helper:CustomHamburgerMenuIconItem>
 
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="WhiteList" Binding="{Binding Extension}" MinWidth="145" />
-            </DataGrid.Columns>
-        </DataGrid>
-        <Controls:Flyout Position="Bottom" Header="" Width="Auto" IsOpen="{Binding FlyoutOpen }" AutoCloseInterval="5000" Background="Orange" CloseButtonVisibility="Hidden" IsAutoCloseEnabled="True" Height="30">
-            <Label x:Name="label" Content="{Binding NotifyMessage}" HorizontalAlignment="Left" Margin="-50,0,0,0" VerticalAlignment="Top" />
-        </Controls:Flyout>
+                    <helper:CustomHamburgerMenuIconItem Icon="{iconPacks:PackIconMaterial Kind=Settings}"
+                                                       Label="Settings"
+                                                       ToolTip="Just the Settings view">
+                        <helper:CustomHamburgerMenuIconItem.Tag>
+                            <views:SettingsView />
+                        </helper:CustomHamburgerMenuIconItem.Tag>
+                    </helper:CustomHamburgerMenuIconItem>
+                </controls:HamburgerMenuItemCollection>
+            </controls:HamburgerMenu.ItemsSource>
+
+            <!--  Options  -->
+            <controls:HamburgerMenu.OptionsItemsSource>
+                <controls:HamburgerMenuItemCollection>
+                    <helper:CustomHamburgerMenuIconItem Icon="{iconPacks:PackIconMaterial Kind=Help}" Label="About">
+                        <helper:CustomHamburgerMenuIconItem.Tag>
+                            <views:AboutView />
+                        </helper:CustomHamburgerMenuIconItem.Tag>
+                    </helper:CustomHamburgerMenuIconItem>
+                </controls:HamburgerMenuItemCollection>
+            </controls:HamburgerMenu.OptionsItemsSource>
+
+            <!--  Content  -->
+            <controls:HamburgerMenu.ContentTemplate>
+                <DataTemplate DataType="{x:Type controls:HamburgerMenuItem}">
+                    <Grid x:Name="TheContentGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" Background="#FF444444">
+                            <TextBlock x:Name="Header"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="24"
+                                       Foreground="White"
+                                       Text="{Binding Label}" />
+                        </Border>
+                        <ContentControl x:Name="TheContent"
+                                        Grid.Row="1"
+                                        Content="{Binding Tag}"
+                                        Focusable="False"
+                                        Foreground="{DynamicResource BlackBrush}" />
+                    </Grid>
+                </DataTemplate>
+            </controls:HamburgerMenu.ContentTemplate>
+        </controls:HamburgerMenu>
     </Grid>
-</Controls:MetroWindow>
+</controls:MetroWindow>

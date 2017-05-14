@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:LaTexInclude.View"
-             xmlns:Obselete="clr-namespace:Xceed.Wpf.Toolkit.Obselete;assembly=Xceed.Wpf.Toolkit" x:Class="LaTexInclude.View.TxtEditorView"
+             xmlns:Obselete="clr-namespace:Xceed.Wpf.Toolkit.Obselete;assembly=Xceed.Wpf.Toolkit"
+    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls" x:Class="LaTexInclude.View.TxtEditorView"
              mc:Ignorable="d" d:DesignWidth="440" d:DesignHeight="269">
 
     <UserControl.Resources>
@@ -41,15 +43,21 @@
     <Grid>
         <DockPanel>
             <ToolBar DockPanel.Dock="Top">
-                <Button Click="SaveButton_Click" Command="{Binding Fly}">
+                <Button Click="SaveButton_Click" Command="{Binding Fly}" ToolTip="Save as .tex">
                     <Image Source="/EmbeddedRessources/Images/Save.png" Width="16" Height="16" />
+                </Button>
+                <Button Click="CopyToClipboard" Command="{Binding Copy}" ToolTip="Copy to clipboard">
+                    <iconPacks:PackIconMaterial Kind="ClipboardFlow" />
                 </Button>
                 <Separator />
                 <TextBox x:Name="searchTxtBox" Style="{StaticResource placeHolder}" Tag="Search" Height="26" Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Padding="0" UseLayoutRounding="False" />
                 <TextBox x:Name="replaceTxtBox" Style="{StaticResource placeHolder}" Tag="Replace" Height="26" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" />
                 <Button x:Name="replaceButton" Content="Replace!" Height="26" VerticalAlignment="Top" Width="74" Margin="10,0,0,0" Click="OnReplaceClick" />
             </ToolBar>
-            <RichTextBox x:Name="richTextBox" AcceptsTab="True" Loaded="RichTextBox_Loaded" VerticalScrollBarVisibility="Visible" AutoWordSelection="False" />
+            <RichTextBox x:Name="richTextBox" AcceptsTab="True" Loaded="RichTextBox_Loaded" VerticalScrollBarVisibility="Visible" AutoWordSelection="False" UndoLimit="500" />
         </DockPanel>
+        <Controls:Flyout Position="Bottom" Header="" Width="Auto" IsOpen="{Binding FlyoutOpen }" AutoCloseInterval="5000" Background="Orange" CloseButtonVisibility="Hidden" IsAutoCloseEnabled="True" Height="30">
+            <Label x:Name="label" Content="{Binding NotifyMessage}" HorizontalAlignment="Left" Margin="-50,0,0,0" VerticalAlignment="Top" />
+        </Controls:Flyout>
     </Grid>
 </UserControl>

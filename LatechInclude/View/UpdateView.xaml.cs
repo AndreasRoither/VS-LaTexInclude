@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using LaTexInclude.ViewModel;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace LaTexInclude.View
@@ -15,6 +16,8 @@ namespace LaTexInclude.View
 
         private void Later(object sender, RoutedEventArgs e)
         {
+            UpdateViewModel uvm = new UpdateViewModel(true);
+            UpdateViewModel.LaterClicked = true;
             var window = Window.GetWindow(this);
             window.Close();
         }

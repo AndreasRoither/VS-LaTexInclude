@@ -4,7 +4,9 @@ using LaTexInclude.Model;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Windows.Input;
 
 namespace LaTexInclude.ViewModel
@@ -15,8 +17,9 @@ namespace LaTexInclude.ViewModel
         public ICommand GithubCommand { get; private set; }
 
         private GetResponse response = null;
-
-        private string path;
+        private string dlgPath = "";
+        private string dir = "";
+        private string saved = "";
 
         public UpdateViewModel(GetResponse obj)
         {
@@ -33,6 +36,12 @@ namespace LaTexInclude.ViewModel
             Progress = 0;
             Text = "";
         }
+
+        public UpdateViewModel(bool b)
+        {
+        }
+
+        public static bool LaterClicked { get; set; }
 
         private string version;
 
@@ -109,7 +118,7 @@ namespace LaTexInclude.ViewModel
                         dlg.Title = "Choose a download path";
                         dlg.AddToMostRecentlyUsedList = false;
                         dlg.AllowNonFileSystemItems = false;
-                        dlg.DefaultDirectory = Environment.CurrentDirectory;
+                        dlg.InitialDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
                         dlg.EnsureFileExists = true;
                         dlg.EnsurePathExists = true;
                         dlg.EnsureReadOnly = false;
@@ -123,7 +132,16 @@ namespace LaTexInclude.ViewModel
                             webClient.Headers.Add("User-Agent", "Mozilla/4.0 (compatible; MSIE 8.0)");
                             webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
                             webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
-                            webClient.DownloadFileAsync(new Uri(response.DownloadUrl), dlg.FileName + @"\LaTexInclude.exe");
+
+                            if (File.Exists(dlg.FileName + @"\LaTexInclude.exe"))
+                            {
+                                dlgPath = dlg.FileName;
+                                dir = "LaTexInclude.exe";
+                                saved = "LaTexInclude" + version + ".exe";
+                                webClient.DownloadFileAsync(new Uri(response.DownloadUrl), dlg.FileName + @"\LaTexInclude" + version + ".exe");
+                            }
+                            else
+                                webClient.DownloadFileAsync(new Uri(response.DownloadUrl), dlg.FileName + @"\LaTexInclude.exe");
                         }
                         else
                         {
@@ -156,6 +174,34 @@ namespace LaTexInclude.ViewModel
 
         private void Completed(object sender, AsyncCompletedEventArgs e)
         {
+            try
+            {
+                if (dir != "")
+                {
+                    System.Diagnostics.Process process = new System.Diagnostics.Process();
+                    System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+                    startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
+                    startInfo.FileName = "cmd.exe";
+                    startInfo.Arguments = @"/C del " + dlgPath + @"\LaTexInclude.exe" + " && rename " + dlgPath + @"\" + saved + " " + dir;
+                    process.StartInfo = startInfo;
+                    process.Start();
+
+                    System.Diagnostics.Process.GetCurrentProcess().Kill();
+                }
+            }
+            catch (Exception ex)
+            {
+                string temp_outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
+
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
+                {
+                    file.WriteLine(temp_outputString);
+                }
+
+                temp_outputString = null;
+            }
+
             Progress = 100;
             ShowProgressBar = false;
             Text = "Download finished.";

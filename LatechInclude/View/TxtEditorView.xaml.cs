@@ -19,6 +19,7 @@ namespace LaTexInclude.View
         {
             InitializeComponent();
             tevm = new TxtEditorViewModel();
+            this.DataContext = tevm;
         }
 
         /// <summary>
@@ -36,7 +37,13 @@ namespace LaTexInclude.View
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             tevm.outputString = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
-            tevm.SaveFileMethod();
+            if (tevm.outputString != null && tevm.outputString != "")
+            {
+                tevm.SaveFileMethod();
+                tevm.NotifyMessage = "Saved as output.tex in working directory";
+            }
+            else
+                tevm.NotifyMessage = "Nothing in the textbox";
         }
 
         /// <summary>
@@ -53,7 +60,24 @@ namespace LaTexInclude.View
                 richTextBox.Document.Blocks.Clear();
                 richTextBox.Document.Blocks.Add(new Paragraph(new Run(tevm.outputString)));
                 temp = null;
+                tevm.NotifyMessage = "Replaced";
             }
+            else
+                tevm.NotifyMessage = "Search textbox is empty";
+            tevm.FlyoutOpen = true;
+        }
+
+        private void CopyToClipboard(object sender, RoutedEventArgs e)
+        {
+            string outputString = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
+            if (outputString != null && outputString != "")
+            {
+                outputString = outputString.Replace("\r\n", "\r");
+                System.Windows.Forms.Clipboard.SetText(outputString);
+                tevm.NotifyMessage = "Copied to clipboard";
+            }
+            else
+                tevm.NotifyMessage = "Nothing to copy";
         }
     }
 }

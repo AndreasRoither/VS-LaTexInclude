@@ -15,6 +15,7 @@ namespace LaTexInclude.ViewModel
     public class TxtEditorViewModel : ViewModelBase
     {
         public ICommand Fly { get; private set; }
+        public ICommand Copy { get; private set; }
 
         private static bool isFlyoutOpen;
         private static string _NotifyMessage = "";
@@ -23,6 +24,7 @@ namespace LaTexInclude.ViewModel
         public TxtEditorViewModel()
         {
             Fly = new RelayCommand(Flyout);
+            Copy = new RelayCommand(CopyMethod);
             isFlyoutOpen = false;
         }
 
@@ -66,7 +68,14 @@ namespace LaTexInclude.ViewModel
         /// </summary>
         public void Flyout()
         {
-            NotifyMessage = "Saved in workdirectory as output.tex";
+            FlyoutOpen = true;
+        }
+
+        /// <summary>
+        /// Method to set the notifymessage and open the flyout
+        /// </summary>
+        public void CopyMethod()
+        {
             FlyoutOpen = true;
         }
 

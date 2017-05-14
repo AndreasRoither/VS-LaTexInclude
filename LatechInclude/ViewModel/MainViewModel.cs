@@ -2,7 +2,6 @@
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using LaTexInclude.HelperClasses;
-using LaTexInclude.View;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Windows;
 using System.Windows.Input;
 
 namespace LaTexInclude.ViewModel
@@ -29,9 +27,7 @@ namespace LaTexInclude.ViewModel
         public ICommand PathFolderDialogCommand { get; private set; }
         public ICommand TexMakerCommand { get; private set; }
         public ICommand AddExtensionCommand { get; private set; }
-        public ICommand SettingsCommand { get; private set; }
         public ICommand ExitCommand { get; private set; }
-        public ICommand TestCommand { get; private set; }
 
         new public event PropertyChangedEventHandler PropertyChanged;
 
@@ -57,9 +53,7 @@ namespace LaTexInclude.ViewModel
             PathFolderDialogCommand = new RelayCommand(PathFolderDialogMethod);
             TexMakerCommand = new RelayCommand(TexMakerMethod);
             AddExtensionCommand = new RelayCommand(AddExtensionMethod);
-            SettingsCommand = new RelayCommand(SettingsMethod);
             ExitCommand = new RelayCommand(ExitMethod);
-            TestCommand = new RelayCommand(Test);
 
             _statusText = "";
             pathString = new StringNotify("");
@@ -93,18 +87,11 @@ namespace LaTexInclude.ViewModel
             }
         }
 
-        public void Test()
-        {
-            TestWindow tw = new TestWindow();
-            tw.Show();
-        }
-
         public override void Cleanup()
         {
             PathFolderDialogCommand = null;
             TexMakerCommand = null;
             AddExtensionCommand = null;
-            SettingsCommand = null;
             ExitCommand = null;
             _fileList = null;
             _whiteList = null;
@@ -492,18 +479,19 @@ namespace LaTexInclude.ViewModel
                     });
 
                     string outputString = "";
-                    bool found = false;
+                    bool found;
 
                     foreach (MyFile file in _fileList)
                     {
+                        found = false;
                         if (_currentLanguage == "" | _currentLanguage == "All")
                         {
                             foreach (WhiteList wl in CurrentWhiteList)
                             {
-                                if (file.Extension == wl.Extension)
+                                if (file.Extension == wl.Extension && !found)
                                 {
-                                    found = true;
                                     fields.Add("Language", wl.Language);
+                                    found = true;
                                 }
                             }
 
@@ -516,6 +504,7 @@ namespace LaTexInclude.ViewModel
                         {
                             fields.Add("Language", _currentLanguage);
                         }
+
                         temp = file.Path;
                         temp = reg.Replace(temp, "/");
                         fields.Add("Path", temp);
@@ -565,9 +554,8 @@ namespace LaTexInclude.ViewModel
             {
                 DataContext = aevm,
                 Title = "Add Extension",
-                Owner = Application.Current.MainWindow,
                 Height = 220,
-                Width = 320
+                Width = 320,
             };
 
             svw.ShowDialog();
@@ -582,27 +570,6 @@ namespace LaTexInclude.ViewModel
         }
 
         /// <summary>
-        /// Shows the SettingsView
-        /// </summary>
-        public void SettingsMethod()
-        {
-            //SettingsViewModel svm = new SettingsViewModel();
-            bool test = Properties.Settings.Default.Setting_General_UseCustomPath;
-
-            SwitchViewWindow svw = new SwitchViewWindow()
-            {
-                DataContext = svm_temp,
-                Title = "Settings",
-                Owner = Application.Current.MainWindow,
-                Height = 360,
-                Width = 426
-            };
-
-            svw.ShowDialog();
-            svw = null;
-        }
-
-        /// <summary>
         /// Shows the TxtEditorView
         /// </summary>
         /// <param name="outputString"></param>
@@ -613,19 +580,20 @@ namespace LaTexInclude.ViewModel
                 outputString = outputString
             };
 
-            SwitchViewWindow svw = new SwitchViewWindow()
+            if (Properties.Settings.Default.Setting_General_CopyToClipboard)
             {
-                DataContext = tevm,
-                Title = "TextEditor",
-                Owner = Application.Current.MainWindow,
-                ResizeMode = ResizeMode.CanResize
-            };
+                outputString = outputString.Replace("\r\n", "\r");
+                System.Windows.Forms.Clipboard.SetText(outputString);
+                NotifyMessage = "Copied to clipboard";
+                FlyoutOpen = true;
+            }
+            else
+            {
+                StartViewmodel.SelectedIndex = 1;
+                NotifyMessage = "Success! Output copied to texteditor";
+                FlyoutOpen = true;
+            }
 
-            svw.Height = 280;
-            svw.Width = 700;
-
-            svw.ShowDialog();
-            svw = null;
             tevm = null;
         }
 
@@ -655,6 +623,7 @@ namespace LaTexInclude.ViewModel
                 _fileList.Clear();
 
                 int i = 1;
+                bool flag = false;
                 foreach (string file in files)
                 {
                     foreach (WhiteList wl in _currentWhiteList)
@@ -667,14 +636,19 @@ namespace LaTexInclude.ViewModel
                                 temp += System.IO.Path.GetFileName(file);
                                 _fileList.Add(new MyFile(System.IO.Path.GetFileNameWithoutExtension(file), temp, System.IO.Path.GetExtension(file), i));
                                 i++;
+                                flag = true;
+                                break;
                             }
                             else
                             {
                                 _fileList.Add(new MyFile(System.IO.Path.GetFileNameWithoutExtension(file), file, System.IO.Path.GetExtension(file), i));
                                 i++;
+                                flag = true;
+                                break;
                             }
                         }
                     }
+                    if (flag) continue;
                 }
 
                 StatusText = (i - 1) + " Files found";

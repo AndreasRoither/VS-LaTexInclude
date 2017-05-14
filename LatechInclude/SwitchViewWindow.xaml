@@ -10,7 +10,7 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         BorderBrush="#FF41B1E1"
-        Title="SwitchViewWindow" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Height="225" Width="385">
+        Title="SwitchViewWindow" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Height="225" Width="385">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type ViewModel:AddExtensionViewModel}">

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:LaTexInclude.View"
              xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="LaTexInclude.View.SettingsView"
-             mc:Ignorable="d" Height="330" Width="410">
+             mc:Ignorable="d" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -39,16 +39,17 @@
     </UserControl.Resources>
 
     <Grid>
-        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="330" VerticalAlignment="Top" Width="410">
+        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="360" Width="410" VerticalAlignment="Top">
             <TabItem Header="General">
                 <Grid>
-                    <Custom:ToggleSwitch Name="SaveWhiteList_Toggle" Header="Save whitelist" Margin="10,10,234,180" IsChecked="False" IsCheckedChanged="IsCheckedChanged_SaveWhiteList" />
-                    <Custom:ToggleSwitch Name="StatusBar_Toggle" Header="Status bar" Margin="234,10,10,180" IsChecked="False" IsCheckedChanged="IsCheckedChanged_StatusBar" />
+                    <Custom:ToggleSwitch Name="SaveWhiteList_Toggle" Header="Save whitelist" Margin="10,10,234,239.5" IsChecked="False" IsCheckedChanged="IsCheckedChanged_SaveWhiteList" />
+                    <Custom:ToggleSwitch Name="StatusBar_Toggle" Header="Status bar" Margin="234,10,10,239.5" IsChecked="False" IsCheckedChanged="IsCheckedChanged_StatusBar" />
                     <Custom:ToggleSwitch Name="ContextStart_Toggle"  Header="Start on context click" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" Width="160" IsCheckedChanged="IsCheckedChanged_ContextStart" />
                     <Custom:ToggleSwitch Name="RelativePath_Toggle" Header="Use relative path" Height="61" Margin="234,80,10,0" VerticalAlignment="Top" IsCheckedChanged="IsCheckedChanged_RelativePath" />
-                    <Custom:ToggleSwitch x:Name="CustomPath_Toggle"  Header="Use custom start path" HorizontalAlignment="Left" Margin="10,163,0,0" VerticalAlignment="Top" Width="160" IsCheckedChanged="IsCheckedChanged_CustomPath" />
-                    <TextBox x:Name="customPath" Style="{StaticResource placeHolder}" Tag="C:\User\Test" Height="23" Margin="10,229,10,0" TextWrapping="Wrap" Text="{Binding CustomPath}" VerticalAlignment="Top" IsEnabled="False" TextChanged="TextChanged" AllowDrop="False" IsReadOnly="True" />
-                    <Button x:Name="button1" Content="Path" Command="{Binding PathDialogCommand}" Margin="234,192,10,0" VerticalAlignment="Top" />
+                    <Custom:ToggleSwitch x:Name="CustomPath_Toggle"  Header="Use custom start path" HorizontalAlignment="Left" Margin="10,212,0,0" VerticalAlignment="Top" Width="160" IsCheckedChanged="IsCheckedChanged_CustomPath" />
+                    <Custom:ToggleSwitch x:Name="CopyToClipBoard_Toggle"  Header="Copy tex to clipboard" HorizontalAlignment="Left" Margin="10,146,0,0" VerticalAlignment="Top" Width="160" IsCheckedChanged="IsCheckedChanged_CopyToClipboard" />
+                    <TextBox x:Name="customPath" Style="{StaticResource placeHolder}" Tag="C:\User\Test" Height="23" Margin="10,278,10,0" TextWrapping="Wrap" Text="{Binding CustomPath}" VerticalAlignment="Top" IsEnabled="False" TextChanged="TextChanged" AllowDrop="False" IsReadOnly="True" />
+                    <Button x:Name="button1" Content="Path" Command="{Binding PathDialogCommand}" Margin="234,246,10,0" VerticalAlignment="Top" />
                 </Grid>
             </TabItem>
             <TabItem Header="Advanced" HorizontalAlignment="Left" Height="39" VerticalAlignment="Top" Width="127" Margin="0,0,-22,0">
@@ -64,5 +65,8 @@
             </TabItem>
             <Button x:Name="button2" Content="Button" Height="100" Width="75" />
         </TabControl>
+        <Custom:Flyout Position="Bottom" Header="" Width="Auto" IsOpen="{Binding FlyoutOpen }" AutoCloseInterval="5000" Background="Orange" CloseButtonVisibility="Hidden" IsAutoCloseEnabled="True" Height="30">
+            <Label x:Name="flyoutlabel" Content="{Binding NotifyMessage}" HorizontalAlignment="Left" Margin="-50,0,0,0" VerticalAlignment="Top" />
+        </Custom:Flyout>
     </Grid>
 </UserControl>

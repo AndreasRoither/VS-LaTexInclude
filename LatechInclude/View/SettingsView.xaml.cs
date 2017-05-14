@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LaTexInclude.ViewModel;
+using System;
 using System.Windows.Controls;
 
 namespace LaTexInclude.View
@@ -8,12 +9,16 @@ namespace LaTexInclude.View
     /// </summary>
     public partial class SettingsView : UserControl
     {
+        private SettingsViewModel svm;
+
         /// <summary>
         /// SettingsView Contructor
         /// </summary>
         public SettingsView()
         {
             InitializeComponent();
+
+            svm = new SettingsViewModel();
 
             SaveWhiteList_Toggle.IsChecked = Properties.Settings.Default.Setting_General_SaveWhiteList;
             StatusBar_Toggle.IsChecked = Properties.Settings.Default.Setting_General_StatusBar;
@@ -22,6 +27,8 @@ namespace LaTexInclude.View
             CustomPath_Toggle.IsChecked = Properties.Settings.Default.Setting_General_UseCustomPath;
             customPath.IsEnabled = Properties.Settings.Default.Setting_General_UseCustomPath;
             customPath.Text = Properties.Settings.Default.Setting_General_CustomPath;
+            CopyToClipBoard_Toggle.IsChecked = Properties.Settings.Default.Setting_General_CopyToClipboard;
+            this.DataContext = svm;
         }
 
         /// <summary>
@@ -78,6 +85,11 @@ namespace LaTexInclude.View
         private void TextChanged(object sender, TextChangedEventArgs e)
         {
             Properties.Settings.Default.Setting_General_CustomPath = customPath.Text;
+        }
+
+        private void IsCheckedChanged_CopyToClipboard(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Setting_General_CopyToClipboard = !Properties.Settings.Default.Setting_General_CopyToClipboard;
         }
     }
 }
