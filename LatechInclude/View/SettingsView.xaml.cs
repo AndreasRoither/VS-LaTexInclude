@@ -48,6 +48,8 @@ namespace LaTexInclude.View
         /// <param name="e"></param>
         private void IsCheckedChanged_StatusBar(object sender, EventArgs e)
         {
+            MainViewModel mvm = new MainViewModel();
+            mvm.StatusText = "";
             Properties.Settings.Default.Setting_General_StatusBar = !Properties.Settings.Default.Setting_General_StatusBar;
         }
 

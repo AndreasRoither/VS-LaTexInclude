@@ -25,6 +25,7 @@ namespace LaTexInclude.ViewModel
         public static ICommand FileCommand { get; private set; }
         public static ICommand FolderCommand { get; private set; }
         public static ICommand PathDialogCommand { get; private set; }
+        public static ICommand ClearPathCommand { get; private set; }
 
         /// <summary>
         /// SettingsViewModel constructor
@@ -34,6 +35,7 @@ namespace LaTexInclude.ViewModel
             FileCommand = new RelayCommand(FileMethod);
             FolderCommand = new RelayCommand(FolderMethod);
             PathDialogCommand = new RelayCommand(PathDialog);
+            ClearPathCommand = new RelayCommand(ClearPathMethod);
 
             customPath = Properties.Settings.Default.Setting_General_CustomPath;
         }
@@ -226,6 +228,25 @@ namespace LaTexInclude.ViewModel
                     NotifyMessage = "Path saved";
                     FlyoutOpen = true;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Clear path textbox and setting
+        /// </summary>
+        public void ClearPathMethod()
+        {
+            if (CustomPath != String.Empty)
+            {
+                CustomPath = "";
+                Properties.Settings.Default.Setting_General_CustomPath = "";
+                NotifyMessage = "Path reset";
+                FlyoutOpen = true;
+            }
+            else
+            {
+                NotifyMessage = "It's already empty.";
+                FlyoutOpen = true;
             }
         }
     }

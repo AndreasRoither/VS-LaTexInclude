@@ -11,7 +11,7 @@
         <DockPanel>
             <StackPanel Height="31" VerticalAlignment="Bottom">
                 <StatusBar Height="31" Background="White">
-                    <TextBlock Margin="10,0,0,0" x:Name="statusBar_TextBlock" Text="{Binding Path=statusText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextWrapping="Wrap" />
+                    <TextBlock Margin="10,0,0,0" x:Name="statusBar_TextBlock" Text="{Binding Path=StatusText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextWrapping="Wrap" Foreground="#FF226BEA" />
                 </StatusBar>
             </StackPanel>
         </DockPanel>

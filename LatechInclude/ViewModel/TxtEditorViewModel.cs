@@ -16,15 +16,20 @@ namespace LaTexInclude.ViewModel
     {
         public ICommand Fly { get; private set; }
         public ICommand Copy { get; private set; }
+        public ICommand Clear { get; private set; }
 
         private static bool isFlyoutOpen;
         private static string _NotifyMessage = "";
         private static string _outputString = "";
 
+        /// <summary>
+        /// Constructor TxtEditorViewModel
+        /// </summary>
         public TxtEditorViewModel()
         {
             Fly = new RelayCommand(Flyout);
             Copy = new RelayCommand(CopyMethod);
+            Clear = new RelayCommand(ClearTxtField);
             isFlyoutOpen = false;
         }
 
@@ -102,6 +107,15 @@ namespace LaTexInclude.ViewModel
                 }
                 outputString = null;
             }
+        }
+
+        /// <summary>
+        /// Clears the text field
+        /// </summary>
+        public void ClearTxtField()
+        {
+            _outputString = "";
+            FlyoutOpen = true;
         }
     }
 }

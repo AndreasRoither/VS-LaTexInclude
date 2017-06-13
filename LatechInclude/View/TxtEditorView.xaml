@@ -49,6 +49,9 @@
                 <Button Click="CopyToClipboard" Command="{Binding Copy}" ToolTip="Copy to clipboard">
                     <iconPacks:PackIconMaterial Kind="ClipboardFlow" />
                 </Button>
+                <Button Click="Clear" Command="{Binding Clear}" ToolTip="Clear text field">
+                    <iconPacks:PackIconMaterial Kind="DeleteForever" />
+                </Button>
                 <Separator />
                 <TextBox x:Name="searchTxtBox" Style="{StaticResource placeHolder}" Tag="Search" Height="26" Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Padding="0" UseLayoutRounding="False" />
                 <TextBox x:Name="replaceTxtBox" Style="{StaticResource placeHolder}" Tag="Replace" Height="26" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" />

@@ -44,6 +44,8 @@ namespace LaTexInclude.ViewModel
         private StringNotify pathString = null;
         private bool isFlyoutOpen;
         private string _notifyMessage;
+        private List<string> filesList = new List<string>();
+        private int nonAccessibleFiles = 0;
 
         private readonly string regexPattern;
         private readonly string regexReplacePattern;
@@ -77,6 +79,15 @@ namespace LaTexInclude.ViewModel
             dlg.ShowPlacesList = true;
 
             LoadFiles();
+        }
+
+        /// <summary>
+        /// Secondary constructor to get static vars
+        /// </summary>
+        /// <param name="temp"></param>
+        public MainViewModel(bool temp)
+        {
+
         }
 
         ~MainViewModel()
@@ -197,7 +208,7 @@ namespace LaTexInclude.ViewModel
                 if (Properties.Settings.Default.Setting_General_StatusBar)
                 {
                     _statusText = value;
-                    OnPropertyChanged("statusText");
+                    OnPropertyChanged("StatusText");
                 }
             }
         }
@@ -369,6 +380,8 @@ namespace LaTexInclude.ViewModel
                 NotifyMessage = message + "... added file(s)!";
                 FlyoutOpen = true;
             }
+
+            StatusText = "Successfully loaded";
         }
 
         /// <summary>
@@ -483,6 +496,9 @@ namespace LaTexInclude.ViewModel
                     string TexCodeTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexCodeTemplate.tex"));
                     string TexImageTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexImageTemplate.tex"));
                     string TexPDFTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexPDFTemplate.tex"));
+                    int count = 0;
+
+                    TrulyObservableCollection<MyFile> tempList = new TrulyObservableCollection<MyFile>();
 
                     StringDictionary fields = new StringDictionary();
 
@@ -494,8 +510,18 @@ namespace LaTexInclude.ViewModel
                     string outputString = "";
                     bool found;
 
-                    foreach (MyFile file in _fileList)
+                    if (_currentLanguage == "All")
                     {
+                        tempList = _fileList;
+                    }
+                    else
+                    {
+                        tempList = _tempFileList;
+                    }
+
+                    foreach (MyFile file in tempList)
+                    {
+                        count++;
                         found = false;
                         if (_currentLanguage == "" | _currentLanguage == "All")
                         {
@@ -530,6 +556,7 @@ namespace LaTexInclude.ViewModel
                         fields.Clear();
                     }
 
+                    StatusText = count + " Files processed";
                     TextEditorMethod(outputString);
                 }
                 catch (Exception ex)
@@ -585,7 +612,7 @@ namespace LaTexInclude.ViewModel
         /// <summary>
         /// Shows the TxtEditorView
         /// </summary>
-        /// <param name="outputString"></param>
+        /// <param name="outputString">The string with Tex code in it</param>
         public void TextEditorMethod(string outputString)
         {
             TxtEditorViewModel tevm = new TxtEditorViewModel()
@@ -626,17 +653,21 @@ namespace LaTexInclude.ViewModel
         /// <summary>
         /// Searches the directory and adds files to the File list
         /// </summary>
-        /// <param name="folder"></param>
+        /// <param name="folder">The starting folder</param>
         public void SearchDirectories(string folder, string workdir = "")
         {
             //Throws exception if no permissions
             try
             {
-                string[] files = Directory.GetFiles(folder, "*", SearchOption.AllDirectories);
+                nonAccessibleFiles = 0;
                 _fileList.Clear();
-
                 int i = 1;
                 bool flag = false;
+
+                ApplyAllFiles(folder, ProcessFile);
+                string[] files = filesList.ToArray();
+
+
                 foreach (string file in files)
                 {
                     foreach (WhiteList wl in _currentWhiteList)
@@ -664,7 +695,32 @@ namespace LaTexInclude.ViewModel
                     if (flag) continue;
                 }
 
-                StatusText = (i - 1) + " Files found";
+                if (nonAccessibleFiles != 0)
+                {
+                    NotifyMessage = "Some files were not accessible, restart as admin to get all files";
+                    StatusText = nonAccessibleFiles + "/" + (i - 1 + nonAccessibleFiles) + " Files could not be accessed";
+                    FlyoutOpen = true;
+                }
+                else
+                {
+                    StatusText = (i - 1) + " Files found";
+                }
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                string outputString;
+                outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
+
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
+                {
+                    file.WriteLine(outputString);
+                }
+
+                outputString = null;
+
+                NotifyMessage = "Unauthorized access, restart as Admin to gain access";
+                FlyoutOpen = true;
             }
             catch (Exception ex)
             {
@@ -678,6 +734,49 @@ namespace LaTexInclude.ViewModel
                 }
 
                 outputString = null;
+            }
+        }
+
+        /// <summary>
+        /// Action called in ApplyAllFiles
+        /// This will add the file path to filesList
+        /// </summary>
+        /// <param name="path">The file path</param>
+        public void ProcessFile(string path)
+        {
+            if (path != "-1")
+            {
+                filesList.Add(path);
+            }
+            else
+            {
+                nonAccessibleFiles++;
+            }
+        }
+
+        /// <summary>
+        /// Searches all Directories including subdirectories, calling Processfile
+        /// if a file has been found
+        /// <para>This function will ignore the occuring UnauthorizedAccessException (all exceptions to be precise)</para>
+        /// </summary>
+        /// <param name="folder">Start folder</param>
+        /// <param name="fileAction">The function to be called</param>
+        public void ApplyAllFiles(string folder, Action<string> fileAction)
+        {
+            foreach (string file in Directory.GetFiles(folder))
+            {
+                fileAction(file);
+            }
+            foreach (string subDir in Directory.GetDirectories(folder))
+            {
+                try
+                {
+                    ApplyAllFiles(subDir, fileAction);
+                }
+                catch
+                {
+                    fileAction("-1");
+                }
             }
         }
 

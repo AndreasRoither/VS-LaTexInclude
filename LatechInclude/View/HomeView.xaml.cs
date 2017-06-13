@@ -154,7 +154,7 @@ namespace LaTexInclude.View
         /// <summary>
         /// Gets the Datagrid row
         /// </summary>
-        /// <param name="index"></param>
+        /// <param name="index">Row index</param>
         /// <returns></returns>
         private DataGridRow GetRowItem(int index)
         {
@@ -168,7 +168,7 @@ namespace LaTexInclude.View
         /// <summary>
         /// Gets current row index
         /// </summary>
-        /// <param name="pos"></param>
+        /// <param name="pos">The position you clicked at</param>
         /// <returns></returns>
         private int GetCurrentRowIndex(GetPosition pos)
         {
@@ -413,25 +413,28 @@ namespace LaTexInclude.View
         {
             if (_viewModel.CurrentLanguage == "All")
             {
-                _viewModel.List.Clear();
+                _viewModel.StatusText = "Cleared " + _viewModel.List.Count() + " files";
                 _viewModel.NotifyMessage = "Cleared";
+                _viewModel.List.Clear();
                 _viewModel.FlyoutOpen = true;
                 MainView_DataGrid.ItemsSource = null;
                 MainView_DataGrid.ItemsSource = _viewModel.List;
             }
             else
             {
-                TrulyObservableCollection<MyFile> tempFileList = _viewModel.TempList;
-                foreach (MyFile f in _viewModel.List)
+                TrulyObservableCollection<MyFile> tempFileList = _viewModel.List;
+                foreach (MyFile f in _viewModel.TempList)
                 {
                     tempFileList.Remove(f);
                 }
 
-                _viewModel.List.Clear();
+                _viewModel.StatusText = "Cleared " + _viewModel.TempList.Count() + " files";
+                _viewModel.List = tempFileList;
+                _viewModel.TempList.Clear();
                 _viewModel.NotifyMessage = "Cleared";
                 _viewModel.FlyoutOpen = true;
                 MainView_DataGrid.ItemsSource = null;
-                MainView_DataGrid.ItemsSource = _viewModel.List;
+                MainView_DataGrid.ItemsSource = _viewModel.TempList;
             }
         }
 
@@ -505,15 +508,15 @@ namespace LaTexInclude.View
                 comboBox.ItemsSource = null;
                 comboBox.ItemsSource = _viewModel.Languages;
                 comboBox.SelectedIndex = 0;
-                _viewModel.NotifyMessage = "Cleared";
-                _viewModel.FlyoutOpen = true;
                 WhiteList_Grid.ItemsSource = null;
                 WhiteList_Grid.ItemsSource = _viewModel.WhiteList;
+                _viewModel.StatusText = "Removed all extensions";
             }
             else
             {
                 List<WhiteList> temp = new List<WhiteList>();
                 string language = comboBox.SelectedItem.ToString();
+                int count = 0;
 
                 foreach (WhiteList w in _viewModel.WhiteList)
                 {
@@ -526,6 +529,7 @@ namespace LaTexInclude.View
                 foreach (WhiteList w in temp)
                 {
                     _viewModel.WhiteList.Remove(w);
+                    count++;
                 }
 
                 _viewModel.CurrentWhiteList = _viewModel.WhiteList;
@@ -539,7 +543,11 @@ namespace LaTexInclude.View
 
                 temp = null;
                 language = null;
+                _viewModel.StatusText = "Removed " + count + " extensions";
             }
+
+            _viewModel.NotifyMessage = "Cleared";
+            _viewModel.FlyoutOpen = true;
         }
     }
 }

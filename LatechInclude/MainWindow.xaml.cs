@@ -44,7 +44,7 @@ namespace LaTexInclude
         /// <summary>
         /// Version number
         /// </summary>
-        private int version = 120;
+        private int version = 130;
 
         /// <summary>
         /// The parsed HTTPWebRequest from github

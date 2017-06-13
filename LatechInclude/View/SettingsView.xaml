@@ -49,7 +49,8 @@
                     <Custom:ToggleSwitch x:Name="CustomPath_Toggle"  Header="Use custom start path" HorizontalAlignment="Left" Margin="10,212,0,0" VerticalAlignment="Top" Width="160" IsCheckedChanged="IsCheckedChanged_CustomPath" />
                     <Custom:ToggleSwitch x:Name="CopyToClipBoard_Toggle"  Header="Copy tex to clipboard" HorizontalAlignment="Left" Margin="10,146,0,0" VerticalAlignment="Top" Width="160" IsCheckedChanged="IsCheckedChanged_CopyToClipboard" />
                     <TextBox x:Name="customPath" Style="{StaticResource placeHolder}" Tag="C:\User\Test" Height="23" Margin="10,278,10,0" TextWrapping="Wrap" Text="{Binding CustomPath}" VerticalAlignment="Top" IsEnabled="False" TextChanged="TextChanged" AllowDrop="False" IsReadOnly="True" />
-                    <Button x:Name="button1" Content="Path" Command="{Binding PathDialogCommand}" Margin="234,246,10,0" VerticalAlignment="Top" />
+                    <Button x:Name="button1" Content="Path" Command="{Binding PathDialogCommand}" Margin="234,246,96,0" VerticalAlignment="Top" />
+                    <Button x:Name="button1_Copy" Content="Clear" Command="{Binding ClearPathCommand}" Margin="320,246,10,0" VerticalAlignment="Top" />
                 </Grid>
             </TabItem>
             <TabItem Header="Advanced" HorizontalAlignment="Left" Height="39" VerticalAlignment="Top" Width="127" Margin="0,0,-22,0">

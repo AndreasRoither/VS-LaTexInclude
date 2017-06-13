@@ -67,6 +67,11 @@ namespace LaTexInclude.View
             tevm.FlyoutOpen = true;
         }
 
+        /// <summary>
+        /// Copies text to the clipboard
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CopyToClipboard(object sender, RoutedEventArgs e)
         {
             string outputString = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
@@ -78,6 +83,17 @@ namespace LaTexInclude.View
             }
             else
                 tevm.NotifyMessage = "Nothing to copy";
+        }
+
+        /// <summary>
+        /// Clears the textbox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Clear(object sender, RoutedEventArgs e)
+        {
+            richTextBox.Document.Blocks.Clear();
+            tevm.NotifyMessage = "Deleted";
         }
     }
 }
