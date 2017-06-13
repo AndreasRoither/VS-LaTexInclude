@@ -33,6 +33,7 @@ namespace LaTexInclude.ViewModel
 
         public static string _currentLanguage = "";
         private static TrulyObservableCollection<MyFile> _fileList = new TrulyObservableCollection<MyFile>();
+        private static TrulyObservableCollection<MyFile> _tempFileList = new TrulyObservableCollection<MyFile>();
         private static List<WhiteList> _whiteList = new List<WhiteList>();
         private static List<WhiteList> _currentWhiteList = new List<WhiteList>();
         private static List<string> _Languages = new List<string>();
@@ -119,10 +120,22 @@ namespace LaTexInclude.ViewModel
             set { _currentLanguage = value; }
         }
 
+        /// <summary>
+        /// Getsor sets the current file list
+        /// </summary>
         public TrulyObservableCollection<MyFile> List
         {
             get { return _fileList; }
             set { _fileList = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the temporary file list
+        /// </summary>
+        public TrulyObservableCollection<MyFile> TempList
+        {
+            get { return _tempFileList; }
+            set { _tempFileList = value; }
         }
 
         /// <summary>

@@ -250,9 +250,13 @@ namespace LaTexInclude.View
             if (_viewModel.CurrentLanguage == "All")
             {
                 _viewModel.CurrentWhiteList = _viewModel.WhiteList;
+                MainView_DataGrid.ItemsSource = null;
+                MainView_DataGrid.ItemsSource = _viewModel.List;
             }
             else
             {
+                // WhiteList 
+
                 List<WhiteList> tempList = new List<WhiteList>();
 
                 foreach (WhiteList wl in _viewModel.WhiteList)
@@ -268,6 +272,27 @@ namespace LaTexInclude.View
                 }
 
                 _viewModel.CurrentWhiteList = tempList;
+                TrulyObservableCollection<MyFile> tempFileList = new TrulyObservableCollection<MyFile>();
+
+                // Filelist
+
+                foreach (MyFile f in _viewModel.List)
+                {
+                    bool flag = false;
+                    for (int i = 0; i < _viewModel.CurrentWhiteList.Count(); i++)
+                    {
+                        if (_viewModel.CurrentWhiteList[i].Extension == f.Extension)
+                        {
+                            tempFileList.Add(f);
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (flag) continue;
+                }
+                _viewModel.TempList = tempFileList;
+                MainView_DataGrid.ItemsSource = null;
+                MainView_DataGrid.ItemsSource = _viewModel.TempList;
             }
             WhiteList_Grid.ItemsSource = _viewModel.CurrentWhiteList;
         }
@@ -296,6 +321,7 @@ namespace LaTexInclude.View
 
                 _viewModel.NotifyMessage = "Removed " + fileName;
                 _viewModel.List.Remove(row);
+                _viewModel.TempList.Remove(row);
 
                 foreach (MyFile file in _viewModel.List)
                 {
@@ -305,7 +331,14 @@ namespace LaTexInclude.View
 
                 _viewModel.FlyoutOpen = true;
                 MainView_DataGrid.ItemsSource = null;
-                MainView_DataGrid.ItemsSource = _viewModel.List;
+                if (_viewModel.CurrentLanguage == "All")
+                {
+                    MainView_DataGrid.ItemsSource = _viewModel.List;
+                }
+                else
+                {
+                    MainView_DataGrid.ItemsSource = _viewModel.TempList;
+                }
 
                 fileName = null;
                 row = null;
@@ -346,12 +379,20 @@ namespace LaTexInclude.View
                 foreach (MyFile file in temp)
                 {
                     _viewModel.List.Remove(file);
+                    _viewModel.TempList.Remove(file);
                 }
 
                 _viewModel.NotifyMessage = "Removed all with " + row.Extension + " extension";
                 _viewModel.FlyoutOpen = true;
                 MainView_DataGrid.ItemsSource = null;
-                MainView_DataGrid.ItemsSource = _viewModel.List;
+                if (_viewModel.CurrentLanguage == "All")
+                {
+                    MainView_DataGrid.ItemsSource = _viewModel.List;
+                }
+                else
+                {
+                    MainView_DataGrid.ItemsSource = _viewModel.TempList;
+                }
 
                 row = null;
                 temp = null;
@@ -370,11 +411,28 @@ namespace LaTexInclude.View
         /// <param name="e"></param>
         private void OnClearClick__Main(object sender, RoutedEventArgs e)
         {
-            _viewModel.List.Clear();
-            _viewModel.NotifyMessage = "Cleared";
-            _viewModel.FlyoutOpen = true;
-            MainView_DataGrid.ItemsSource = null;
-            MainView_DataGrid.ItemsSource = _viewModel.List;
+            if (_viewModel.CurrentLanguage == "All")
+            {
+                _viewModel.List.Clear();
+                _viewModel.NotifyMessage = "Cleared";
+                _viewModel.FlyoutOpen = true;
+                MainView_DataGrid.ItemsSource = null;
+                MainView_DataGrid.ItemsSource = _viewModel.List;
+            }
+            else
+            {
+                TrulyObservableCollection<MyFile> tempFileList = _viewModel.TempList;
+                foreach (MyFile f in _viewModel.List)
+                {
+                    tempFileList.Remove(f);
+                }
+
+                _viewModel.List.Clear();
+                _viewModel.NotifyMessage = "Cleared";
+                _viewModel.FlyoutOpen = true;
+                MainView_DataGrid.ItemsSource = null;
+                MainView_DataGrid.ItemsSource = _viewModel.List;
+            }
         }
 
         /// <summary>
