@@ -8,7 +8,7 @@
              mc:Ignorable="d">
     <Grid MinWidth="250">
 
-        <TextBlock HorizontalAlignment="Center" Margin="58,262,58,20" TextWrapping="Wrap" Width="134" VerticalAlignment="Center" ><Run Text="LateTexInclude Ver. 1.32" /></TextBlock>
+        <TextBlock HorizontalAlignment="Center" Margin="58,262,58,20" TextWrapping="Wrap" Width="134" VerticalAlignment="Center" ><Run Text="LateTexInclude Ver. 1.4" /></TextBlock>
         <TextBlock HorizontalAlignment="Center" Margin="32,31,32,0" TextWrapping="Wrap" Text="Don't know how everything works?" VerticalAlignment="Top" />
         <TextBlock Margin="75,52,74,230" HorizontalAlignment="Center">
             <Hyperlink NavigateUri="https://github.com/AndiRoither/VS-LaTexInclude/wiki" Click="HyperlinkClick">Check out the wiki!</Hyperlink>

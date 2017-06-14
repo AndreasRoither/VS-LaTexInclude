@@ -5,11 +5,9 @@ using LaTexInclude.HelperClasses;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 namespace LaTexInclude.ViewModel
@@ -49,12 +47,15 @@ namespace LaTexInclude.ViewModel
 
         private readonly string regexPattern;
         private readonly string regexReplacePattern;
+        private readonly string assemblyPath;
+
+        private TexMaker tm;
 
         [PreferredConstructor]
         public MainViewModel()
         {
             PathFolderDialogCommand = new RelayCommand(PathFolderDialogMethod);
-            TexMakerCommand = new RelayCommand(TexMakerMethod);
+            TexMakerCommand = new RelayCommand(TexGeneratorMethod);
             AddExtensionCommand = new RelayCommand(AddExtensionMethod);
             ExitCommand = new RelayCommand(ExitMethod);
 
@@ -65,6 +66,7 @@ namespace LaTexInclude.ViewModel
 
             regexPattern = @"\$(.*?)\$";
             regexReplacePattern = @"[\\]";
+            assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             dlg.IsFolderPicker = true;
 
@@ -239,6 +241,16 @@ namespace LaTexInclude.ViewModel
             }
         }
 
+        public TexMaker Tex
+        {
+            get
+            {
+                return tm;
+            }
+            set
+            { }
+        }
+
         /// <summary>
         /// Saving WhiteList
         /// </summary>
@@ -266,14 +278,14 @@ namespace LaTexInclude.ViewModel
 
             try
             {
-                System.IO.File.WriteAllText((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\WhiteList.txt"), outputString);
+                System.IO.File.WriteAllText((assemblyPath + "\\Resources\\WhiteList.txt"), outputString);
             }
             catch (Exception ex)
             {
                 string temp_outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
 
                 using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
+                new System.IO.StreamWriter(assemblyPath + "\\CrashLog.txt", true))
                 {
                     file.WriteLine(temp_outputString);
                 }
@@ -288,17 +300,16 @@ namespace LaTexInclude.ViewModel
         public void LoadFiles()
         {
             bool missingFiles = false;
-            string message = "Missing ";
-            string path_temp = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            if (!Directory.Exists(Path.Combine(path_temp, "\\Resources")))
+            if (!Directory.Exists(Path.Combine(assemblyPath, @"Resources")))
             {
-                Directory.CreateDirectory(path_temp + "\\Resources");
+                Directory.CreateDirectory(assemblyPath + "\\Resources");
             }
 
-            if (File.Exists(Path.Combine(path_temp, @"Resources\WhiteList.txt")))
+            if (File.Exists(Path.Combine(assemblyPath, @"Resources\WhiteList.txt")))
             {
-                string[] WhiteListLines = System.IO.File.ReadAllLines(Path.Combine(path_temp, @"Resources\WhiteList.txt"));
+                string temp = Path.Combine(assemblyPath, @"Resources\WhiteList.txt");
+                string[] WhiteListLines = System.IO.File.ReadAllLines(Path.Combine(assemblyPath, @"Resources\WhiteList.txt"));
 
                 Init_WhiteList(WhiteListLines);
             }
@@ -307,7 +318,7 @@ namespace LaTexInclude.ViewModel
                 string[] exampleLines = { "#C++", ".h", ".cpp", "#C", ".c", "#Pascal", ".pas", "#HTML", ".html", ".css", "#VHDL", ".vhdl" };
 
                 using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter((path_temp + "\\Resources\\WhiteList.txt")))
+                new System.IO.StreamWriter((assemblyPath + "\\Resources\\WhiteList.txt")))
                 {
                     foreach (string line in exampleLines)
                     {
@@ -315,72 +326,18 @@ namespace LaTexInclude.ViewModel
                     }
                 }
 
-                string[] WhiteListLines = System.IO.File.ReadAllLines(Path.Combine(path_temp, @"Resources\WhiteList.txt"));
+                string[] WhiteListLines = System.IO.File.ReadAllLines(Path.Combine(assemblyPath, @"Resources\WhiteList.txt"));
 
                 Init_WhiteList(WhiteListLines);
-                message += "WhiteList ";
                 missingFiles = true;
             }
 
-            if (File.Exists(Path.Combine(path_temp, @"Resources\TexCodeTemplate.tex")))
-            {
-                string[] TexCodeLines = System.IO.File.ReadAllLines(Path.Combine(path_temp, @"Resources\TexCodeTemplate.tex"));
-            }
+            tm = new TexMaker();
+
+            if (tm.MissingFiles | missingFiles)
+                StatusText = "Missing files added";
             else
-            {
-                string exampleLine = "\\lstinputlisting[language=$Language$] {$Path$}";
-
-                using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter((path_temp + "\\Resources\\TexCodeTemplate.tex")))
-                {
-                    file.WriteLine(exampleLine);
-                }
-                message += "CodeTemplate";
-                missingFiles = true;
-            }
-
-            if (File.Exists(Path.Combine(path_temp, @"Resources\TexImageTemplate.tex")))
-            {
-                string[] TexImageLines = System.IO.File.ReadAllLines(Path.Combine(path_temp, @"Resources\TexImageTemplate.tex"));
-            }
-            else
-            {
-                string exampleLine = "\\begin{figure}[H]\n\\centering\n\\includegraphics[scale = { Scale }]{ { $Path$ } }\n" +
-                    "\\caption{ { Caption} }\n\\label{ fig: { Label } }\n\\end{ figure}";
-
-                using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter((System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Resources\\TexImageTemplate.tex")))
-                {
-                    file.WriteLine(exampleLine);
-                }
-                message += "ImageTemplate ";
-                missingFiles = true;
-            }
-
-            if (File.Exists(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexPDFTemplate.tex")))
-            {
-                string[] TexPdfLines = System.IO.File.ReadAllLines(Path.Combine(path_temp, @"Resources\TexPDFTemplate.tex"));
-            }
-            else
-            {
-                string exampleLine = "\\includepdf[pages=1-,pagecommand={}]{{ $Path$ }}";
-
-                using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter((path_temp + "\\Resources\\TexPDFTemplate.tex")))
-                {
-                    file.WriteLine(exampleLine);
-                }
-                message += "PDFTemplate ";
-                missingFiles = true;
-            }
-
-            if (missingFiles)
-            {
-                NotifyMessage = message + "... added file(s)!";
-                FlyoutOpen = true;
-            }
-
-            StatusText = "Successfully loaded";
+                StatusText = "Successfully loaded";
         }
 
         /// <summary>
@@ -477,111 +434,65 @@ namespace LaTexInclude.ViewModel
             }
         }
 
+        /// <summary>
+        /// Generates the string for the TextEditor window
+        /// </summary>
         public void TexGeneratorMethod()
         {
             if (_fileList.Count > 0)
             {
-                //TexMaker tm = new TexMaker();
+                this.tm.FileList = _fileList;
+                this.tm.WhiteList = _currentWhiteList;
 
+                List<string> texLines = this.tm.Build();
+                String outputString = "";
 
-            }
-        }
-
-        /// <summary>
-        /// Generates the string for the TextEditor window
-        /// </summary>
-        public void TexMakerMethod()
-        {
-            if (_fileList.Count > 0)
-            {
-                MainWindow mw = new MainWindow(true);
-
-                Regex re = new Regex(regexPattern, RegexOptions.Compiled);
-                Regex reg = new Regex(regexReplacePattern);
-                string temp = "";
-
-                try
+                if (texLines == null)
                 {
-                    string TexCodeTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexCodeTemplate.tex"));
-                    string TexImageTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexImageTemplate.tex"));
-                    string TexPDFTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexPDFTemplate.tex"));
-                    int count = 0;
-
-                    TrulyObservableCollection<MyFile> tempList = new TrulyObservableCollection<MyFile>();
-
-                    StringDictionary fields = new StringDictionary();
-
-                    string outputString = "";
-                    bool found;
-
-                    if (_currentLanguage == "All")
+                    NotifyMessage = tm.ErrorMsg;
+                    FlyoutOpen = true;
+                }
+                else if (tm.ErrorMsg != "")
+                {
+                    foreach (string line in texLines)
                     {
-                        tempList = _fileList;
+                        outputString += line;
+                    }
+
+                    StatusText = this.tm.ProcessedFiles + " Files processed";
+
+                    TxtEditorViewModel tevm = new TxtEditorViewModel();
+                    tevm.ClearTxtField();
+                    tevm.OutputString = outputString;
+
+                    NotifyMessage = tm.ErrorMsg;
+                    FlyoutOpen = true;
+
+                    if (Properties.Settings.Default.Setting_General_CopyToClipboard)
+                    {
+                        outputString = outputString.Replace("\r\n", "\r");
+                        System.Windows.Forms.Clipboard.SetText(outputString);
+                        StatusText = "Copied to clipboard";
+                        FlyoutOpen = true;
                     }
                     else
                     {
-                        tempList = _tempFileList;
+                        StatusText = "Success! Output copied to texteditor";
+                        FlyoutOpen = true;
                     }
 
-                    foreach (MyFile file in tempList)
+                    tevm = null;
+                }
+                else
+                {
+                    foreach (string line in texLines)
                     {
-                        count++;
-                        found = false;
-                        if (_currentLanguage == "" | _currentLanguage == "All")
-                        {
-                            foreach (WhiteList wl in CurrentWhiteList)
-                            {
-                                if (file.Extension == wl.Extension && !found)
-                                {
-                                    fields.Add("Language", wl.Language);
-                                    found = true;
-                                    break;
-                                }
-                            }
-
-                            if (!found)
-                            {
-                                fields.Add("Language", "FillMe");
-                            }
-                        }
-                        else
-                        {
-                            fields.Add("Language", _currentLanguage);
-                        }
-
-                        temp = file.Path;
-                        temp = reg.Replace(temp, "/");
-                        fields.Add("Path", temp);
-
-                        outputString += re.Replace(TexCodeTemplate, delegate (Match match)
-                        {
-                            return fields[match.Groups[1].Value];
-                        });
-                        outputString += "\n";
-                        fields.Clear();
-
-                        if (found) continue;
+                        outputString += line;
                     }
 
-                    StatusText = count + " Files processed";
+                    StatusText = this.tm.ProcessedFiles + " Files processed";
                     TextEditorMethod(outputString);
                 }
-                catch (Exception ex)
-                {
-                    string outputString;
-                    outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
-
-                    using (System.IO.StreamWriter file =
-                    new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
-                    {
-                        file.WriteLine(outputString);
-                    }
-
-                    outputString = null;
-                }
-
-                mw.Close();
-                mw = null;
             }
             else
             {
@@ -620,17 +531,16 @@ namespace LaTexInclude.ViewModel
         /// Shows the TxtEditorView
         /// </summary>
         /// <param name="outputString">The string with Tex code in it</param>
-        public void TextEditorMethod(string outputString)
+        public void TextEditorMethod(string texString)
         {
-            TxtEditorViewModel tevm = new TxtEditorViewModel()
-            {
-                outputString = outputString
-            };
+            TxtEditorViewModel tevm = new TxtEditorViewModel();
+            tevm.ClearTxtField();
+            tevm.OutputString = texString;
 
             if (Properties.Settings.Default.Setting_General_CopyToClipboard)
             {
-                outputString = outputString.Replace("\r\n", "\r");
-                System.Windows.Forms.Clipboard.SetText(outputString);
+                texString = texString.Replace("\r\n", "\r");
+                System.Windows.Forms.Clipboard.SetText(texString);
                 NotifyMessage = "Copied to clipboard";
                 FlyoutOpen = true;
             }
@@ -719,7 +629,7 @@ namespace LaTexInclude.ViewModel
                 outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
 
                 using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
+                new System.IO.StreamWriter(assemblyPath + "\\CrashLog.txt", true))
                 {
                     file.WriteLine(outputString);
                 }
@@ -735,7 +645,7 @@ namespace LaTexInclude.ViewModel
                 outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine;
 
                 using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
+                new System.IO.StreamWriter(assemblyPath + "\\CrashLog.txt", true))
                 {
                     file.WriteLine(outputString);
                 }

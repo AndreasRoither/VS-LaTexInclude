@@ -28,7 +28,7 @@ namespace LaTexInclude.View
         private void RichTextBox_Loaded(object sender, RoutedEventArgs e)
         {
             richTextBox.Document.Blocks.Clear();
-            richTextBox.Document.Blocks.Add(new Paragraph(new Run(tevm.outputString)));
+            richTextBox.Document.Blocks.Add(new Paragraph(new Run(tevm.OutputString)));
         }
 
         /// <summary>
@@ -36,8 +36,8 @@ namespace LaTexInclude.View
         /// </summary>
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            tevm.outputString = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
-            if (tevm.outputString != null && tevm.outputString != "")
+            tevm.OutputString = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
+            if (tevm.OutputString != null && tevm.OutputString != "")
             {
                 tevm.SaveFileMethod();
                 tevm.NotifyMessage = "Saved as output.tex in working directory";
@@ -55,10 +55,10 @@ namespace LaTexInclude.View
         {
             if (searchTxtBox.Text.Length != 0)
             {
-                string temp = tevm.outputString.Replace(searchTxtBox.Text.ToString(), replaceTxtBox.Text.ToString());
-                tevm.outputString = temp;
+                string temp = tevm.OutputString.Replace(searchTxtBox.Text.ToString(), replaceTxtBox.Text.ToString());
+                tevm.OutputString = temp;
                 richTextBox.Document.Blocks.Clear();
-                richTextBox.Document.Blocks.Add(new Paragraph(new Run(tevm.outputString)));
+                richTextBox.Document.Blocks.Add(new Paragraph(new Run(tevm.OutputString)));
                 temp = null;
                 tevm.NotifyMessage = "Replaced";
             }

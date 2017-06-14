@@ -62,10 +62,13 @@ namespace LaTexInclude.ViewModel
         /// <summary>
         /// outputString get and setter
         /// </summary>
-        public string outputString
+        public string OutputString
         {
             get { return _outputString; }
-            set { _outputString = value; }
+            set
+            {
+                _outputString = value;
+            }
         }
 
         /// <summary>

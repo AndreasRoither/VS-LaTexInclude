@@ -4,7 +4,6 @@ using LaTexInclude.ViewModel;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
@@ -13,7 +12,6 @@ using System.Net;
 using System.Reflection;
 using System.Security.Permissions;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
 using System.Windows;
 
@@ -25,26 +23,19 @@ namespace LaTexInclude
     public partial class MainWindow : MetroWindow
     {
         /// <summary>
-        /// contains the found files
-        /// </summary>
-        private TrulyObservableCollection<MyFile> _fileList = new TrulyObservableCollection<MyFile>();
-
-        /// <summary>
         /// current domain
         /// </summary>
         private AppDomain currentDomain;
 
-        /// <summary>
-        /// MainViewModel
-        /// </summary>
         private MainViewModel _viewModel = new MainViewModel();
-
         private StartViewmodel _start = new StartViewmodel();
 
         /// <summary>
         /// Version number
         /// </summary>
-        private int version = 132;
+        private int version = 140;
+
+        private readonly string assemblyPath;
 
         /// <summary>
         /// The parsed HTTPWebRequest from github
@@ -60,6 +51,8 @@ namespace LaTexInclude
             //Add Global Exception Handling
             currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(MyHandler);
+
+            assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             //Check for multiple instances, kill old instance or kill the starting process
             if (System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 2)
@@ -83,6 +76,8 @@ namespace LaTexInclude
             }
 
             string[] args = Environment.GetCommandLineArgs();
+
+            GenerateOutputTex(args[0]);
 
             if (args.Length > 1)
             {
@@ -159,7 +154,7 @@ namespace LaTexInclude
                 outputString = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + e.Message + Environment.NewLine + Environment.NewLine + e.ToString() + Environment.NewLine;
 
                 using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
+                new System.IO.StreamWriter(assemblyPath + "\\CrashLog.txt", true))
                 {
                     file.WriteLine(outputString);
                 }
@@ -267,66 +262,36 @@ namespace LaTexInclude
         {
             if (_viewModel.List.Count > 0)
             {
-                Regex re = new Regex(@"\$(.*?)\$", RegexOptions.Compiled);
-                Regex reg = new Regex(@"[\\]");
-                string temp = "";
+                TexMaker tm = _viewModel.Tex;
 
-                string TexCodeTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexCodeTemplate.tex"));
-                string TexImageTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexImageTemplate.tex"));
-                string TexPDFTemplate = System.IO.File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Resources\TexPDFTemplate.tex"));
+                tm.FileList = _viewModel.List;
+                tm.WhiteList = _viewModel.CurrentWhiteList;
 
-                StringDictionary fields = new StringDictionary();
-
-                string outputString = "";
-                bool found = false;
-
-                foreach (MyFile file in _viewModel.List)
+                List<string> texLines = tm.Build();
+                String outputString = "";
+                if (texLines != null)
                 {
-                    found = false;
-                    foreach (WhiteList wl in _viewModel.CurrentWhiteList)
+                    foreach (string line in texLines)
                     {
-                        if (file.Extension == wl.Extension)
+                        outputString += line;
+                    }
+
+                    try
+                    {
+                        System.IO.File.WriteAllText((path + "\\output.tex"), outputString);
+                    }
+                    catch (Exception ex)
+                    {
+                        string t;
+                        t = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine + "Runtime terminating: ";
+
+                        using (System.IO.StreamWriter file =
+                        new System.IO.StreamWriter(assemblyPath + "\\CrashLog.txt", true))
                         {
-                            found = true;
-                            fields.Add("Language", wl.Language);
-                            break;
+                            file.WriteLine(t);
                         }
+                        t = null;
                     }
-
-                    if (!found)
-                    {
-                        fields.Add("Language", "FillMe");
-                    }
-
-                    temp = file.Path;
-                    temp = reg.Replace(temp, "/");
-                    fields.Add("Path", temp);
-
-                    outputString += re.Replace(TexCodeTemplate, delegate (Match match)
-                    {
-                        return fields[match.Groups[1].Value];
-                    });
-                    outputString += "\n";
-                    fields.Clear();
-
-                    if (found) continue;
-                }
-
-                try
-                {
-                    System.IO.File.WriteAllText((path + "\\output.tex"), outputString);
-                }
-                catch (Exception ex)
-                {
-                    string t;
-                    t = Environment.NewLine + "Exception caught" + Environment.NewLine + "Date: " + DateTime.UtcNow.Date.ToString("dd/MM/yyyy") + ", Time: " + DateTime.Now.ToString("HH:mm:ss tt") + Environment.NewLine + ex.Message + Environment.NewLine + ex.ToString() + Environment.NewLine + "Runtime terminating: ";
-
-                    using (System.IO.StreamWriter file =
-                    new System.IO.StreamWriter(System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\CrashLog.txt", true))
-                    {
-                        file.WriteLine(t);
-                    }
-                    t = null;
                 }
             }
         }
