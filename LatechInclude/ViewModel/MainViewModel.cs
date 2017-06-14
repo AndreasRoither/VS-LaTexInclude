@@ -502,11 +502,6 @@ namespace LaTexInclude.ViewModel
 
                     StringDictionary fields = new StringDictionary();
 
-                    string output = re.Replace(TexCodeTemplate, delegate (Match match)
-                    {
-                        return fields[match.Groups[1].Value];
-                    });
-
                     string outputString = "";
                     bool found;
 
@@ -531,6 +526,7 @@ namespace LaTexInclude.ViewModel
                                 {
                                     fields.Add("Language", wl.Language);
                                     found = true;
+                                    break;
                                 }
                             }
 
@@ -554,6 +550,8 @@ namespace LaTexInclude.ViewModel
                         });
                         outputString += "\n";
                         fields.Clear();
+
+                        if (found) continue;
                     }
 
                     StatusText = count + " Files processed";

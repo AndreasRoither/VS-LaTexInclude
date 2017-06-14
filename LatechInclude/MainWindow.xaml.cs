@@ -44,7 +44,7 @@ namespace LaTexInclude
         /// <summary>
         /// Version number
         /// </summary>
-        private int version = 130;
+        private int version = 131;
 
         /// <summary>
         /// The parsed HTTPWebRequest from github
@@ -276,22 +276,19 @@ namespace LaTexInclude
 
                 StringDictionary fields = new StringDictionary();
 
-                string output = re.Replace(TexCodeTemplate, delegate (Match match)
-                {
-                    return fields[match.Groups[1].Value];
-                });
-
                 string outputString = "";
                 bool found = false;
 
                 foreach (MyFile file in _viewModel.List)
                 {
+                    found = false;
                     foreach (WhiteList wl in _viewModel.CurrentWhiteList)
                     {
                         if (file.Extension == wl.Extension)
                         {
                             found = true;
                             fields.Add("Language", wl.Language);
+                            break;
                         }
                     }
 
@@ -310,6 +307,8 @@ namespace LaTexInclude
                     });
                     outputString += "\n";
                     fields.Clear();
+
+                    if (found) continue;
                 }
 
                 try
