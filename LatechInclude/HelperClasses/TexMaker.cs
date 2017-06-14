@@ -14,14 +14,17 @@ namespace LaTexInclude.HelperClasses
         private string[] TexImageTemplate = null;
         private string[] TexPDFTemplate = null;
 
-        private List<string> _lines = null;
+        private List<string> _finLines = null;
+        TrulyObservableCollection<MyFile> _fileList;
+        List<WhiteList> _whiteList;
 
         /// <summary>
         /// TexMaker Constructor
         /// </summary>
-        public TexMaker()
+        public TexMaker(TrulyObservableCollection<MyFile> fileList, List<WhiteList> whiteList)
         {
-            _lines = new List<string>();
+            this._fileList = fileList;
+            this._whiteList = whiteList;
 
             if (!LoadFiles())
             {
@@ -29,6 +32,9 @@ namespace LaTexInclude.HelperClasses
             }
         }
 
+        /// <summary>
+        /// Gets the content
+        /// </summary>
         public string Content
         {
             get
@@ -37,6 +43,9 @@ namespace LaTexInclude.HelperClasses
             }
         }
 
+        /// <summary>
+        /// Gets bool missingFiles
+        /// </summary>
         public bool MissingFiles
         {
             get
@@ -45,49 +54,81 @@ namespace LaTexInclude.HelperClasses
             }
         }
 
-        private TexMaker addPremable()
+        private List<string> AddPremable()
         {
-            string path = Path.Combine(Environment.CurrentDirectory, @"Resources\premable.tex");
-            _content += File.ReadAllText(path);
-            return this;
+            string path_temp = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            if (File.Exists(Path.Combine(path_temp, @"Resources\Premable.tex")) | File.Exists(Path.Combine(path_temp, @"Resources\Premable.txt")))
+            {
+                List<string> temp = new List<string>();
+                string line = "";
+                System.IO.StreamReader file = new System.IO.StreamReader(Path.Combine(path_temp, @"Resources\Premable.tex"));
+                while ((line = file.ReadLine()) != null)
+                {
+                    temp.Add(line);
+                }
+                return temp;
+            }
+            else return null;
         }
 
-        public String build()
+        public List<string> Build()
         {
+            List<string> pics = new List<string>();
+            List<string> temp;
+            pics.Add(".png");
+            pics.Add(".jpg");
+            pics.Add(".jpeg");
+            pics.Add(".bmp");
+
             if (!finalized)
-                finalize();
-            return _content;
+            {
+                temp = AddPremable();
+                if (temp != null)
+                {
+                    _finLines = temp;
+                }
+
+                foreach (MyFile f in _fileList)
+                {
+                    if (f.Extension == ".pdf")
+                    {
+                        _finLines.Add(AddPDF(f));
+                    }
+                    else if (pics.Contains(f.Extension.ToLower()))
+                    {
+                        _finLines.Add(AddImage(f));
+                    }
+                    else
+                    {
+                        _finLines.Add(AddCode(f));
+                    }
+                }
+
+                Finalize();
+            }
+            return _finLines;
         }
 
-        public TexMaker addImage(String relativePath, float size)
+        public string AddImage(MyFile f)
+        {
+            return "";
+        }
+
+        public string AddPDF(MyFile f)
+        {
+            return "";
+        }
+
+        public string AddCode(MyFile f)
+        {
+            return "";
+        }
+
+        public TexMaker Finalize()
         {
             if (finalized)
                 return this;
-
-            //TODO: Convert Path to Latex Format (Replace \ by /)
-            _content += "\\begin{figure}[H]\n\\centering\n\\includegraphics[scale = " + size + "]{" + relativePath + "}\n\\end{figure}";
-            return this;
-        }
-
-        public TexMaker addPDF()
-        {
-            if (finalized)
-                return this;
-            return this;
-        }
-
-        public TexMaker addCode()
-        {
-            if (finalized)
-                return this;
-            return this;
-        }
-
-        public TexMaker finalize()
-        {
-            if (finalized)
-                return this;
-            //content += "\\end{document}";
             finalized = true;
             return this;
         }
@@ -101,11 +142,6 @@ namespace LaTexInclude.HelperClasses
             bool missingFiles = false;
             string message = "Missing ";
             string path_temp = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            if (!Directory.Exists(Path.Combine(path_temp, "\\Resources")))
-            {
-                Directory.CreateDirectory(path_temp + "\\Resources");
-            }
 
             if (File.Exists(Path.Combine(path_temp, @"Resources\TexCodeTemplate.tex")))
             {
@@ -159,12 +195,7 @@ namespace LaTexInclude.HelperClasses
                 missingFiles = true;
             }
 
-            if (missingFiles)
-            {
-                return false;
-            }
-
-            return true;
+            return missingFiles;
         }
     }
 }

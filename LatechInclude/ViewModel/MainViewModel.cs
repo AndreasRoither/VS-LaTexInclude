@@ -87,7 +87,6 @@ namespace LaTexInclude.ViewModel
         /// <param name="temp"></param>
         public MainViewModel(bool temp)
         {
-
         }
 
         ~MainViewModel()
@@ -397,7 +396,7 @@ namespace LaTexInclude.ViewModel
 
                 foreach (string s in WhiteListLines)
                 {
-                    if (s.StartsWith("#"))
+                    if (s.StartsWith("#") && !_Languages.Contains(s.Remove(0, 1)))
                     {
                         _Languages.Add(s.Remove(0, 1));
                         wl.Language = s.Remove(0, 1);
@@ -475,6 +474,16 @@ namespace LaTexInclude.ViewModel
 
                     SearchDirectories(folder);
                 }
+            }
+        }
+
+        public void TexGeneratorMethod()
+        {
+            if (_fileList.Count > 0)
+            {
+                //TexMaker tm = new TexMaker();
+
+
             }
         }
 
@@ -659,12 +668,12 @@ namespace LaTexInclude.ViewModel
             {
                 nonAccessibleFiles = 0;
                 _fileList.Clear();
+                filesList.Clear();
                 int i = 1;
                 bool flag = false;
 
                 ApplyAllFiles(folder, ProcessFile);
                 string[] files = filesList.ToArray();
-
 
                 foreach (string file in files)
                 {

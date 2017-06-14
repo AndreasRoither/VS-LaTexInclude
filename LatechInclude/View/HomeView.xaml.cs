@@ -255,7 +255,7 @@ namespace LaTexInclude.View
             }
             else
             {
-                // WhiteList 
+                // WhiteList
 
                 List<WhiteList> tempList = new List<WhiteList>();
 

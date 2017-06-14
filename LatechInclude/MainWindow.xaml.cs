@@ -44,7 +44,7 @@ namespace LaTexInclude
         /// <summary>
         /// Version number
         /// </summary>
-        private int version = 131;
+        private int version = 132;
 
         /// <summary>
         /// The parsed HTTPWebRequest from github
@@ -141,6 +141,7 @@ namespace LaTexInclude
                 request.UserAgent = "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/6.0;)";
                 request.KeepAlive = false;
                 request.Method = "GET";
+
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 {
                     var encoding = ASCIIEncoding.ASCII;
