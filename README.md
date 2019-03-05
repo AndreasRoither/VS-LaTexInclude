@@ -16,6 +16,19 @@ Say you want to include different files in different folders in a .tex file.
 
 VS-LaTeX-Include does the job for you so you don't have to worry about those pesky path declerations.
 
+#### Showcase
+<p align="left">
+  <img src="images/LatexInclude_1.png" width="400"/>
+</p>
+<p align="left">
+  <img src="images/LatexInclude_2.png" width="400"/>
+</p>
+<p align="left">
+  <img src="images/LatexInclude_3.png" width="400"/>
+</p>
+<p align="left">
+  <img src="images/LatexInclude.png" width="400"/>
+</p>
 
 ### Installation
 [VS-LaTeX-Include release](https://github.com/AndreasRoither/VS-LaTexInclude/releases)  
