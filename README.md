@@ -18,7 +18,7 @@ VS-LaTeX-Include does the job for you so you don't have to worry about those pes
 
 
 ### Installation
-[VS-LaTeX-Include release](https://github.com/AndiRoither/VS-LaTexInclude/releases)  
+[VS-LaTeX-Include release](https://github.com/AndreasRoither/VS-LaTexInclude/releases)  
 
 ### How to use
 Place the executable wherever you desire and run it.
